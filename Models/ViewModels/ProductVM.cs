@@ -24,7 +24,6 @@ namespace ECommerce2.Models.ViewModels
         public int? Inventory { get; set; }
         public int? ShippingFee { get; set; }
         public List<CategoryVM> Categories { get; set; }
-        public List<VariationVM>? Variations { get; set; }
         public List<AdditionalDetailVM>? AdditionalDetails { get; set; }
         public bool IsPublished { get; set; }
     }

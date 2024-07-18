@@ -19,7 +19,6 @@ namespace ECommerce2.Models
         public int? Inventory { get; set; }
         public int? ShippingFee { get; set; }
         public ICollection<Category> Categories { get; set; }
-        public ICollection<Variation>? ProductVariations { get; set; }
         public ICollection<ProductAdditionalDetail>? AdditionalDetails { get; set; }
         public ICollection<ProductImage>? ProductImages { get; set; }
         public bool IsPublished { get; set; }

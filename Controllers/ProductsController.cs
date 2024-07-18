@@ -109,9 +109,6 @@ namespace ECommerce2.Controllers
                 .Include(p => p.ProductImages)
                 .Include(p => p.AdditionalImages)
                     .ThenInclude(ai => ai.Image)
-                .Include(p => p.ProductVariations)
-                    .ThenInclude(pv => pv.VariationItems)
-                        .ThenInclude(vi => vi.Image)
                 .Include(vi => vi.AdditionalDetails)
                 .Where(p => p.Id == id)
                 .FirstOrDefaultAsync();
@@ -133,7 +130,6 @@ namespace ECommerce2.Controllers
                     ShippingFee = product.ShippingFee,
                     IsPublished = product.IsPublished,
                     AdditionalImages = new List<AdditionalImageVM>(),
-                    Variations = new List<VariationVM>(),
                     AdditionalDetails = new List<AdditionalDetailVM>(),
                 };
 
@@ -177,39 +173,6 @@ namespace ECommerce2.Controllers
                             };
                             mapProduct.AdditionalImages.Add(additionalImageVM);
                         }
-                    }
-                }
-
-                /** Product Variations */
-
-                if (product.ProductVariations != null && product.ProductVariations.Any())
-                {
-                    foreach (Variation ProductVariation in product.ProductVariations)
-                    {
-                        VariationVM VariationVM = new VariationVM()
-                        {
-                            Id = ProductVariation.Id,
-                            Name = ProductVariation.Name,
-                            VariationItems = new List<VariationItemsVM>(),
-                        };
-
-                        if (ProductVariation.VariationItems.Any()) 
-                        {
-                            foreach (VariationItem VariationItem in ProductVariation.VariationItems)
-                            {
-                                VariationItemsVM VariationItemVM = new VariationItemsVM()
-                                {
-                                    Id = VariationItem.Id,
-                                    Value = VariationItem.Value,
-                                    ListPrice = VariationItem.ListPrice,
-                                    SalePrice = VariationItem.SalePrice,
-                                    ImageId = VariationItem.ImageId,
-                                    Image = VariationItem.Image,
-                                };
-                                VariationVM.VariationItems.Add(VariationItemVM);
-                            }
-                        }
-                        mapProduct.Variations.Add(VariationVM);
                     }
                 }
 
@@ -259,9 +222,6 @@ namespace ECommerce2.Controllers
                         .Include(p => p.Categories)
                         .Include(p => p.ProductImages)
                         .Include(p => p.AdditionalImages)
-                        .Include(p => p.ProductVariations)
-                            .ThenInclude(p => p.VariationItems)
-                                .ThenInclude(p => p.Image)
                         .Include(p => p.AdditionalDetails)
                         .Where(p => p.Id == id).FirstOrDefaultAsync();
 
@@ -338,115 +298,6 @@ namespace ECommerce2.Controllers
                             }
                         }
                     }
-
-                    /** Product Variations */
-                    List<Variation> Variations = UpdateProduct.ProductVariations.ToList();
-
-
-                    if (productVM.Variations != null)
-                    {
-                        if (Variations.Any())
-                        {
-                            /** Remove Variation */
-
-                            for (int i = Variations.Count - 1; i >= 0; i--)
-                            {
-                                Variation Variation = Variations[i];
-                                if (!productVM.Variations.Any(v => v.Id == Variation.Id))
-                                {
-                                    Variations.Remove(Variation);
-                                }
-                            }
-                        }
-
-                        /** Add or Update Variation */
-                        foreach (VariationVM VariationVM in productVM.Variations)
-                        {
-                            // Update Variation
-                            if (VariationVM.Id != null)
-                            {
-                                Variation ProductVariation = Variations.FirstOrDefault(v => v.Id == VariationVM.Id);
-                                if (ProductVariation != null)
-                                {
-                                    ProductVariation.Name = ProductVariation.Name;
-                                    List<VariationItem> VariationItems = ProductVariation.VariationItems.ToList();
-
-                                    if (VariationItems != null)
-                                    {
-                                        /** Remove Variation Items */
-
-                                        for (int i = VariationItems.Count - 1; i >= 0; i--)
-                                        {
-                                            VariationItem VariationItem = VariationItems[i];
-                                            if (!VariationVM.VariationItems.Any(vi => vi.Id == VariationItem.Id))
-                                            {
-                                                VariationItems.Remove(VariationItem);
-                                            }
-                                        }
-                                    }
-
-                                    /** Add or Update Variation Items */
-                                    foreach (VariationItemsVM VariationItemVM in VariationVM.VariationItems)
-                                    {
-                                        if (VariationItemVM.Id != null)
-                                        {
-                                            VariationItem VariationItem = VariationItems.FirstOrDefault(vi => vi.Id == VariationItemVM.Id);
-                                            if (VariationItem != null)
-                                            {
-                                                VariationItem.Value = VariationItemVM.Value;
-                                                VariationItem.ImageId = VariationItemVM.ImageId;
-                                                VariationItem.ListPrice = VariationItemVM.ListPrice;
-                                                VariationItem.SalePrice = VariationItemVM.SalePrice;
-                                            }
-                                        }
-                                        else
-                                        {
-                                            VariationItem NewItem = new VariationItem()
-                                            {
-                                                Value = VariationItemVM.Value,
-                                                ImageId = VariationItemVM.ImageId,
-                                                ListPrice = VariationItemVM.ListPrice,
-                                                SalePrice = VariationItemVM.SalePrice,
-                                            };
-                                            VariationItems.Add(NewItem);
-                                        }
-                                    }
-
-                                    ProductVariation.VariationItems = VariationItems;
-                                }
-                            }
-                            else
-                            {
-                                Variation NewVariation = new Variation()
-                                {
-                                    Name = VariationVM.Name,
-                                    ProductId = id,
-                                    VariationItems = new List<VariationItem>(),
-                                };
-
-                                if (VariationVM.VariationItems != null)
-                                {
-                                    foreach(VariationItemsVM VariationItemVM in VariationVM.VariationItems)
-                                    {
-                                        VariationItem NewItem = new VariationItem()
-                                        {
-                                            Value = VariationItemVM.Value,
-                                            ImageId = VariationItemVM.ImageId,
-                                            ListPrice = VariationItemVM.ListPrice,
-                                            SalePrice = VariationItemVM.SalePrice,
-                                        };
-                                        NewVariation.VariationItems.Add(NewItem);
-                                    }
-                                }
-                                Variations.Add(NewVariation);
-                            }
-                        }
-                    } else
-                    {
-                        Variations.Clear();
-                    }
-
-                    UpdateProduct.ProductVariations = Variations;
 
                     /** Product Published */
                     UpdateProduct.IsPublished = productVM.IsPublished;

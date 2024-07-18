@@ -2,117 +2,6 @@ const productId = $('#Id.product-id').val();
 
 
 /************************************** */
-/** Product Variation */
-function createVariationContainer() {
-    var variationContainer = $('.product-variations');
-    var variationCount = $('.variation-name').length == null ? 0 : $('.variation-name').length;
-    let newDiv =
-        `<div data-variation="${variationCount}" class="variation-${variationCount} col-6 mb-4">
-            <div class="card position-relative">
-                <div class="card-body p-4 d-flex">
-                    <div style="flex: 1;">
-                        <div class="form-group mb-2">
-                            <label for="variations-${variationCount}" class="control-label">Variation Name</label>
-                            <input class="variation-name form-control" type="text" id="variations-${variationCount}" name="Variations[${variationCount}].Name" value="${name}"/>
-                        </div>
-                        <div>
-                            <span>Variation Items</span>
-                            <div class="variation-items"></div>
-                            <div class="d-flex">
-                                <button type="button" class="btn btn-primary add-item text-nowrap" onclick="createVariationItem(${variationCount})">Add Item</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="end-0 p-1 position-absolute">
-                     <button type="button" class="btn-close" aria-label="Close" onclick="deleteVariation(${variationCount})"></button>
-                </div>
-            </div>
-        </div>`;
-    variationContainer.append(newDiv);
-};
-
-function createVariationItem(value) {
-    var itemsDiv = $(`[data-variation=${value}]`).find('.variation-items');
-    var itemsCount = $(`[data-variation=${value}]`).find('.item').length == null ? 0 : $(`[data-variation=${value}]`).find('.item').length;
-    let newItemDiv =
-        `<div class="d-flex  mb-2">
-            <div style="flex: 1;" class="item input-group">
-                <input type="text" class="form-control" name="Variations[${value}].VariationItems[${itemsCount}].Value" placeholder="Item" />
-                <input type="text" class="form-control" name="Variations[${value}].VariationItems[${itemsCount}].ListPrice" placeholder="List Price" title="Leave empty to use product pricing" />
-                <input type="text" class="form-control" name="Variations[${value}].VariationItems[${itemsCount}].SalePrice" placeholder="Sale Price" title="Leave empty to use product pricing" />
-            </div>
-            <div class="ms-2 d-flex">
-                <div class="variant-item-img-wrapper position-relative">
-                    <button type="button" class="btn btn-secondary media-library-btn position-relative"  data-variant-id="${value}" data-item-id="${itemsCount}">
-                        <i class="bi bi-card-image"></i>
-                    </button>
-                </div>
-                <button type="button" class="ms-1 btn btn-danger delete-item-btn">
-                    <i class="bi bi-trash"></i>
-                </button>
-            </div>
-        </div>`
-    itemsDiv.append(newItemDiv);
-};
-
-$(document).on('click', '.delete-variation-btn', function () {
-    let parentEl = $(this).closest('.variation--wrapper');
-
-    let itemIndex = parentEl.data('variation');
-    $('.product-variations').children().each(function (index) {
-        if (index > itemIndex) {
-            let variationIndex = index;
-            $(this).attr('data-variation', variationIndex - 1);
-            $(this).find('input:first').attr('name', `Variations[${variationIndex - 1}].Id`);
-            $(this).find('.variation-name').attr('name', `Variations[${variationIndex - 1}].Name`);
-
-            let variationItems = $(this).find('.variation-items');
-            let i = 0;
-            variationItems.children().each(function (index) {
-                let varItem = $(this).find('[type=hidden]:first');
-                let prevName = $(this).find('[type=hidden]:first').attr('name');
-                let newName = prevName.replace(`Variations[${variationIndex}]`, `Variations[${variationIndex - 1}]`);
-                varItem.attr('name', newName);
-
-                $(this).find('.img-selected').find('input').attr('name', `Variations[${variationIndex - 1}].VariationItems[${i}].ImageId`);
-                let inputs = $(this).find('input.form-control');
-                inputs.each(function () {
-                    let prevName = $(this).attr('name');
-                    let newName = prevName.replace(`Variations[${variationIndex}]`, `Variations[${variationIndex - 1}]`);
-                    $(this).attr('name', newName);
-                })
-                i++;
-            });
-        }
-    });
-
-    parentEl.remove();
-
-});
-
-$(document).on("click", '.delete-item-btn', function () {
-    let parentEl = $(this).parent().parent();
-    let itemIndex = parentEl.data('var-item-index');
-    let parentItemWrapper = parentEl.closest('.variation-items');
-
-    parentItemWrapper.children().each(function (index) {
-        if (index > itemIndex) {
-            $(this).attr('data-var-item-index', index - 1);
-            let inputEls = $(this).find('input');
-            inputEls.each(function () {
-                let oldName = $(this).attr('name');
-                let newName = oldName.replace(`VariationItems[${index}]`, `VariationItems[${index - 1}]`);
-                $(this).attr('name', newName);
-            })
-        }
-    })
-    
-
-    parentEl.remove();
-});
-
-/************************************** */
 /** Media Library */
 
 const mediaLibraryModal = $('#mediaLibraryModal');
@@ -144,46 +33,6 @@ mediaLibraryModal.on('hide.bs.modal', () => {
     selectBtn.off('click');
     $(document).off('change', '.product-images');
 });
-
-// For selecting image for product item variant
-$(document).on('click', '.media-library-btn', selectImgForItemVariant);
-
-function selectImgForItemVariant() {
-    mediaLibraryModal.modal('show');
-    $(document).on('change', '.product-images', function (e) {
-        selectMedia(e, false);
-    });
-
-    let variantItem = $(this);
-
-    selectBtn.on('click', () => {
-        let selected = $('.image-checkbox:checkbox:checked');
-        let variantId = variantItem.data('variant-id');
-        let itemId = variantItem.data('item-id');
-        let selectedId;
-        let imgSrc;
-        if (selected.length == 1) {
-            selectedId = selected.data('id');
-            imgSrc = selected.val();
-
-            variantItem.find('input').remove();
-            variantItem.find('img').remove();
-            let input = `<input type="hidden" value="${selectedId}" data-image-id="${selectedId}" name="Variations[${variantId}].VariationItems[${itemId}].ImageId" />`;
-            let img = `<img src="${imgSrc}" class="position-absolute selected-img h-100 w-100 top-0 start-0 rounded" />`
-            let removeBtn =
-            `<button type="button" data-image-id="${selectedId}" class="btn btn-warning position-absolute remove-img-btn p-0 rounded-circle">
-                <div class="d-flex justify-content-center align-items-center">
-                    <i class="bi bi-x-lg"></i>
-                </div>
-            </button>`;
-            variantItem.append(input);
-            variantItem.append(img);
-            variantItem.parent().append(removeBtn);
-            variantItem.addClass('img-selected');
-            mediaLibraryModal.modal('hide');
-        }
-    });
-}
 
 
 // Media select function for library modal
@@ -282,12 +131,6 @@ function removeImages(imageIds) {
         if (addtlImg != null) {
             addtlImg.remove();
             additionalImageDeleted = true;
-        }
-        const variantImgInput = $(`[data-image-id=${imageIds[i]}]`);
-        if (variantImgInput != null) {
-            variantImgInput.parent().removeClass('img-selected');
-            variantImgInput.next().remove();
-            variantImgInput.remove();
         }
 
         imgElement.remove();

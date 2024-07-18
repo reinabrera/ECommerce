@@ -15,8 +15,6 @@ namespace ECommerce2.Data
         public DbSet<ProductImage> ProductImages { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<ProductCategories> ProductCategories { get; set; }
-        public DbSet<Variation> Variations { get; set; }
-        public DbSet<VariationItem> VariationItems { get; set; }
         public DbSet<ProductAdditionalImage> ProductAdditionalImages { get; set; }
         public DbSet<ProductAdditionalDetail> ProductAdditionalDetails { get; set; }
         public DbSet<Partnership> Partnerships { get; set; }
@@ -38,30 +36,6 @@ namespace ECommerce2.Data
                 .WithOne(p => p.Product)
                 .HasForeignKey(p => p.ProductId)
                 .OnDelete(DeleteBehavior.Cascade);
-
-            builder.Entity<Product>()
-                .HasMany(p => p.ProductVariations)
-                .WithOne(p => p.Product)
-                .HasForeignKey(p => p.ProductId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            builder.Entity<Variation>()
-                .HasOne(p => p.Product)
-                .WithMany(p => p.ProductVariations)
-                .HasForeignKey(p => p.ProductId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            builder.Entity<VariationItem>()
-                .HasOne(p => p.Variation)
-                .WithMany(p => p.VariationItems)
-                .HasForeignKey(p => p.VariationId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            builder.Entity<VariationItem>()
-                .HasOne(p => p.Image)
-                .WithMany()
-                .HasForeignKey(p => p.ImageId)
-                .OnDelete(DeleteBehavior.SetNull);
 
             builder.Entity<Product>()
                 .HasMany(p => p.Categories)
