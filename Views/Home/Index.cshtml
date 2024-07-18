@@ -1,0 +1,175 @@
+﻿@model ECommerce2.Models.ViewModels.HomePageVM
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<section class="hero">
+    <div class="content-wrapper container h-100 d-flex align-items-center">
+        <div class="content col-6 text-light">
+            <h1 class="title display-2 fw-bold">Raining Offers For Hot Summer!</h1>
+            <h4 class="mt-5 fs-3">
+                25% Off On All Products
+            </h4>
+
+            <div class="btns mt-5">
+                <div class="row gx-4">
+                    <div class="col-auto">
+                        <a class="btn btn-light rounded-0 px-4 py-2 fw-600">SHOP NOW</a>
+                    </div>
+                    <div class="col-auto">
+                        <a class="btn btn-outline-light rounded-0 px-4 py-2 fw-600">FIND MORE</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="logo-carousel" class="py-5">
+    <div class="container p-4">
+        <div class="splide" aria-label="Company Logos">
+            <div class="splide__track">
+                <ul class="splide__list">
+                    @foreach (Partnership partnership in Model.Partnerships)
+                    {
+                        <li class="splide__slide d-flex">
+                            <a class="col-9" href="@partnership.CompanyWebsite" target="_blank">
+                                <img src="@partnership.Logo.FilePath" alt="@partnership.CompanyName Logo">
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>  
+    </div>
+</section>
+
+<section class="special-promotions">
+    <div class="container">
+        <div class="row">
+
+            @for (int i = 0; i < Model.SpecialPromotions.Count; i++)
+            {
+                SpecialPromotion item = Model.SpecialPromotions[i];
+                <div class="col-4">
+                    <div class="card text-bg-dark position-relative">
+                        <div class="img-color-overlay position-absolute w-100 h-100"></div>
+                        <img src="@(item.SiteMedia != null ? item.SiteMedia.FilePath : "")" class="card-img" alt="...">
+                        <div class="card-img-overlay d-flex">
+                            <div class="card-content mt-auto  text-light p-4">
+                                <h5 class="card-title fs-4">@item.Title</h5>
+                                <p class="card-text">@item.Description</p>
+                                <a href="@item.Url" class="btn btn-light py-2 px-4 fw-600">@item.ButtonText</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<section class="featured-product-listing">
+    <div class="container">
+        <h2 class="text-center fs-1">Featured Products</h2>
+        <div class="divider d-flex mt-4">
+            <span></span>
+        </div>
+        <div class="products-wrapper mt-5">
+            <div class="row row-cols-5 gy-4">
+                @for (int i = 0; i < 10; i++)
+                {
+                    <div class="col">
+                        <div class="card border-0 bg-transparent">
+                            <div class="position-relative img--wrapper">
+                                <img src="https://websitedemos.net/brandstore-02/wp-content/uploads/sites/150/2021/03/sports-shoe3-300x300.jpg" class="card-img-top" alt="...">
+                                <a href="#" class="stretched-link"></a>
+                                <div class="add-to-cart position-absolute">
+@*                                     <span class="bg-dark text-light rounded-1 px-2 py-1 toolto">
+                                        <small>Add to cart</small>
+                                    </span> *@
+                                    <button type="button" class="btn rounded-pill justify-content-center align-items-center" data-bs-toggle="tooltip" data-bs-placement="left"
+                                            data-bs-custom-class="add-to-cart-tooltip"
+                                            data-bs-title="Add to cart">
+                                        <i class="bi bi-handbag-fill text-muted"></i>
+                                    </button>
+                                </div>
+
+                            </div>
+                            <div class="card-body px-0">
+                                <a href="#" class="card-title text-black text-decoration-none fw-600">DNK Yellow Shoes</a>
+                                <div class="product-details mt-1">
+                                    <div class="product-category">
+                                        <span class="text-muted">Men</span>
+                                    </div>
+                                    <div class="product-pricing mt-1">
+                                        <span class="listing-price text-muted fw-600"><del>$150.00</del></span>
+                                        <span class="sale-price fw-600">$120.00</span>
+                                    </div>
+                                    <div class="star-rating d-flex">
+                                        <i class="bi bi-star"></i>
+                                        <i class="bi bi-star"></i>
+                                        <i class="bi bi-star"></i>
+                                        <i class="bi bi-star"></i>
+                                        <i class="bi bi-star"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="limited-time-offer">
+    <div class="container">
+        <div class="content p-7 text-light col-6">
+            <div>
+                <span class="fs-5 fw-600">
+                    Limited Time Offer
+                </span>
+            </div>
+
+            <h2 class="fs-1 fw-600 mt-4">Special Edition</h2>
+            <p class="mt-4">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.
+            </p>
+
+            <div>
+                <span class="fs-5 fw-600">Buy This T-shirt At 20% Discount, Use Code OFF20</span>
+            </div>
+            <a href="#" class="mt-5 px-4 py-2 btn btn-light fw-600">SHOP NOW</a>
+        </div>
+    </div>
+
+</section>
+
+<section class="highlight-subsections">
+    <div class="container">
+        <div class="subsections row">
+            @for (int i=0; i < 4; i++)
+            {
+                <div class="col-3">
+                    <div class="subsection">
+                        <div class="icon-wrapper text-center">
+                            <img src="https://websitedemos.net/brandstore-02/wp-content/uploads/sites/150/2018/12/globe-free-img.png" />
+                        </div>
+                        <div class="content text-center mt-3">
+                            <h5 class="content">
+                                Worldwide Shipping
+                            </h5>
+                            <p class="description mt-3">
+                                It elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+</section>

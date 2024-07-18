@@ -1,0 +1,79 @@
+﻿
+
+/************************************************** */
+/** Global */
+
+:root {
+    --bs-primary-bg-subtle: #cfe2ff;
+    --global-blue: #31779a;
+    --global-blue-1: #0075be;
+    --global-bg-gray: #f5f7f9;
+    --global-text-muted: #6c757d;
+    --bs-light: #f8f9fa;
+}
+
+html {
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+/*body {
+    margin-bottom: 60px;
+}
+*/
+
+@media (min-width: 1400px) {
+    .container {
+        max-width: 1200px;
+    }
+}
+
+
+.btn {
+    border-radius: 0;
+}
+
+.btn-light {
+    transition: 0.3s all;
+}
+
+.btn-blue {
+    background-color: var(--global-blue-1);
+    color: white !important;
+}
+
+.btn-light:hover {
+    background-color: black;
+    color: white;
+    border-color: black;
+}
+
+.fw-600 {
+    font-weight: 600;
+}
+
+.p-6 {
+    padding: 4rem;
+}
+
+.p-7 {
+    padding: 5rem;
+}
+
+.add-to-cart-tooltip {
+    margin-right: 5px !important;
+}

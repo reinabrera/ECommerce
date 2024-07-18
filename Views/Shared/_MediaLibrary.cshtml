@@ -1,0 +1,45 @@
+﻿<div class="global-media-library">
+    <!-- Modal -->
+    <div class="modal fade" id="globalMediaLibraryModal" tabindex="-1" aria-labelledby="globalMediaLibraryModalLabel" aria-hidden="true">
+        <div class="modal-dialog w-50 mw-100 h-100 modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content position-relative h-75">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="globalMediaLibraryLabel">Media Library</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="global-images row g-3">
+                    </div>
+                </div>
+                <div class="modal-custom-backdrop position-absolute w-100 h-100"></div>
+                <div class="modal-footer">
+                    <input type="file" accept="images/*" id="globalMediaInput" class="d-none" multiple />
+                    <button type="button" class="btn btn-primary d-none" id="globalSelectImageBtn">Select Image</button>
+                    <button type="button" id="globalDeleteBtn" class="d-none btn btn-danger">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                    <button type="button" class="btn btn-primary" id="globalMediaUploadBtn">Upload Images</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="globalDeleteSelectedModal" tabindex="-1" aria-labelledby="globalDeleteSelectedModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content h-75">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="globalDeleteSelectedModalLabel">Confirm Delete</h1>
+                    <button type="button" class="btn-close" id="globalDeleteSelectedClose" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete selected images?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-warning" id="globalDeleteSelectedConfirm">Yes</button>
+                    <button type="button" class="btn btn-secondary" id="globalDeleteSelectedCancel" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

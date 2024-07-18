@@ -1,0 +1,154 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - ECommerce2</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/global.css" asp-append-version="true" />
+
+    <link rel="stylesheet" href="~/ECommerce2.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+    <link href="https://cdn.jsdelivr.net/npm/@@splidejs/splide@4.1.4/dist/css/splide.min.css" rel="stylesheet">
+    @RenderSection("CssOverrides", false)
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow py-4">
+            <div class="container-fluid py-1 px-5">
+                <a class="navbar-brand w-100 p-0" asp-area="" asp-controller="Home" asp-action="Index"><img src="~/dist/logo1-free-img-140x47.png" /></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-light fw-bold" asp-area="" asp-controller="Home" asp-action="Index">HOME</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-light fw-bold" asp-area="" asp-controller="Products" asp-action="Index">PRODUCTS</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-light fw-bold" asp-area="" asp-controller="Partnerships" asp-action="Index">PARTNERSHIPS</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-light fw-bold" asp-area="" asp-controller="SpecialPromotions" asp-action="Index">SPECIAL PROMOTIONS</a>
+                        </li>
+                    </ul>
+                    <partial name="_LoginPartial" />
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main role="main">
+        @RenderBody()
+    </main>
+
+
+    <footer class="border-top footer text-muted bg-white">
+        <div class="footer-widget py-5">
+            <div class="container">
+                <a href="#" class="fw-600 text-dark fs-4 text-decoration-none">SALE UP TO 70% OFF FOR ALL CLOTHES & FASHION ITEMS, ON ALL BRANDS.</a>
+            </div>
+        </div>
+
+        <div class="primary-footer border-top border-bottom">
+            <div class="container py-5">
+                <div class="row">
+                    <div class="col-4">
+                        <div class="brand-img--wrapper ">
+                            <img class="btn-close-white" src="../dist/logo1-free-img-140x47.png" />
+                        </div>
+                        <div class="brand-line mt-5">
+                            <span class="text-dark fs-5 fw-600">
+                                The best look anytime, anywhere.
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-5">
+                        <div class="row footer-links">
+                            <div class="col-6">
+                                <div class="col-title">
+                                    <span class="text-dark fs-5 fw-600">For Her</span>
+                                </div>
+                                <ul class="links list-unstyled mt-4">
+                                    <li><a href="#">Women Jeans</a></li>
+                                    <li class="mt-1"><a href="#">Women Jeans</a></li>
+                                    <li class="mt-1"><a href="#">Women Jeans</a></li>
+                                    <li class="mt-1"><a href="#">Women Jeans</a></li>
+                                    <li class="mt-1"><a href="#">Women Jeans</a></li>
+
+                                </ul>
+                            </div>
+                            <div class="col-6">
+                                <div class="col-title">
+                                    <span class="text-dark fs-5 fw-600">For Him</span>
+                                </div>
+                                <ul class="links list-unstyled mt-4">
+                                    <li><a href="#">Men Jeans</a></li>
+                                    <li class="mt-1"><a href="#">Men Jeans</a></li>
+                                    <li class="mt-1"><a href="#">Men Jeans</a></li>
+                                    <li class="mt-1"><a href="#">Men Jeans</a></li>
+                                    <li class="mt-1"><a href="#">Men Jeans</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="subscribe-widget">
+                            <div class="col-title">
+                                <span class="text-dark fs-5 fw-600">Subscribe</span>
+                                <form method="POST" class="mt-4">
+                                    <input class="form-control rounded-0 py-2" placeholder="Your email address..."/>
+                                    <button type="submit" class="btn btn-blue px-4 py-2 mt-3 fw-600">SUBSCRIBE</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="container py-5">
+                <div class="d-flex justify-content-between">
+                    <div class="copyright">
+                        <span class="text-dark">
+                            Copyright © @DateTime.Now.Year Brandstore. Powered by Brandstore.
+                        </span>
+                    </div>
+                    <div class="social-links">
+                        <ul class="d-flex list-unstyled mb-0">
+                            <li>
+                                <a href="#" target="_blank"><i class="bi bi-facebook text-dark"></i></a>
+                            </li>
+                            <li>
+                                <a href="#" target="_blank"><i class="bi bi-youtube text-dark"></i></a>
+                            </li>
+                            <li>
+                                <a href="#" target="_blank"><i class="bi bi-twitter text-dark"></i></a>
+                            </li>
+                            <li>
+                                <a href="#" target="_blank"><i class="bi bi-instagram text-dark"></i></a>
+                            </li>
+                            <li>
+                                <a href="#" target="_blank"><i class="bi bi-google text-dark"></i></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.3/jquery-ui.min.js"
+            integrity="sha256-sw0iNNXmOJbQhYFuC9OF2kOlD5KQKe1y5lfBn4C9Sjg="
+            crossorigin="anonymous"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

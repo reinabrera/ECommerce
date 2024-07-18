@@ -1,0 +1,342 @@
+.global-img-wrapper {
+    width: 200px;
+    height: 200px;
+}
+
+.global-img-wrapper img {
+    pointer-events: none;
+}
+
+.global-img-wrapper .default {
+    opacity: .3;
+}
+
+.modal-backdrop.delete-modal {
+    opacity: 0;
+}
+
+
+
+/** Header */
+header {
+    margin-bottom: -104px;
+}
+
+header .navbar {
+    background-color: rgba(0,0,0,0.07) !important;
+    border-bottom: none !important;
+}
+
+header .navbar-brand {
+    max-width: 140px;
+}
+header .navbar-brand img {
+    width: 100%;
+}
+
+header .container-fluid {
+    background-color: unset;
+}
+/** Featured Image */
+.featured-img-wrapper {
+    width: 200px;
+    height: 200px;
+}
+
+/** Container Fix from Header */
+
+.container-fix {
+    padding-top: 104px;
+}
+
+
+/** Hero section */
+
+section.hero {
+    background: linear-gradient(0deg, rgb(30 87 122 / 50%), rgb(30 87 122 / 50%)), url(../dist/home-new-bg-free-img.jpg);
+    background-repeat: no-repeat;
+    height: calc(100vh - 25px);
+    background-attachment: fixed;
+    padding-top: 104px;
+}
+
+.featured-img-wrapper:hover .remove-featured-img-btn {
+    display: block;
+}
+
+.featured-img-wrapper .remove-featured-img-btn {
+    width: 28px;
+    height: 28px;
+    right: -13px;
+    top: -13px;
+    display: none;
+    z-index: 99;
+}
+
+.featured-img-wrapper img {
+    pointer-events: none;
+    object-fit: cover;
+    object-position: center;
+}
+
+.featured-img-wrapper .default {
+    opacity: 0.1;
+}
+
+
+/** Media library */
+
+.modal-custom-backdrop {
+    pointer-events: none;
+    transition: 0.3s ease-in;
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.modal-custom-backdrop.active {
+    background-color: rgba(0, 0, 0, 0.25);
+}
+
+.img-selected .bi {
+    transition: 0.2s all ease-in;
+    opacity: 0;
+    z-index: 99;
+}
+
+.img-selected:hover .bi {
+    opacity: 1;
+}
+
+.img-selected:hover .selected-img {
+    opacity: 0.5;
+}
+
+.selected-img {
+    object-fit: cover;
+    object-position: center;
+    transition: 0.2s all ease-in;
+}
+
+/** Variant Item Image */
+
+.variant-item-img-wrapper:hover .remove-img-btn {
+    display: block;
+}
+
+.variant-item-img-wrapper .remove-img-btn {
+    top: -10px;
+    right: -10px;
+    height: 24px;
+    width: 24px;
+    display: none;
+}
+
+.variant-item-img-wrapper .remove-img-btn i::before {
+    font-size: 12px;
+    vertical-align: 0;
+}
+
+/** Additional Product Images */
+
+.product-additional-images--wrapper #addAddtlImageBtn {
+    width: 50px;
+    height:50px;
+}
+
+.product-additional-images--wrapper #addAddtlImageBtn i {
+    width: inherit;
+    height: inherit;
+}
+
+.product-additional-images--wrapper #addAddtlImageBtn i::before {
+    display: block;
+    font-size: 50px;
+    line-height: 50px;
+}
+
+.product-additional-images {
+    list-style: none;
+}
+
+.product-additional-images li img {
+    width: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.product-additional-images .remove-addtl-img-btn {
+    width: 28px;
+    height: 28px;
+    right: -2px;
+    top: -13px;
+    display: none;
+    z-index: 99;
+}
+
+.product-additional-images li div:hover > button {
+    display: block;
+}
+
+/** Categories */
+
+.categories--wrapper .category-items .category-item button {
+    height: 20px;
+    width: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: -8px;
+    right: -8px;
+    display: none;
+}
+
+.categories--wrapper .category-items .category-item:hover button {
+    display: flex;
+}
+
+.categories--wrapper .category-items .category-item button i {
+
+}
+
+/******************************************************** */
+/** Partnership Pages */
+
+/** Company Logo*/
+.company-logo--wrapper {
+    height: 200px;
+    width: 200px;
+}
+
+
+.company-logo--wrapper img {
+    pointer-events: none;
+    opacity: 0.3;
+    object-fit: contain !important;
+}
+
+/*********************************************************** */
+/** Homepage */
+
+.splide {
+    padding: 0 50px;
+}
+
+.splide__slide img {
+    width: 100%;
+    height: auto;
+}
+
+/*.splide__track {
+    padding-left: 20px;
+    padding-right: 20px;
+}*/
+
+.splide__arrows button {
+    background: none;
+}
+
+.splide__arrows button svg {
+    opacity: 0.2;
+}
+.splide__arrow--prev {
+    left: 0 !important;
+}
+
+.splide__arrow--next {
+    right: 0 !important;
+}
+
+/** Special Promotions */
+
+.special-promotions {
+    padding: 100px 0;
+}
+
+.special-promotions .img-color-overlay {
+    background-color: rgba(0,0,0,0.45);
+}
+
+.special-promotions img {
+    height: 480px;
+    object-fit: cover;
+    object-position: center;
+}
+
+/** Featured Products Listing */
+
+section.featured-product-listing .divider span {
+    border-bottom: 2px solid var(--global-blue);
+    width: 80px;
+    margin: 0 auto;
+}
+
+section.featured-product-listing {
+    padding: 100px 0;
+    background-color: var(--global-bg-gray);
+}
+
+@media (min-width: 1400px) {
+    section.featured-product-listing .container {
+        max-width: 1320px;
+    }
+}
+
+section.featured-product-listing .product-details {
+    font-size: 0.9rem;
+}
+section.featured-product-listing .img--wrapper:hover .add-to-cart {
+    display: flex;
+}
+
+section.featured-product-listing .add-to-cart {
+    top: 0;
+    right: 0;
+    margin-top: 8px;
+    margin-right: 8px;
+    display: none;
+    z-index: 99;
+}
+
+section.featured-product-listing .add-to-cart button {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    background-color: var(--bs-light);
+}
+section.featured-product-listing .add-to-cart button i {
+    margin-right: -1px;
+}
+
+section.featured-product-listing .add-to-cart button:hover i {
+    color: black !important;
+}
+
+
+
+
+/** Limited Time Offer */
+@media (min-width: 1400px) {
+    section .limited-time-offer .container {
+    max-width: 1380px;
+    }
+}
+
+section.limited-time-offer {
+    background-color: var(--global-bg-gray);
+}
+
+section.limited-time-offer .container {
+    background-image: linear-gradient(0deg, rgb(25 149 211 / 28%), rgb(25 149 211 / 28%)), url("../dist/banner-03.jpg");
+    background-attachment: fixed;
+}
+
+section.highlight-subsections .icon-wrapper img {
+    max-width: 52px;
+    max-height: 52px;
+    margin: 0 auto;
+}
+
+section.highlight-subsections {
+    background-color: var(--global-bg-gray);
+    padding: 100px 0;
+}
+

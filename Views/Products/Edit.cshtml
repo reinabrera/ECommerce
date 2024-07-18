@@ -1,0 +1,325 @@
+﻿@model ECommerce2.Models.ViewModels.ProductVM
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section CssOverrides {
+    <link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/42.0.0/ckeditor5.css">
+    <link rel="stylesheet" href="~/css//ckeditor.css" />
+}
+
+<div class="container container-fix">
+    <h1>Edit</h1>
+
+    <h4>Product</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-12">
+            <form asp-action="Edit" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="Id" class="product-id" />
+                <div class="form-group">
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group mt-2">
+                    <label class="form-label">Featured Image</label>
+                    <div class="position-relative featured-img-wrapper rounded border border-1 ">
+                        <button type="button" class="h-100 w-100 btn" id="featuredImgtBtn"></button>
+                        @if (Model.FeaturedImageId != null)
+                        {
+                            <input asp-for="FeaturedImageId" type="hidden" />
+                            <img src="@Model.FeaturedImage.FilePath" class="position-absolute featured-img w-100 h-100 top-0 start-0 rounded" />
+                            <button type="button" class="btn btn-danger position-absolute remove-featured-img-btn p-0 rounded-circle" id="removeFeaturedImgBtn">
+                                <div class="d-flex justify-content-center align-items-center">
+                                    <i class="bi bi-x-lg"></i>
+                                </div>
+                            </button>
+                        }
+                        else
+                        {
+                            <img src="../../dist/uploadImage.jpg" class="position-absolute default rounded w-100 h-100 top-0 start-0" />
+                        }
+                    </div>
+                </div>
+                
+                <div class="form-group mt-2">
+                    <label class="form-label">Additional Images</label>
+
+                    <div class="border rounded product-additional-images--wrapper p-4">
+
+                        <ul class="product-additional-images row ps-0" id="sortable">
+                            @if (Model.AdditionalImages != null)
+                            {
+                                @for (int i = 0; i < Model.AdditionalImages.Count; i++)
+                                {
+                                    <li class="col-2 mb-2" data-addtl-index="@i" data-addtl-image-id="@Model.AdditionalImages[i].ImageId">
+                                        <div class="position-relative">
+                                            <input type="hidden" value="@Model.AdditionalImages[i].ImageId" name="AdditionalImages[@i].ImageId" />
+                                            <img src="@Model.AdditionalImages[i].Image!.FilePath" />
+                                            <button type="button" class="btn btn-danger position-absolute remove-addtl-img-btn p-0 rounded-circle">
+                                                <div class="d-flex justify-content-center align-items-center">
+                                                    <i class="bi bi-x-lg"></i>
+                                                </div>
+                                            </button>
+                                        </div>
+                                    </li>
+                                }
+                            }
+                        </ul>
+                        <button class="btn btn-secondary rounded-circle d-flex justify-content-center align-items-center m-auto" id="addAddtlImageBtn" type="button">
+                            <i class="bi bi-plus"></i>
+                        </button>
+                    </div>
+
+                </div>
+
+                <div class="form-group mt-2">
+                    <label asp-for="Overview" class="control-label"></label>
+                    <textarea asp-for="Overview" class="form-control"></textarea>
+                    <span asp-validation-for="Overview" class="text-danger"></span>
+                </div>
+                <div class="form-group mt-2">
+                    <label asp-for="Description" class="control-label"></label>
+                    <div class="editor-container editor-container_classic-editor" id="editor-container">
+                        <div class="editor-container__editor"><textarea id="editor" asp-for="Description"></textarea></div>
+                    </div>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+                <div class="form-group mt-2">
+                    <label asp-for="ListPrice" class="control-label"></label>
+                    <input asp-for="ListPrice" class="form-control" />
+                    <span asp-validation-for="ListPrice" class="text-danger"></span>
+                </div>
+                <div class="form-group mt-2">
+                    <label asp-for="SalePrice" class="control-label"></label>
+                    <input asp-for="SalePrice" class="form-control" />
+                    <span asp-validation-for="SalePrice" class="text-danger"></span>
+                </div>
+                <div class="form-group mt-2">
+                    <label asp-for="Inventory" class="control-label"></label>
+                    <input asp-for="Inventory" class="form-control" />
+                    <span asp-validation-for="Inventory" class="text-danger"></span>
+                </div>
+                <div class="form-group mt-2">
+                    <label asp-for="ShippingFee" class="control-label"></label>
+                    <input asp-for="ShippingFee" class="form-control" />
+                    <span asp-validation-for="ShippingFee" class="text-danger"></span>
+                </div> 
+
+                <div class="form-group mt-2">
+                    <label class="form-label">Categories</label>
+                    <div class="categories--wrapper border rounded col-6 p-2">
+
+                        <div class="category-items d-flex">
+                            @if (Model.Categories != null)
+                            {
+                                @for (int i = 0; i < Model.Categories.Count; i++)
+                                {
+                                    <div class="category-item bg-primary ms-2 px-2 py-1 rounded text-light position-relative" data-category-index="@i">
+                                        <input type="hidden" name="Categories[@i].Name" value="@Model.Categories[i].Name" />
+                                        <span>@Model.Categories[i].Name</span>
+                                        <button type="button" class="btn btn-danger position-absolute p-0 rounded-pill remove-category-btn">
+                                            <i class="bi bi-x"></i>
+                                        </button>
+                                    </div>
+                                }
+                            }
+                            <input type="text" class="border-0 ms-2" id="addCategory" placeholder="Type category here..." />
+                        </div>
+                    </div>
+                </div>
+
+               <div class="form-group mt-2">
+                    <h4>Product Variation</h4>
+                    <div class="border rounded p-4">
+
+                        <div class="product-variations row">
+                            @for (int i = 0; i < Model.Variations.Count; i++)
+                            {
+                                <div data-variation="@i" class="variation--wrapper col-6 mb-4">
+                                    <input type="hidden" name="Variations[@i].Id" value="@Model.Variations[@i].Id" />
+                                    <div class="card position-relative">
+                                        <div class="card-body p-4 d-flex">
+                                            <div style="flex: 1;">
+                                                <div class="form-group mb-2">
+                                                    <label for="variations-@i" class="control-label">Variation Name</label>
+                                                    <input class="variation-name form-control" type="text" id="variations-@i" name="Variations[@i].Name" value="@Model.Variations[@i].Name" />
+                                                </div>
+                                                <div>
+                                                    <span>Variation Items</span>
+                                                    <div class="variation-items">
+                                                        @{var VariationItems = Model.Variations[i].VariationItems; }
+                                                        @for (int j = 0; j < VariationItems.Count; j++)
+                                                        {
+                                                            <div class="d-flex mb-2" data-var-item-index="@j">
+                                                                <input type="hidden" name="Variations[@i].VariationItems[@j].Id" value="@VariationItems[j].Id" />
+                                                                <div style="flex: 1;" class="input-group item ">
+                                                                    <input type="text" class="form-control" name="Variations[@i].VariationItems[@j].Value" placeholder="Item" value="@VariationItems[j].Value" />
+                                                                    <input type="text" class="form-control" name="Variations[@i].VariationItems[@j].ListPrice" placeholder="List Price" value="@VariationItems[j].ListPrice" title="Leave empty to use product pricing" />
+                                                                    <input type="text" class="form-control" name="Variations[@i].VariationItems[@j].SalePrice" placeholder="Sale Price" value="@VariationItems[j].SalePrice" title="Leave empty to use product pricing" />
+                                                                </div>
+                                                                <div class="ms-2 d-flex">
+                                                                    <div class="variant-item-img-wrapper position-relative">
+                                                                        <button type="button" class="btn btn-secondary media-library-btn @(VariationItems[j].ImageId != null ? "img-selected" : "") position-relative" data-variant-id="@i" data-item-id="@j">
+                                                                            <i class="bi bi-card-image position-relative z-3"></i>
+                                                                            @if (VariationItems[j].ImageId != null)
+                                                                            {
+                                                                                <input type="hidden" value="@VariationItems[j].ImageId" data-image-id="@VariationItems[j].ImageId" name="Variations[@i].VariationItems[@j].ImageId" />
+                                                                                <img src="@VariationItems[j].Image!.FilePath" class="position-absolute selected-img h-100 w-100 top-0 start-0 rounded" />
+                                                                            }
+                                                                        </button>
+
+                                                                        @if (VariationItems[j].Image != null)
+                                                                        {
+                                                                            <button type="button" data-image-id="@VariationItems[j].ImageId" class="btn btn-warning position-absolute remove-img-btn p-0 rounded-circle">
+                                                                                <div class="d-flex justify-content-center align-items-center">
+                                                                                    <i class="bi bi-x-lg"></i>
+                                                                                </div>
+                                                                            </button>
+                                                                        }
+
+                                                                    </div>
+
+                                                                    <button type="button" class="ms-1 btn btn-danger delete-item-btn">
+                                                                        <i class="bi bi-trash"></i>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        }
+                                                    </div>
+                                                    <div class="d-flex">
+                                                        <button type="button" class="btn btn-primary add-item text-nowrap" onclick="createVariationItem(@i)">Add Item</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="end-0 p-1 position-absolute">
+                                            <button type="button" class="btn-close delete-variation-btn" aria-label="Close"></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                        <div class="d-flex justify-content-center">
+                            <button type="button" class="ms-2 btn btn-primary text-nowrap" id="addVariation">Add Variation</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group mt-2">
+                    <label class="form-label">Additional Details</label>
+
+                    <div class="additional-details-wrapper col-6">
+                        @if (Model.AdditionalDetails != null)
+                        {
+                            @for (int i = 0; i < Model.AdditionalDetails.Count; i++)
+                            {
+                                <div class="d-flex mb-2" data-detail-index="@i">
+                                    <input type="hidden" name="AdditionalDetails[@i].Id" value="@Model.AdditionalDetails[i].Id" />
+                                    <div class="input-group">
+                                        <input class="form-control ad-name" name="AdditionalDetails[@i].Name" value="@Model.AdditionalDetails[i].Name" placeholder="Name" />
+                                        <input class="form-control ad-value" name="AdditionalDetails[@i].Value" value="@Model.AdditionalDetails[i].Value" placeholder="Value" />
+                                    </div>
+
+                                    <div class="ms-2">
+                                        <button type="button" class="ms-1 btn btn-danger delete-detail-btn">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
+                    <button type="button" class="btn btn-outline-primary" id="addDetailsBtn">Add details</button>
+
+                </div>
+
+                <div class="form-check form-switch ps-0 mt-2">
+                    <label class="form-check-label d-block" for="flexSwitchCheckDefault">Publish Product</label>
+                    <input asp-for="IsPublished" class="form-check-input ms-0 d-block" type="checkbox" role="switch" id="flexSwitchCheckDefault" style="cursor: pointer;">
+                </div>
+
+                <!-- Modal -->
+                <div class="modal fade" id="mediaLibraryModal" tabindex="-1" aria-labelledby="mediaLibraryModalLabel" aria-hidden="true">
+                    <div class="modal-dialog w-50 mw-100 h-100 modal-dialog-centered modal-dialog-scrollable">
+                        <div class="modal-content position-relative h-75">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="mediaLibraryModalLabel">Media Library</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="product-images row g-3">
+                                </div>
+                            </div>
+                            <div class="modal-custom-backdrop position-absolute w-100 h-100"></div>
+                            <div class="modal-footer">
+                                <input type="file" accept="images/*" id="mediaInput" class="d-none" multiple />
+                                <button type="button" class="btn btn-primary d-none" id="selectImageBtn">Select Image</button>
+                                <button type="button" id="deleteBtn" class="d-none btn btn-danger">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                                <button type="button" class="btn btn-primary" id="mediaUploadBtn">Upload Images</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal fade" id="deleteSelectedModal" tabindex="-1" aria-labelledby="deleteSelectedModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content h-75">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="deleteSelectedModalLabel">Confirm Delete</h1>
+                                <button type="button" class="btn-close" id="deleteSelectedClose" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                Are you sure you want to delete selected images?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-warning" id="deleteSelectedConfirm">Yes</button>
+                                <button type="button" class="btn btn-secondary" id="deleteSelectedCancel" data-bs-dismiss="modal">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group mt-5">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="mt-2">
+        <a asp-action="Index">Back to List</a>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/js/product.js" asp-append-version="true"></script>
+    <script type="importmap">
+        {
+            "imports": {
+                "ckeditor5": "https://cdn.ckeditor.com/ckeditor5/42.0.0/ckeditor5.js",
+                "ckeditor5/": "https://cdn.ckeditor.com/ckeditor5/42.0.0/"
+            }
+        }
+    </script>
+    <script type="module" src="~/js/product-cke.js"></script>
+
+    <script>
+        $('document').ready(function () {
+
+            $("#addVariation").on('click', function () {
+                createVariationContainer();
+            });
+        })
+    </script>
+}

@@ -1,0 +1,112 @@
+﻿@model ECommerce2.Models.ViewModels.SpecialPromotionVM
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container container-fix">
+    <h1>Edit</h1>
+
+    <h4>SpecialPromotion</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="Id" />
+                <div class="form-group">
+                    <label asp-for="Title" class="control-label"></label>
+                    <input asp-for="Title" class="form-control" />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Description" class="control-label"></label>
+                    <input asp-for="Description" class="form-control" />
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Url" class="control-label"></label>
+                    <input asp-for="Url" class="form-control" />
+                    <span asp-validation-for="Url" class="text-danger"></span>
+                </div>
+                <div>
+                    <label asp-for="ButtonText" class="control-label"></label>
+                    <input asp-for="ButtonText" class="form-control" />
+                    <span asp-validation-for="ButtonText" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="SiteMediaId" class="control-label"></label>
+                    <input class="invisible position-absolute" asp-for="SiteMediaId" />
+                    <div class="position-relative global-img-wrapper rounded border border-1 ">
+                        <button type="button" class="h-100 w-100 btn" id="globalAddImgBtn"></button>
+                        <img src="../../dist/uploadImage.jpg" class="position-absolute default rounded w-100 h-100 top-0 start-0 @(Model.SiteMedia != null ? "d-none" : "")" />
+                        @if (Model.SiteMedia != null)
+                        {
+                            <img src="@Model.SiteMedia.FilePath" data-img-id="@Model.SiteMediaId" class="position-absolute selected-img rounded w-100 h-100 top-0 start-0" />
+                        }
+                    </div>
+                    <span asp-validation-for="SiteMediaId" class="text-danger"></span>
+                </div>
+
+                <partial name="_MediaLibrary" />
+
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div>
+        <a asp-action="Index">Back to List</a>
+    </div>
+
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        const siteMediaIdInput = $('#SiteMediaId');
+        const imgWrapper = $('.global-img-wrapper');
+        globalMediaLibrary.on('shown.bs.modal', function () {
+            $(document).on('change', '.global-images', function (e) {
+                globalSelectMedia(e, false);
+            });
+        })
+
+        globalSelectBtn.on('click', function () {
+            const selected = $('.global-images input:checked');
+
+            if (selected.length > 0) {
+                imgWrapper.find('.default').addClass('d-none');
+                imgWrapper.find('selected-img').remove();
+                const src = selected.val();
+                const id = selected.data('id');
+                siteMediaIdInput.val(id);
+                let imgEl = `<img src="${src}" class="position-absolute selected-img rounded w-100 h-100 top-0 start-0" />`
+                imgWrapper.append(imgEl);
+
+                globalMediaLibrary.modal('hide');
+                document.off('change', '.global-images');
+            }
+        });
+
+        let target = document.querySelector('.global-img-wrapper');
+
+        let observer = new MutationObserver(function (mutations) {
+            if (target.querySelector('.selected-img') == null) {
+                $('#SiteMediaId').val("");
+                target.querySelector('.default').classList.remove('d-none');
+                target.querySelector('')
+            }
+        });
+
+        observer.observe(target, {
+            attributes: false,
+            childList: true,
+            characterData: false
+        });
+
+    </script>
+}
