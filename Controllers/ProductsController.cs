@@ -164,7 +164,7 @@ namespace ECommerce2.Controllers
 
                     if (product.AdditionalImages != null)
                     {
-                        foreach (ProductAdditionalImage item in  product.AdditionalImages)
+                        foreach (AdditionalImage item in  product.AdditionalImages)
                         {
                             AdditionalImageVM additionalImageVM = new AdditionalImageVM()
                             {
@@ -179,7 +179,7 @@ namespace ECommerce2.Controllers
                 /** Product Additional Details */
                 if (product.AdditionalDetails != null && product.AdditionalDetails.Any())
                 {
-                    foreach (ProductAdditionalDetail AdditionalDetail in product.AdditionalDetails)
+                    foreach (AdditionalDetail AdditionalDetail in product.AdditionalDetails)
                     {
                         AdditionalDetailVM AdditionalDetailVM = new AdditionalDetailVM()
                         {
@@ -286,7 +286,7 @@ namespace ECommerce2.Controllers
                                 
                                 if (Image != null)
                                 {
-                                    ProductAdditionalImage UpdateAdditionalImage = new ProductAdditionalImage()
+                                    AdditionalImage UpdateAdditionalImage = new AdditionalImage()
                                     {
                                         ProductId = id,
                                         ImageId = Image.Id,
@@ -303,7 +303,7 @@ namespace ECommerce2.Controllers
                     UpdateProduct.IsPublished = productVM.IsPublished;
 
                     /** Product Additional Details */
-                    List<ProductAdditionalDetail> AdditionalDetails = UpdateProduct.AdditionalDetails.ToList();
+                    List<AdditionalDetail> AdditionalDetails = UpdateProduct.AdditionalDetails.ToList();
 
                     if (productVM.AdditionalDetails != null)
                     {
@@ -312,7 +312,7 @@ namespace ECommerce2.Controllers
                             /** Remove Additional Details */
                             for (int i = AdditionalDetails.Count - 1; i >= 0; i--)
                             {
-                                ProductAdditionalDetail AdditionalDetail = AdditionalDetails[i];
+                                AdditionalDetail AdditionalDetail = AdditionalDetails[i];
 
                                 if (!productVM.AdditionalDetails.Any(ai => ai.Id == AdditionalDetail.Id))
                                 {
@@ -327,7 +327,7 @@ namespace ECommerce2.Controllers
                         {
                             if (AdditionalDetailVM.Id != null)
                             {
-                                ProductAdditionalDetail UpdateAdditionalDetail = AdditionalDetails.FirstOrDefault(ai => ai.Id == AdditionalDetailVM.Id);
+                                AdditionalDetail UpdateAdditionalDetail = AdditionalDetails.FirstOrDefault(ai => ai.Id == AdditionalDetailVM.Id);
 
                                 if (UpdateAdditionalDetail != null)
                                 {
@@ -337,7 +337,7 @@ namespace ECommerce2.Controllers
                             }
                             else
                             {
-                                ProductAdditionalDetail AddAdditionalDetail = new ProductAdditionalDetail()
+                                AdditionalDetail AddAdditionalDetail = new AdditionalDetail()
                                 {
                                     Name = AdditionalDetailVM.Name,
                                     Value = AdditionalDetailVM.Value

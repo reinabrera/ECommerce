@@ -311,8 +311,6 @@ section.featured-product-listing .add-to-cart button:hover i {
 }
 
 
-
-
 /** Limited Time Offer */
 @media (min-width: 1400px) {
     section .limited-time-offer .container {
@@ -340,3 +338,98 @@ section.highlight-subsections {
     padding: 100px 0;
 }
 
+
+/** Attribute Page */
+
+.product-attribute .color-picker {
+    cursor: pointer;
+    height: 100%;
+}
+
+.product-attribute .terms-list {
+    cursor: text;
+    flex-wrap: wrap;
+    row-gap: 5px;
+}
+
+.product-attribute .term-item button {
+    top: -7px;
+    right: -7px;
+    height: 20px;
+    width: 20px;
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+.product-attribute .term-item:hover button {
+    display: flex;
+}
+
+.product-attribute .term-input {
+    width: 100%;
+    min-width: 75px;
+    outline: none !important;
+    flex: 1;
+}
+
+.product-attribute .dropdown-list {
+    z-index: 99;
+    padding: 0 .75rem;
+    left: 0;
+    margin-top: -1px;
+    display: none;
+}
+
+.product-attribute .dropdown-list.active {
+    display: block;
+}
+
+.product-attribute .dropdown-list li {
+    cursor: pointer;
+}
+
+.product-attribute .dropdown-list li[data-selected="true"] {
+    color: var(--global-text-muted);
+    pointer-events: none;
+    cursor: default;
+}
+
+.product-attribute #attributeAccordion.loading {
+    min-height: 100px;
+}
+.product-attribute #attributeAccordion.loading > div:not(.spinner) {
+    opacity: 0.3;
+}
+
+.variation-section--wrapper #variationAccordion.loading {
+    min-height: 100px;
+}
+
+.variation-section--wrapper #variationAccordion.loading > div:not(.spinner) {
+    opacity: 0.3;
+}
+
+.variation-section--wrapper #variationAccordion .img--wrapper {
+    width: 100px;
+    height: 100px;
+}
+
+.variation-section--wrapper #variationAccordion .img--wrapper .remove-variant-img-btn {
+    top: -5px;
+    right: -5px;
+    display: none;
+}
+
+.variation-section--wrapper #variationAccordion .img--wrapper .remove-variant-img-btn div {
+    width: 20px;
+    height: 20px;
+}
+
+.variation-section--wrapper #variationAccordion .img--wrapper .remove-variant-img-btn div i {
+    font-size: 0.9rem;
+}
+
+.variation-section--wrapper #variationAccordion .img--wrapper:hover .remove-variant-img-btn {
+    display: flex;
+}

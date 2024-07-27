@@ -4,6 +4,7 @@ using ECommerce2.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ECommerce2.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240722093802_addedTermVariationJoinTable")]
+    partial class addedTermVariationJoinTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -496,28 +499,23 @@ namespace ECommerce2.Migrations
                     b.Property<int?>("ImageId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Inventory")
+                    b.Property<int>("Inventory")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ListPrice")
+                    b.Property<int>("ListPrice")
                         .HasColumnType("int");
 
                     b.Property<Guid>("ProductId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int?>("SalePrice")
+                    b.Property<int>("SalePrice")
                         .HasColumnType("int");
-
-                    b.Property<string>("TermsConcatenated")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ImageId");
 
-                    b.HasIndex("ProductId", "TermsConcatenated")
-                        .IsUnique();
+                    b.HasIndex("ProductId");
 
                     b.ToTable("Variations");
                 });
@@ -804,7 +802,7 @@ namespace ECommerce2.Migrations
 
             modelBuilder.Entity("ECommerce2.Models.Variant", b =>
                 {
-                    b.HasOne("ECommerce2.Models.ProductImage", "Image")
+                    b.HasOne("ECommerce2.Models.ProductImage", null)
                         .WithMany()
                         .HasForeignKey("ImageId")
                         .OnDelete(DeleteBehavior.SetNull);
@@ -814,8 +812,6 @@ namespace ECommerce2.Migrations
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Image");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

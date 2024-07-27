@@ -71,18 +71,18 @@ const globalSelectBtn = $('#globalSelectImageBtn');
 const globalDelBtn = $('#globalDeleteBtn');
 const globalDelModal = $('#globalDeleteSelectedModal');
 
-let imagesLoaded = false;
+let globalImagesLoaded = false;
 globalAddImgBtn.on('click', function () {
     globalMediaLibrary.modal('show');
 })
 
 globalMediaLibrary.on('shown.bs.modal', async function () {
-    if (imagesLoaded == false) {
+    if (globalImagesLoaded == false) {
         const result = await getImages();
         if (result.length > 0) {
             loadImages(result);
         }
-        imagesLoaded = true;
+        globalImagesLoaded = true;
     }
 })
 
@@ -251,4 +251,28 @@ function removeImages(imageIds) {
         selectedImg.remove();
         imgElement.remove();
     }
+}
+
+/************************************************** */
+/** Attribute Page */
+
+function createTermInput(count, type) {
+    let inputEl;
+    if (type == "Button") {
+        inputEl = `<div class="input--wrapper mt-2">
+            <input type="text" class="form-control" name="Terms[${count}].Name" required >
+            <span class="text-danger field-validation-valid" data-valmsg-for="Terms[${count}].Name" data-valmsg-replace="true"></span>
+        </div>`
+    } else if (type == "Color") {
+        inputEl = `<div class="input--wrapper mt-2 row gx-2">
+            <div class="col-9">
+                <input type="text" class="form-control" name="Terms[${count}].Name" required>
+            </div>
+            <div class="col-3">
+                <input type="color" class="form-control h-100 color-picker" name="Terms[${count}].ColorValue" required>
+            </div>
+            <span class="text-danger field-validation-valid" data-valmsg-for="Terms[${count}].ColorValue" data-valmsg-replace="true"></span>
+        </div>`
+    }
+    return inputEl;
 }

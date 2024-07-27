@@ -1,0 +1,95 @@
+﻿@model ECommerce2.Models.AttributeModel
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container product-attribute container-fix">
+    <h1>Edit</h1>
+
+    <h4>ProductAttribute</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="Id" />
+                <div class="form-group">
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group mt-2">
+                    <label asp-for="Type" class="control-label"></label>
+                    <input asp-for="Type" class="form-control" readonly />
+                    <span asp-validation-for="Type" class="text-danger"></span>
+                </div>
+                <div class="form-group mt-2">
+                    <label class="control-label">Attribute Terms</label>
+                    <div class="terms-list">
+                        @if (Model.Terms != null)
+                        {
+                            List<Term> Terms = Model.Terms.ToList();
+                            if (Model.Type.ToString() == "Button")
+                            {
+                                for (int i = 0; i < Terms.Count; i++)
+                                {
+                                    <div class="input--wrapper mt-2">
+                                        <input type="hidden" name="Terms[@i].Id" value="@Terms[@i].Id" />
+                                        <input type="text" class="form-control" name="Terms[@i].Name" value="@Terms[@i].Name" required />
+                                        <span asp-validation-for="@Terms[@i].Name" class="text-danger"></span>
+                                    </div>
+                                }
+                            } else if (Model.Type.ToString() == "Color")
+                            {
+                                for (int i = 0; i < Terms.Count; i++)
+                                {
+                                    <div class="input--wrapper mt-2 row gx-2">
+                                        <input type="hidden" name="Terms[@i].Id" value="@Terms[@i].Id" />
+                                        <div class="col-9">
+                                            <input type="text" class="form-control" name="Terms[@i].Name" value="@Terms[@i].Name" required />
+                                            <span asp-validation-for="@Terms[@i].Name" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-3">
+                                            <input type="color" class="color-picker form-control" name="Terms[@i].Value" value="@Terms[@i].ColorValue" required />
+                                            <span asp-validation-for="@Terms[@i].ColorValue" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                        }
+                    </div>
+
+                    <button type="button" id="addTerms" class="btn btn-outline-primary mt-2">Add Terms</button>
+                </div>
+                <div class="form-group mt-4">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div>
+        <a asp-action="Index">Back to List</a>
+    </div>
+
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        const addBtn = $('#addTerms');
+        const termsParentEl = $('.terms-list');
+
+        addBtn.on('click', function () {
+            let count = termsParentEl.children().length;
+
+            const input = createTermInput(count, "@Model.Type")
+
+            if (input != null) {
+                termsParentEl.append(input);
+            }
+        });
+
+    </script>
+}

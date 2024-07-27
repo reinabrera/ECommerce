@@ -2,7 +2,7 @@
 
 namespace ECommerce2.Models
 {
-    public class ProductAdditionalImage
+    public class AdditionalImage
     {
         public int Id { get; set; }
         public Guid ProductId { get; set; }

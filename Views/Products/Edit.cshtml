@@ -132,6 +132,51 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="form-group mt-2 d-block cstm">
+                    <h3>Product Variation</h3>
+                    <div class="attribute-section--wrapper border rounded p-4 row">
+                        <div class="col-6">
+                            <div class="product-attribute">
+                                <span class="fs-4">Attributes</span>
+                                <div class="col-12 d-flex">
+                                    <div class="col-6">
+                                        <select class="form-control select-attribute">
+                                            <option selected disabled>Select Attribute</option>
+                                        </select>
+                                    </div>
+                                    <div class="ms-2">
+                                        <button type="button" class="btn btn-primary" id="addAttribute">Add</button>
+                                    </div>
+                                </div>
+                                <div class="col-12 mt-2">
+                                    <div class="accordion position-relative" id="attributeAccordion">
+                                    </div>
+                                    <button class="btn btn-outline-primary mt-2" id="saveAttributes" type="button">Save Attributes</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-6">
+                            <div class="variation-section--wrapper">
+                                <div class="product-variation">
+                                    <div>
+                                        <div class="col-auto">
+                                            <span class="fs-4">Variations</span>
+                                        </div>
+                                        <div>
+                                            <button type="button" id="generateVariation" class="btn btn-primary" data-bs-toggle="tooltip" data-placement="top" title="Generate Variation from attributes">Generate Variation</button>
+                                        </div>
+                                    </div>
+                                    <div class="variations mt-2">
+                                        <div class="accordion position-relative" id="variationAccordion"></div>
+                                        <button type="button" class="btn btn-outline-primary mt-2" id="saveVariations">Save Variations</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 
                 <div class="form-group mt-2">
                     <label class="form-label">Additional Details</label>

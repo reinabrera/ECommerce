@@ -15,12 +15,17 @@ namespace ECommerce2.Data
         public DbSet<ProductImage> ProductImages { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<ProductCategories> ProductCategories { get; set; }
-        public DbSet<ProductAdditionalImage> ProductAdditionalImages { get; set; }
-        public DbSet<ProductAdditionalDetail> ProductAdditionalDetails { get; set; }
+        public DbSet<AdditionalImage> ProductAdditionalImages { get; set; }
+        public DbSet<AdditionalDetail> ProductAdditionalDetails { get; set; }
         public DbSet<Partnership> Partnerships { get; set; }
         public DbSet<PartnershipLogo> PartnershipLogos { get; set; }
         public DbSet<SiteMedia> SiteMedias { get; set; }
         public DbSet<SpecialPromotion> SpecialPromotions { get; set; }
+        public DbSet<Variant> Variations { get; set; }
+        public DbSet<AttributeModel> Attributes { get; set; }
+        public DbSet<Term> AttributeTerms { get; set; }
+        public DbSet<ProductAttributeJoin> ProductAttributeJoinTable { get; set; }
+        public DbSet<ProductTermJoin> ProductTermJoinTable { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -42,7 +47,7 @@ namespace ECommerce2.Data
                 .WithMany(p => p.Products)
                 .UsingEntity<ProductCategories>();
 
-            builder.Entity<ProductAdditionalImage>()
+            builder.Entity<AdditionalImage>()
                 .HasOne(p => p.Image)
                 .WithMany()
                 .HasForeignKey(p => p.ImageId)
@@ -55,12 +60,43 @@ namespace ECommerce2.Data
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
 
-
             builder.Entity<SpecialPromotion>()
                 .HasOne(sp => sp.SiteMedia)
                 .WithMany()
                 .HasForeignKey(sp => sp.SiteMediaId)
                 .OnDelete(DeleteBehavior.SetNull);
+
+            builder.Entity<Term>()
+                .HasOne(at => at.Attribute)
+                .WithMany(at => at.Terms)
+                .HasForeignKey(at => at.AttributeId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<Product>()
+                .HasMany(p => p.Attributes)
+                .WithMany(p => p.Products)
+                .UsingEntity<ProductAttributeJoin>();
+
+            builder.Entity<Product>()
+                .HasMany(p => p.SelectedTerms)
+                .WithMany()
+                .UsingEntity<ProductTermJoin>();
+
+            builder.Entity<Variant>()
+                .HasMany(p => p.Terms)
+                .WithMany()
+                .UsingEntity<TermVariation>();
+
+            builder.Entity<Variant>()
+                .HasOne(v => v.Image)
+                .WithMany()
+                .HasForeignKey(p => p.ImageId)
+                .OnDelete(DeleteBehavior.SetNull);
+
+            builder.Entity<Variant>()
+                .HasIndex(v => new { v.ProductId, v.TermsConcatenated })
+                .IsUnique();
+
         }
     }
 }

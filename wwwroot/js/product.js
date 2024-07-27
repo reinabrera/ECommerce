@@ -417,9 +417,6 @@ let categoriesItemsWrapper = $('.category-items');
 categoriesItemsWrapper.on('click', function () {
     addCategory.focus();
 })
-//addCategory.on('focus', function () {
-//    $(this).on("keypress")
-//});
 
 addCategory.bind("keydown", function (e) {
     if (e.keyCode == 13 || e.keyCode == 188 || e.keyCode == 9) {
@@ -445,9 +442,598 @@ addCategory.bind("keydown", function (e) {
 
 $(document).on('click', '.remove-category-btn', function () {
     $(this).parent().remove();
-    console.log("Hello");
     categoriesItemsWrapper.children().each(function (index) {
         $(this).attr('data-category-index', index);
         $(this).find('input[type=hidden]').attr("name", `Categories[${index}].Name`);
     });
 })
+
+/** Product Variation */
+
+const attributeSelectEl = $('.select-attribute');
+let attributeLoaded = false;
+const addAttributeBtn = $('#addAttribute');
+const termInput = $('.term-input');
+const saveAttributeBtn = $('#saveAttributes');
+attributeSelectEl.on('click', function () {
+
+    if (attributeLoaded == false) {
+        getAttributes();
+    }
+})
+
+async function getAttributes() {
+    try {
+        const response = await fetch('/ProductAttributes/GetAttributes', {
+            method: 'POST',
+        });
+
+        const result = await response.json();
+
+        if (result.status == "Success") {
+            appendAttributeToSelectEl(JSON.parse(result.attributes));
+        }
+    } catch (err) {
+        console.error(err);
+        throw err;
+    }
+}
+
+function appendAttributeToSelectEl(items) {
+    for (let i = 0; i < items.length; i++) {
+        const attributeEl = $(`.accordion-item[data-attribute-id="${items[i].Id}"]`);
+
+        const optionEl = $(`<option>`, { value: items[i].Id, text: items[i].Name });
+
+        if (attributeEl.length == 1) {
+            optionEl.addClass('text-muted');
+            optionEl.attr('disabled', true);
+        }
+
+        attributeSelectEl.append(optionEl);
+    }
+    attributeLoaded = true;
+}
+
+
+attributeSelectEl.on('change', function () {
+    attributeSelectEl.removeClass('text-muted');
+})
+addAttributeBtn.on('click', function () {
+    const selected = attributeSelectEl.find('option:selected');
+    const parentEl = $('#attributeAccordion');
+    const index = parentEl.children().length + 1;
+
+    if (selected.prop('disabled') != true) {
+        parentEl.children().each(function () {
+            $(this).find('.show').collapse('hide');
+        });
+
+        const attributeEl = createAttributeEl(selected.val(), selected.text(), index);
+
+        selected.prop("disabled", true);
+        parentEl.append(attributeEl);
+
+        attributeSelectEl.find('option:eq(0)').prop('selected', true);
+        selected.addClass('text-muted');
+        selected.attr('disabled', true);
+    }
+});
+
+function createAttributeEl(id, name, index) {
+    const attributeEl = `
+        <div class="accordion-item" data-attribute-id="${id}">
+            <h2 class="accordion-header" id="headingOne">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#attribute-index-${index}" aria-expanded="true" aria-controls="collapseOne">
+                    <strong>${name}</strong>
+                </button>
+            </h2>
+            <div id="attribute-index-${index}" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#attributeAccordion">
+                <div class="accordion-body">
+                    <div class="row">
+                        <div class="col-3">
+                            <div>
+                                <span class="text-muted">Name:</span>
+                            </div>
+                            <div>
+                                <span>Color</span>
+                            </div>
+                        </div>
+                        <div class="col-9 position-relative">
+                            <div>
+                                <span class="text-muted">Value(s):</span>
+                            </div>
+                            <div class="d-flex terms-list border p-2">
+                                <input type="text" class="border-0 term-input" data-attribute-id="${id}"/>
+                            </div>
+                            <ul class="dropdown-list position-absolute w-100 list-group" data-loaded="false">
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>`
+    return attributeEl;
+}
+
+$(document).on("focus", '.term-input', async function () {
+    const dropdownListEl = $(this).parent().siblings('.dropdown-list');
+    const attributeId = $(this).data('attribute-id');
+
+    if (dropdownListEl.attr('data-loaded') == "false") {
+        const terms = await getAttributeTerms(attributeId);
+
+        terms.forEach(function (item) {
+            const termEl = `<li data-term-id="${item.Id}" class="list-group-item rounded-0">${item.Name}</li>`
+            dropdownListEl.append(termEl);
+        });
+
+        dropdownListEl.attr('data-loaded', "true");
+    }
+
+    dropdownListEl.addClass('active');
+
+    $(this).on("focusout", function () {
+        setTimeout(function () {
+            dropdownListEl.removeClass('active');
+        }, 100)
+        dropdownListEl.off('focusout');
+    });
+})
+
+$(document).on('click', '.dropdown-list li', function () {
+    let termListParentEl = $(this).closest('.accordion-body').find('.terms-list');
+
+
+    if ($(this).attr('data-added') != "true") {
+        const text = $(this).text();
+        const termId = $(this).data('term-id');
+
+        const termEl = createTermEl(termId, text);
+
+        termListParentEl.find('.term-input').before(termEl);
+    }
+    
+    $(this).attr('data-selected', "true");
+});
+
+
+function createTermEl(termId, text) {
+    const termEl = `<div class="term-item bg-primary px-2 py-1 rounded text-light position-relative me-2" data-term-id=${termId}>
+            <span>${text}</span>
+            <button type="button" class="btn btn-danger position-absolute p-0 rounded-pill remove-term-btn">
+                <i class="bi bi-x"></i>
+            </button>
+        </div>`
+
+    return termEl;
+}
+async function getAttributeTerms(id) {
+
+    if (id != null) {
+        const formData = new FormData();
+
+        formData.append('id', id);
+
+        try {
+            const response = await fetch('/ProductAttributes/GetAttributeTerms', {
+                method: 'POST',
+                body: formData
+            });
+
+            const result = await response.json();
+
+            if (result.status == "Success") {
+                return JSON.parse(result.terms);
+            }
+        } catch (err) {
+            console.error(err);
+            throw err;
+        }
+    }
+}
+
+$(document).on('click', '.remove-term-btn', function () {
+    const termId = $(this).parent().data('term-id');
+    const dropdownListItem = $(this).closest('.row').find(`[data-term-id=${termId}]`);
+    dropdownListItem.attr('data-selected', "false");
+    $(this).parent().remove();
+});
+
+saveAttributeBtn.on('click', async function () {
+    const attributeParentEl = $('#attributeAccordion');
+
+
+    let data = { "ProductId" : productId };
+
+    data.Attributes = bindAttributesData(attributeParentEl.children());
+
+    try {
+        attributeParentEl.addClass('loading');
+        attributeParentEl.append(loaderEl());
+        const response = await fetch('/ProductAttributes/SaveProductAttributes', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+
+    } catch (err) {
+        console.error(err);
+        throw err;
+    } finally {
+        attributeParentEl.children().each(function () {
+            $(this).find('.show').collapse('hide');
+        });
+        attributeParentEl.removeClass('loading');
+        attributeParentEl.find('.spinner').remove();
+    }
+
+});
+
+function bindAttributesData(data) {
+    const attributes = [];
+    data.each(function () {
+        let attributeId = $(this).data('attribute-id');
+        let terms = [];
+        const termItemsEl = $(this).find('.terms-list');
+
+        termItemsEl.children().each(function () {
+            if ($(this).data('term-id') != null) {
+                terms.push({ "Id" : $(this).data('term-id') });
+            }
+        });
+
+        attributes.push({ "Id": attributeId, Terms: terms });
+    });
+
+    return attributes;
+}
+
+
+$(document).ready(async function () {
+    // Product Attributes
+    const attrAccordion = $('#attributeAccordion');
+    const data = await getProductAttribute();
+
+    for (let i = 0; i < data.Attributes.length; i++) {
+        var attr = data.Attributes[i];
+
+        const attrEl = createAttributeEl(attr.Id, attr.Name, i);
+
+        attrAccordion.append(attrEl);
+        attrAccordion.find('.show').collapse('hide');
+
+        for (let j = 0; j < attr.Terms.length; j++) {
+            var term = attr.Terms[j];
+            const termEl = createTermEl(term.Id, term.Name);
+            attrAccordion.children().last().find('.terms-list input').before(termEl);
+        }
+    }
+
+    attrAccordion.removeClass('loading');
+    attrAccordion.find('.spinner').remove();
+
+    //Product Variations
+    await getProductVariations();
+})
+
+
+async function getProductAttribute() {
+    const attrAccordion = $('#attributeAccordion');
+    const formData = new FormData();
+
+    formData.append('productId', productId);
+
+    try {
+
+        attrAccordion.addClass('loading');
+        attrAccordion.append(loaderEl());
+
+        const response = await fetch('/ProductAttributes/GetProductAttributes', {
+            method: 'POST',
+            body: formData
+        })
+
+        const result = await response.json();
+
+        if (result.status == "Success") {
+            return JSON.parse(result.attributeTerms);
+        }
+
+    } catch (err) {
+        attrAccordion.removeClass('loading');
+        attrAccordion.find('.spinner').remove();
+        console.error(err);
+        throw err;
+    }
+}
+
+function loaderEl() {
+    const loader = `<div class="h-100 w-100 d-flex justify-content-center align-items-center spinner position-absolute top-0">
+        <div class="spinner-border" role="status">
+            <span class="sr-only"></span>
+        </div>
+    </div>`
+    return loader;
+}
+
+const genVariationBtn = $('#generateVariation');
+
+genVariationBtn.on('click', async function () {
+    const variationAccordion = $('#variationAccordion');
+    let variationData;
+    const formData = new FormData();
+
+    formData.append('productId', productId);
+
+    try {
+        variationAccordion.addClass('loading');
+        variationAccordion.append(loaderEl());
+
+        const response = await fetch('/ProductAttributes/GenerateProductVariation', {
+            method: 'POST',
+            body: formData,
+        })
+
+        const result = await response.json();
+
+        if (result.status = "Success") {
+            variationData = JSON.parse(result.variations);
+        }
+    } catch (err) {
+        console.error(err);
+        throw err;
+    } finally {
+        const length = variationAccordion.children().length - 1;
+        if (variationData.length > 0) {
+            variationData.forEach((item, index) => {
+                const variationEl = createVariationEl(index + length, item.Id, item.Terms, item.ListPrice, item.SalePrice, item.Inventory, item.Image);
+
+                variationAccordion.append(variationEl);
+            });
+        }
+
+        variationAccordion.find('.spinner').remove();
+        variationAccordion.removeClass('loading');
+    }
+});
+
+$(document).on('click', '.select-variation-img', selectVariantImg)
+
+function selectVariantImg() {
+    const imgWrapper = $(this).parent();
+
+    mediaLibraryModal.modal('show');
+    $(document).on('change', '.product-images', function (e) {
+        selectMedia(e, false);
+    });
+
+    selectBtn.on('click', () => {
+        let selected = $('.image-checkbox:checkbox:checked');
+        let selectedId;
+        let imgSrc;
+        if (selected.length == 1) {
+            selectedId = selected.data('id');
+            imgSrc = selected.val();
+            imgWrapper.find('.selected-img').remove();
+            imgWrapper.find('.default').addClass('d-none');
+
+            const imgEl = `<img src="${imgSrc}" data-img-id=${selectedId} class="w-100 h-100 rounded border selected-img" />`
+            const removeBtnEl = `<button type="button" class="btn btn-danger position-absolute remove-variant-img-btn p-0 rounded-circle">
+                <div class="d-flex justify-content-center align-items-center">
+                    <i class="bi bi-x-lg"></i>
+                </div>
+            </button>`
+
+            imgWrapper.append(imgEl);
+            imgWrapper.append(removeBtnEl);
+
+            mediaLibraryModal.modal('hide');
+        }
+    });
+}
+
+async function getProductVariations() {
+
+    const formData = new FormData();
+    const variationAccordion = $('#variationAccordion');
+    let variationData;
+
+    formData.append('productId', productId);
+
+    try {
+        variationAccordion.addClass('loading');
+        variationAccordion.append(loaderEl());
+
+        const response = await fetch('/ProductAttributes/GetProductVariations', {
+            method: 'POST',
+            body: formData
+        });
+
+        const result = await response.json();
+
+        if (result.status == "Success") {
+            variationData = JSON.parse(result.variations);
+
+        }
+
+    } catch (err) {
+        console.error(err);
+        throw err;
+    } finally {
+        if (variationData.length > 0) {
+            variationData.forEach((item, index) => {
+                const variationEl = createVariationEl(index, item.Id, item.Terms, item.ListPrice, item.SalePrice, item.Inventory, item.Image);
+
+                variationAccordion.append(variationEl);
+            });
+        }
+        variationAccordion.find('.spinner').remove();
+        variationAccordion.removeClass('loading');
+    }
+}
+
+function createVariationEl(index, variationId, terms, listPrice, salePrice, inventory, image) {
+
+
+    terms = terms.map((item) => {
+        return item.Name;
+    }).join(" | ");
+
+
+    let imgEl;
+
+    if (image != null) {
+        imgEl = `<img src="${image.FilePath}" data-img-id=${image.Id} class="w-100 h-100 rounded border selected-img" />
+        <button type="button" class="btn btn-danger position-absolute remove-variant-img-btn p-0 rounded-circle">
+            <div class="d-flex justify-content-center align-items-center">
+                <i class="bi bi-x-lg"></i>
+            </div>
+         </button>`
+    }
+
+
+    const variationEl = `<div class="accordion-item">
+        <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#variation-index-${index}" aria-expanded="false" aria-controls="variation-index-${index}">
+                    ${terms}
+            </button>
+        </h2>
+        <div id="variation-index-${index}" class="accordion-collapse collapse hide" data-variation-id="${variationId}" data-bs-parent="#variationAccordion">
+            <div class="accordion-body">
+                <div>
+                    <div class="d-flex justify-content-between">
+                        <div class="img--wrapper col-2 position-relative">
+                            <button type="button" class="position-absolute w-100 h-100 top-0 start-0 select-variation-img opacity-0"></button>
+                            <img src="../../dist/uploadImage.jpg" class="w-100 h-100 rounded border default ${image != null ? 'd-none' : ''}"/>
+                            ${image != null ? imgEl : ""}
+                        </div>
+                        <div>
+                            <button type="button" class="btn btn-outline-danger delete-variation" data-variation-id="${variationId}">Delete Variation</button>
+                        </div>
+                    </div>
+
+                    <hr />
+                    <div class="input-group">
+                        <input type="number" class="form-control list-price" placeholder="Listing Price" ${listPrice != null && "value=" + listPrice} />
+                        <input type="number" class="form-control sale-price" placeholder="Sale Price" ${salePrice != null && "value=" + salePrice} />
+                        <input type="number" class="form-control inventory" placeholder="Inventory" ${inventory != null && "value=" + inventory} />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>`
+    return variationEl;
+}
+
+$(document).on('click', '.remove-variant-img-btn', function () {
+    $(this).siblings('.selected-img').remove();
+    $(this).siblings('.default').removeClass('d-none');
+    $(this).remove();
+});
+
+const saveVariationBtn = $('#saveVariations');
+
+saveVariationBtn.on('click', async function () {
+    const variationAccordion = $('#variationAccordion');
+
+    let data = { "ProductId": productId };
+
+    data.Variants = BindProductVariations(variationAccordion.children());
+
+    let updated;
+
+    try {
+        variationAccordion.append(loaderEl);
+        variationAccordion.addClass('loading');
+        const response = await fetch('/ProductAttributes/UpdateProductVariations', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+
+        const result = await response.json();
+
+        if (result.status == "Success") {
+            updated = JSON.parse(result.updated);
+            console.log(updated);
+        }
+
+    } catch (err) {
+        console.error(err);
+        throw err;
+    } finally {
+        variationAccordion.find('> div').not('.spinner').remove();
+        if (updated.length > 0) {
+            updated.forEach((item, index) => {
+                const variationEl = createVariationEl(index, item.Id, item.Terms, item.ListPrice, item.SalePrice, item.Inventory, item.Image);
+
+                variationAccordion.append(variationEl);
+            });
+        }
+        variationAccordion.find('.spinner').remove();
+        variationAccordion.removeClass('loading');
+    }
+
+})
+
+
+function BindProductVariations(elements) {
+    variation = [];
+    elements.each(function () {
+        content = $(this).find('> div');
+        id = content.data('variation-id');
+        listPrice = content.find('.input-group .list-price').val() || null;
+        salePrice = content.find('.input-group .sale-price').val() || null;
+        inventory = content.find('.input-group .inventory').val() || null;
+        imgId = content.find('.img--wrapper .selected-img').data('img-id') || null;
+        const data = { "Id": id, "ListPrice": listPrice, "SalePrice": salePrice, "Inventory": inventory, "ImageId": imgId };
+        variation.push(data);
+    })
+    return variation;
+}
+
+
+$(document).on('click', '.delete-variation', async function () {
+    const variationAccordion = $('#variationAccordion');
+    const variantId = $(this).data('variation-id');
+
+    const formData = new FormData();
+
+    formData.append('productId', productId);
+    formData.append('variantId', variantId);
+
+
+    try {
+        variationAccordion.append(loaderEl);
+        variationAccordion.addClass('loading');
+
+        const response = await fetch('/ProductAttributes/DeleteProductVariation', {
+            method: 'POST',
+            body: formData
+        });
+
+        const result = await response.json();
+
+        if (result.status == "Success") {
+            const deletedVariantId = JSON.parse(result.deleted);
+            if (deletedVariantId == variantId) {
+                $(this).closest('.accordion-item').remove();
+            }
+        }
+
+
+    } catch (err) {
+        console.error(err);
+        throw err;
+
+    } finally {
+        variationAccordion.find('.spinner').remove();
+        variationAccordion.removeClass('loading');
+    }
+});
+

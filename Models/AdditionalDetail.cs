@@ -1,6 +1,6 @@
 ﻿namespace ECommerce2.Models
 {
-    public class ProductAdditionalDetail
+    public class AdditionalDetail
     {
         public int Id { get; set; }
         public Guid ProductId { get; set; }

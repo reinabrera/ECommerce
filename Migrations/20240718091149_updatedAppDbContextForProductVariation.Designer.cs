@@ -4,6 +4,7 @@ using ECommerce2.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ECommerce2.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240718091149_updatedAppDbContextForProductVariation")]
+    partial class updatedAppDbContextForProductVariation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,58 +24,6 @@ namespace ECommerce2.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("ECommerce2.Models.AdditionalDetail", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("ProductId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Value")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("ProductAdditionalDetails");
-                });
-
-            modelBuilder.Entity("ECommerce2.Models.AdditionalImage", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("ImageId")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("ProductId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("SortOrder")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ImageId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("ProductAdditionalImages");
-                });
 
             modelBuilder.Entity("ECommerce2.Models.ApplicationUser", b =>
                 {
@@ -155,7 +106,7 @@ namespace ECommerce2.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("ECommerce2.Models.AttributeModel", b =>
+            modelBuilder.Entity("ECommerce2.Models.AttributeTerm", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -163,16 +114,18 @@ namespace ECommerce2.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Name")
+                    b.Property<int>("AttributeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Value")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.ToTable("Attributes");
+                    b.HasIndex("AttributeId");
+
+                    b.ToTable("AttributeTerms");
                 });
 
             modelBuilder.Entity("ECommerce2.Models.Category", b =>
@@ -278,7 +231,7 @@ namespace ECommerce2.Migrations
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("ECommerce2.Models.ProductAttributeJoin", b =>
+            modelBuilder.Entity("ECommerce2.Models.ProductAdditionalDetail", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -286,19 +239,68 @@ namespace ECommerce2.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("AttributeId")
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Value")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ProductAdditionalDetails");
+                });
+
+            modelBuilder.Entity("ECommerce2.Models.ProductAdditionalImage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ImageId")
                         .HasColumnType("int");
 
                     b.Property<Guid>("ProductId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<int>("SortOrder")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("AttributeId");
+                    b.HasIndex("ImageId");
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ProductAttributeJoinTable");
+                    b.ToTable("ProductAdditionalImages");
+                });
+
+            modelBuilder.Entity("ECommerce2.Models.ProductAttribute", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ProductAttribute");
                 });
 
             modelBuilder.Entity("ECommerce2.Models.ProductCategories", b =>
@@ -359,7 +361,7 @@ namespace ECommerce2.Migrations
                     b.ToTable("ProductImages");
                 });
 
-            modelBuilder.Entity("ECommerce2.Models.ProductTermJoin", b =>
+            modelBuilder.Entity("ECommerce2.Models.ProductVariant", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -367,8 +369,17 @@ namespace ECommerce2.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("Inventory")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ListPrice")
+                        .HasColumnType("int");
+
                     b.Property<Guid>("ProductId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("SalePrice")
+                        .HasColumnType("int");
 
                     b.Property<int>("TermId")
                         .HasColumnType("int");
@@ -379,7 +390,7 @@ namespace ECommerce2.Migrations
 
                     b.HasIndex("TermId");
 
-                    b.ToTable("ProductTermJoinTable");
+                    b.ToTable("Variations");
                 });
 
             modelBuilder.Entity("ECommerce2.Models.SiteMedia", b =>
@@ -435,91 +446,6 @@ namespace ECommerce2.Migrations
                     b.HasIndex("SiteMediaId");
 
                     b.ToTable("SpecialPromotions");
-                });
-
-            modelBuilder.Entity("ECommerce2.Models.Term", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("AttributeId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ColorValue")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AttributeId");
-
-                    b.ToTable("AttributeTerms");
-                });
-
-            modelBuilder.Entity("ECommerce2.Models.TermVariation", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("TermId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("VariantId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TermId");
-
-                    b.HasIndex("VariantId");
-
-                    b.ToTable("TermVariation");
-                });
-
-            modelBuilder.Entity("ECommerce2.Models.Variant", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("ImageId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("Inventory")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("ListPrice")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("ProductId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int?>("SalePrice")
-                        .HasColumnType("int");
-
-                    b.Property<string>("TermsConcatenated")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ImageId");
-
-                    b.HasIndex("ProductId", "TermsConcatenated")
-                        .IsUnique();
-
-                    b.ToTable("Variations");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -655,7 +581,29 @@ namespace ECommerce2.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("ECommerce2.Models.AdditionalDetail", b =>
+            modelBuilder.Entity("ECommerce2.Models.AttributeTerm", b =>
+                {
+                    b.HasOne("ECommerce2.Models.ProductAttribute", "Attribute")
+                        .WithMany("Terms")
+                        .HasForeignKey("AttributeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Attribute");
+                });
+
+            modelBuilder.Entity("ECommerce2.Models.PartnershipLogo", b =>
+                {
+                    b.HasOne("ECommerce2.Models.Partnership", "Partnership")
+                        .WithOne("Logo")
+                        .HasForeignKey("ECommerce2.Models.PartnershipLogo", "PartnershipId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Partnership");
+                });
+
+            modelBuilder.Entity("ECommerce2.Models.ProductAdditionalDetail", b =>
                 {
                     b.HasOne("ECommerce2.Models.Product", null)
                         .WithMany("AdditionalDetails")
@@ -664,7 +612,7 @@ namespace ECommerce2.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("ECommerce2.Models.AdditionalImage", b =>
+            modelBuilder.Entity("ECommerce2.Models.ProductAdditionalImage", b =>
                 {
                     b.HasOne("ECommerce2.Models.ProductImage", "Image")
                         .WithMany()
@@ -679,36 +627,6 @@ namespace ECommerce2.Migrations
                         .IsRequired();
 
                     b.Navigation("Image");
-
-                    b.Navigation("Product");
-                });
-
-            modelBuilder.Entity("ECommerce2.Models.PartnershipLogo", b =>
-                {
-                    b.HasOne("ECommerce2.Models.Partnership", "Partnership")
-                        .WithOne("Logo")
-                        .HasForeignKey("ECommerce2.Models.PartnershipLogo", "PartnershipId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Partnership");
-                });
-
-            modelBuilder.Entity("ECommerce2.Models.ProductAttributeJoin", b =>
-                {
-                    b.HasOne("ECommerce2.Models.AttributeModel", "Attribute")
-                        .WithMany()
-                        .HasForeignKey("AttributeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ECommerce2.Models.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Attribute");
 
                     b.Navigation("Product");
                 });
@@ -743,21 +661,19 @@ namespace ECommerce2.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("ECommerce2.Models.ProductTermJoin", b =>
+            modelBuilder.Entity("ECommerce2.Models.ProductVariant", b =>
                 {
-                    b.HasOne("ECommerce2.Models.Product", "Product")
-                        .WithMany()
+                    b.HasOne("ECommerce2.Models.Product", null)
+                        .WithMany("Variations")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ECommerce2.Models.Term", "Term")
+                    b.HasOne("ECommerce2.Models.AttributeTerm", "Term")
                         .WithMany()
                         .HasForeignKey("TermId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.Navigation("Product");
 
                     b.Navigation("Term");
                 });
@@ -770,52 +686,6 @@ namespace ECommerce2.Migrations
                         .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("SiteMedia");
-                });
-
-            modelBuilder.Entity("ECommerce2.Models.Term", b =>
-                {
-                    b.HasOne("ECommerce2.Models.AttributeModel", "Attribute")
-                        .WithMany("Terms")
-                        .HasForeignKey("AttributeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Attribute");
-                });
-
-            modelBuilder.Entity("ECommerce2.Models.TermVariation", b =>
-                {
-                    b.HasOne("ECommerce2.Models.Term", "Term")
-                        .WithMany()
-                        .HasForeignKey("TermId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ECommerce2.Models.Variant", "Variant")
-                        .WithMany()
-                        .HasForeignKey("VariantId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Term");
-
-                    b.Navigation("Variant");
-                });
-
-            modelBuilder.Entity("ECommerce2.Models.Variant", b =>
-                {
-                    b.HasOne("ECommerce2.Models.ProductImage", "Image")
-                        .WithMany()
-                        .HasForeignKey("ImageId")
-                        .OnDelete(DeleteBehavior.SetNull);
-
-                    b.HasOne("ECommerce2.Models.Product", null)
-                        .WithMany("Variations")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Image");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -869,11 +739,6 @@ namespace ECommerce2.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("ECommerce2.Models.AttributeModel", b =>
-                {
-                    b.Navigation("Terms");
-                });
-
             modelBuilder.Entity("ECommerce2.Models.Partnership", b =>
                 {
                     b.Navigation("Logo")
@@ -889,6 +754,11 @@ namespace ECommerce2.Migrations
                     b.Navigation("ProductImages");
 
                     b.Navigation("Variations");
+                });
+
+            modelBuilder.Entity("ECommerce2.Models.ProductAttribute", b =>
+                {
+                    b.Navigation("Terms");
                 });
 #pragma warning restore 612, 618
         }
