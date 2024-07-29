@@ -11,6 +11,7 @@
     --global-text-muted: #6c757d;
     --bs-light: #f8f9fa;
     --global-white: white;
+    --global-border-color: #e2e2e2;
 }
 
 html {
@@ -77,4 +78,17 @@ html {
 
 .add-to-cart-tooltip {
     margin-right: 5px !important;
+}
+
+.custom-divider span {
+    border-bottom: 3px solid var(--global-blue);
+    width: 100px;
+}
+
+.py-100 {
+    padding: 100px 0;
+}
+
+.rounded-4 {
+    border-radius: 1rem;
 }

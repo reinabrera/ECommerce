@@ -26,6 +26,7 @@ namespace ECommerce2.Data
         public DbSet<Term> AttributeTerms { get; set; }
         public DbSet<ProductAttributeJoin> ProductAttributeJoinTable { get; set; }
         public DbSet<ProductTermJoin> ProductTermJoinTable { get; set; }
+        public DbSet<TeamMember> Team { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -97,6 +98,11 @@ namespace ECommerce2.Data
                 .HasIndex(v => new { v.ProductId, v.TermsConcatenated })
                 .IsUnique();
 
+            builder.Entity<TeamMember>()
+                .HasOne(tm => tm.Image)
+                .WithMany()
+                .HasForeignKey(tm => tm.ImageId)
+                .OnDelete(DeleteBehavior.SetNull);
         }
     }
 }

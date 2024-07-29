@@ -1,0 +1,66 @@
+﻿@model ECommerce2.Models.ViewModels.SelectMediaVM
+
+<div class="form-group mt-2">
+    <label asp-for="ImageId" class="control-label"></label>
+    <input class="invisible position-absolute image-input" asp-for="ImageId" />
+    <div class="position-relative global-img-wrapper rounded border border-1 ">
+        <button type="button" class="h-100 w-100 btn" id="globalAddImgBtn"></button>
+        <img src="../../dist/uploadImage.jpg" class="position-absolute default rounded w-100 h-100 top-0 start-0 @(Model.Image != null ? "d-none" : "")" />
+        @if (@Model.Image != null)
+        {
+            <img src="@Model.Image.FilePath" data-img-id="@Model.ImageId" class="position-absolute selected-img rounded w-100 h-100 top-0 start-0" />
+        }
+    </div>
+    <span asp-validation-for="ImageId" class="text-danger"></span>
+</div>
+
+<script>
+    var waitForJQuery = setInterval(function () {
+        if (typeof $ != 'undefined') {
+
+            const siteMediaIdInput = $('input.image-input');
+            const imgWrapper = $('.global-img-wrapper');
+            globalMediaLibrary.on('shown.bs.modal', function () {
+                $(document).on('change', '.global-images', function (e) {
+                    globalSelectMedia(e, false);
+                });
+            })
+
+            globalSelectBtn.on('click', function () {
+                const selected = $('.global-images input:checked');
+
+                if (selected.length > 0) {
+                    imgWrapper.find('.default').addClass('d-none');
+                    imgWrapper.find('selected-img').remove();
+                    const src = selected.val();
+                    const id = selected.data('id');
+                    siteMediaIdInput.val(id);
+                    let imgEl = `<img src="${src}" data-img-id=${id} class="position-absolute selected-img rounded w-100 h-100 top-0 start-0" />`
+                    imgWrapper.append(imgEl);
+
+                    globalMediaLibrary.modal('hide');
+                    $(document).off('change', '.global-images');
+                }
+            });
+
+            let target = document.querySelector('.global-img-wrapper');
+
+            let observer = new MutationObserver(function (mutations) {
+                if (target.querySelector('.selected-img') == null) {
+                    $('#ImageInput').val("");
+                    target.querySelector('.default').classList.remove('d-none');
+                    target.querySelector('')
+                }
+            });
+
+            observer.observe(target, {
+                attributes: false,
+                childList: true,
+                characterData: false
+            })
+
+            clearInterval(waitForJQuery);
+        }
+    }, 10);
+    
+</script>

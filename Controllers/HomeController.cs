@@ -34,14 +34,15 @@ namespace ECommerce2.Controllers
             return View(homePageVM);
         }
 
-        public IActionResult Privacy()
+        public IActionResult ContactUs()
         {
             return View();
         }
 
-        public IActionResult AboutUs()
+        public async Task<IActionResult> AboutUs()
         {
-            return View();
+            List<TeamMember> teamMembers = await _context.Team.Include(t => t.Image).ToListAsync();
+            return View(teamMembers);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

@@ -1,4 +1,6 @@
-﻿<section class="about-us-hero">
+﻿@model List<ECommerce2.Models.TeamMember>
+
+<section class="about-us-hero">
     <div class="content d-flex justify-content-center align-items-center h-100 w-100">
         <h1 class="text-light display-2 fw-600">About Us</h1>
     </div>
@@ -30,5 +32,83 @@
     </div>
     
 </section>
+
+<section id="our-team" class="py-100">
+    <div class="container">
+        <div class="content">
+            <div class="custom-divider justify-content-center d-flex">
+                <span></span>
+            </div>
+            <div class="text-content text-center">
+                <div class="mt-3">
+                    <span class="fw-600 fs-5">
+                        A Few Words About
+                    </span>
+                </div>
+                <h2 class="mt-3 fs-1">Our Team</h2>
+                <p class="mt-3">
+                    Nam nec tellus a odio tincidunt auctor a ornare odio. Sed non mauris vitae erat consequat auctor eu in elit. Class aptent taciti sociosqu ad litora torquent per conubia nostra.
+                </p>
+            </div>
+            
+            <div class="team-members row g-3 mt-5">
+                
+                @foreach (var item in @Model)
+                {
+                    <div class="col-4">
+                        <div class="px-5 py-4 d-flex justify-content-center align-items-center flex-column member-content rounded border">
+                            <div class="img--wrapper mb-4">
+                                <img src="@item.Image!.FilePath" alt="@item.Name Photo" />
+                            </div>
+                            <h5>
+                                @item.Name
+                            </h5>
+                            <div>
+                                <span>@item.Position</span>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="socials">
+    <div class="container">
+        <div class="content text-center">
+            <div class="custom-divider justify-content-center d-flex">
+                <span></span>
+            </div>
+            <h4 class="fs-1 mt-4 fw-600">Follow Us</h4>
+            <div class="row gx-5 justify-content-center mt-5">
+                <div class="col-auto">
+                    <a href="#" class="text-decoration-none text-dark">
+                        <i class="bi bi-facebook"></i>
+                    </a>
+                </div>
+                <div class="col-auto">
+                    <a href="#" class="text-decoration-none text-dark">
+                        <i class="bi bi-twitter-x"></i>
+                    </a>
+                </div>
+                <div class="col-auto">
+                    <a href="#" class="text-decoration-none text-dark">
+                        <i class="bi bi-instagram"></i>
+                    </a>
+                </div>
+                <div class="col-auto">
+                    <a href="#" class="text-decoration-none text-dark">
+                        <i class="bi bi-google"></i>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+</section>
+
 
 @Html.Partial("_SectionHighlights", "--global-white")

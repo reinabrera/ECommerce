@@ -450,14 +450,79 @@ section.who-we-are {
     }
 }
 
-section.who-we-are .custom-divider span {
-    border-bottom: 3px solid var(--global-blue);
-    width: 100px;
-}
-
 section.who-we-are .inner-content--wrapper {
     padding: 100px;
     height: 100%;
     display: flex;
     align-items: center;
+}
+
+section#our-team .content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+section#our-team .content .team-members .member-content {
+    background-color: var(--global-bg-gray);
+}
+
+section#our-team .content .team-members img {
+    max-width: 90px;
+}
+
+section#socials {
+    background: linear-gradient(0deg, rgb(25 26 26 / 50%), rgb(26 28 28 / 50%)), url(../dist/banner-05.jpg);
+    background-attachment: fixed;
+}
+
+section#socials .content {
+    background-color: var(--global-bg-gray);
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 150px 50px;
+}
+
+section#socials .content a:hover i {
+    color: var(--global-blue-1) !important;
+}
+
+section#contact-us-hero {
+    height: 55vh;
+    background: linear-gradient(0deg, rgb(43 0 0 / 70%), rgb(30 87 122 / 50%)), url(../dist/banner-06.jpg);
+    background-position: center;
+    background-attachment: fixed;
+}
+
+section#contact-cards .divider-black span {
+    border-bottom: 1px solid black;
+    width: 50px;
+}
+
+section#contact-cards .cards a {
+    color: var(--global-blue-1);
+    text-decoration: none;
+}
+
+section#contact-form {
+    padding-bottom: 100px;
+}
+
+section#contact-form .form {
+    padding: 40px;
+}
+
+section#contact-form .form input, section#contact-form .form textarea {
+    width: 100%;
+    border: 1px solid var(--global-border-color);
+    padding: 10px;
+    outline: none !important;
+}
+
+section#contact-form .form textarea {
+    height: 200px;
+}
+
+section#contact-form .form button {
+    background-color: var(--global-blue-1);
+    color: white;
 }
