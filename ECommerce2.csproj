@@ -8,6 +8,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="wwwroot\PartnershipLogos\**" />
+    <Content Remove="wwwroot\PartnershipLogos\**" />
+    <EmbeddedResource Remove="wwwroot\PartnershipLogos\**" />
+    <None Remove="wwwroot\PartnershipLogos\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="HtmlAgilityPack" Version="1.11.61" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.4" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.4" />
@@ -25,7 +32,6 @@
   <ItemGroup>
     <Folder Include="Migrations\" />
     <Folder Include="wwwroot\Media\" />
-    <Folder Include="wwwroot\PartnershipLogos\" />
     <Folder Include="wwwroot\ProductImages\" />
   </ItemGroup>
 

@@ -12,7 +12,6 @@ using System.Xml.Linq;
 using ECommerce2.Models.ViewModels;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis;
-using ECommerce2.Migrations;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace ECommerce2.Controllers

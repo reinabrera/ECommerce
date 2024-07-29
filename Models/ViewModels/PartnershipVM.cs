@@ -10,7 +10,7 @@ namespace ECommerce2.Models.ViewModels
         [DisplayName("Company Website")]
         public string CompanyWebsite { get; set; }
         [DisplayName("Company Logo")]
-        public PartnershipLogo? Logo { get; set; }
-        public IFormFile? FileUpload { get; set; }
+        public int ImageId { get; set; }
+        public SiteMedia? Image { get; set; }
     }
 }

@@ -66,15 +66,9 @@ namespace ECommerce2.Controllers
                 {
                     CompanyName = partnership.CompanyName,
                     CompanyWebsite = partnership.CompanyWebsite,
+                    ImageId = partnership.ImageId,
                 };
 
-                CreatePartnership.Logo = UploadLogo(partnership.FileUpload);
-
-                if (CreatePartnership.Logo == null)
-                {
-                    partnership.FileUpload = null;
-                    return View(partnership);
-                }
 
                 _context.Add(CreatePartnership);
                 await _context.SaveChangesAsync();
@@ -83,35 +77,6 @@ namespace ECommerce2.Controllers
             return View(partnership);
         }
 
-        public PartnershipLogo? UploadLogo(IFormFile file)
-        {
-            string logoFolder = Path.Combine(_webHostEnvironment.WebRootPath, "PartnershipLogos");
-
-            if (!Directory.Exists(logoFolder))
-            {
-                Directory.CreateDirectory(logoFolder);
-            }
-
-            string FileName = Guid.NewGuid().ToString() + "-" + Path.GetFileName(file.FileName);
-            string FileSavePath = Path.Combine(logoFolder, FileName);
-
-            using (FileStream stream = new FileStream(FileSavePath, FileMode.Create))
-            {
-                file.CopyTo(stream);
-            }
-
-            if (System.IO.File.Exists(FileSavePath))
-            {
-                PartnershipLogo Logo = new PartnershipLogo()
-                {
-                    FileName = FileName,
-                    FilePath = @"\PartnershipLogos\" + FileName
-                };
-
-                return Logo;
-            }
-            return null;
-        }
 
         // GET: Partnerships/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -121,7 +86,7 @@ namespace ECommerce2.Controllers
                 return NotFound();
             }
 
-            var partnership = await _context.Partnerships.Include(x => x.Logo).FirstOrDefaultAsync(p => p.Id == id);
+            var partnership = await _context.Partnerships.Include(p => p.Image).FirstOrDefaultAsync(p => p.Id == id);
 
             if (partnership == null)
             {
@@ -132,7 +97,7 @@ namespace ECommerce2.Controllers
             {
                 CompanyName = partnership.CompanyName,
                 CompanyWebsite = partnership.CompanyWebsite,
-                Logo = partnership.Logo,
+                Image = partnership.Image,
             };
 
             return View(partnershipVM);
@@ -154,30 +119,13 @@ namespace ECommerce2.Controllers
             {
                 try
                 {
-                    Partnership partnership = await _context.Partnerships.Include(p => p.Logo).FirstOrDefaultAsync();
+                    Partnership partnership = await _context.Partnerships.Include(p => p.Image).FirstOrDefaultAsync();
 
                     if (partnership == null) return NotFound();
 
                     partnership.CompanyName = partnershipVM.CompanyName;
                     partnership.CompanyWebsite = partnershipVM.CompanyWebsite;
-
-                    /** Updating Company Logo */
-                    if (partnershipVM.FileUpload != null)
-                    {
-                        PartnershipLogo logo = UploadLogo(partnershipVM.FileUpload);
-
-                        if (logo == null) return View(partnershipVM);
-
-                        /** Removing Old Company Logo */
-                        string filePath = Path.Combine(_webHostEnvironment.WebRootPath, partnership.Logo.FilePath.TrimStart('\\'));
-
-                        if (System.IO.File.Exists(filePath))
-                        {
-                            System.IO.File.Delete(filePath);
-                        }
-
-                        partnership.Logo = logo;
-                    }
+                    partnership.ImageId = partnershipVM.ImageId;
 
                     _context.Update(partnership);
                     await _context.SaveChangesAsync();
@@ -221,23 +169,7 @@ namespace ECommerce2.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var partnership = await _context.Partnerships.Include(p => p.Logo).FirstOrDefaultAsync();
-            //PartnershipLogo logo = await _context.PartnershipLogos.Include(p => p.Logo).FirstOrDefaultAsync(p => p.PartnershipId == partnership.Id);
-
-            if (partnership != null)
-            {
-                if (partnership.Logo != null)
-                {
-                    string filePath = Path.Combine(_webHostEnvironment.WebRootPath, partnership.Logo.FilePath.TrimStart('\\'));
-
-                    if (System.IO.File.Exists(filePath))
-                    {
-                        System.IO.File.Delete(filePath);
-                    }
-                }
-
-                _context.Partnerships.Remove(partnership);
-            }
+            var partnership = await _context.Partnerships.FirstOrDefaultAsync();
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

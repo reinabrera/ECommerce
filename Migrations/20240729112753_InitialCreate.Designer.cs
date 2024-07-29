@@ -4,6 +4,7 @@ using ECommerce2.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ECommerce2.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240729112753_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -173,20 +176,6 @@ namespace ECommerce2.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Attributes");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Color",
-                            Type = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Size",
-                            Type = 0
-                        });
                 });
 
             modelBuilder.Entity("ECommerce2.Models.Category", b =>
@@ -204,23 +193,6 @@ namespace ECommerce2.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Men"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Women"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "Accessories"
-                        });
                 });
 
             modelBuilder.Entity("ECommerce2.Models.Partnership", b =>
@@ -239,79 +211,36 @@ namespace ECommerce2.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ImageId")
+                    b.HasKey("Id");
+
+                    b.ToTable("Partnerships");
+                });
+
+            modelBuilder.Entity("ECommerce2.Models.PartnershipLogo", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FilePath")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PartnershipId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ImageId");
+                    b.HasIndex("PartnershipId")
+                        .IsUnique();
 
-                    b.ToTable("Partnerships");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CompanyName = "Lorem Ipsum",
-                            CompanyWebsite = "#",
-                            ImageId = 4
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CompanyName = "Lorem Ipsum",
-                            CompanyWebsite = "#",
-                            ImageId = 5
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CompanyName = "Lorem Ipsum",
-                            CompanyWebsite = "#",
-                            ImageId = 6
-                        },
-                        new
-                        {
-                            Id = 4,
-                            CompanyName = "Lorem Ipsum",
-                            CompanyWebsite = "#",
-                            ImageId = 7
-                        },
-                        new
-                        {
-                            Id = 5,
-                            CompanyName = "Lorem Ipsum",
-                            CompanyWebsite = "#",
-                            ImageId = 8
-                        },
-                        new
-                        {
-                            Id = 6,
-                            CompanyName = "Lorem Ipsum",
-                            CompanyWebsite = "#",
-                            ImageId = 9
-                        },
-                        new
-                        {
-                            Id = 7,
-                            CompanyName = "Lorem Ipsum",
-                            CompanyWebsite = "#",
-                            ImageId = 10
-                        },
-                        new
-                        {
-                            Id = 8,
-                            CompanyName = "Lorem Ipsum",
-                            CompanyWebsite = "#",
-                            ImageId = 11
-                        },
-                        new
-                        {
-                            Id = 9,
-                            CompanyName = "Lorem Ipsum",
-                            CompanyWebsite = "#",
-                            ImageId = 12
-                        });
+                    b.ToTable("PartnershipLogos");
                 });
 
             modelBuilder.Entity("ECommerce2.Models.Product", b =>
@@ -494,114 +423,6 @@ namespace ECommerce2.Migrations
                             Id = 3,
                             FileName = "special-promotion-3",
                             FilePath = "\\Media\\special-promotion-3.jpg"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            FileName = "logo-1",
-                            FilePath = "\\Media\\logo-1.svg"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            FileName = "logo-2",
-                            FilePath = "\\Media\\logo-2.svg"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            FileName = "logo-3",
-                            FilePath = "\\Media\\logo-3.svg"
-                        },
-                        new
-                        {
-                            Id = 7,
-                            FileName = "logo-4",
-                            FilePath = "\\Media\\logo-4.svg"
-                        },
-                        new
-                        {
-                            Id = 8,
-                            FileName = "logo-5",
-                            FilePath = "\\Media\\logo-5.svg"
-                        },
-                        new
-                        {
-                            Id = 9,
-                            FileName = "logo-6",
-                            FilePath = "\\Media\\logo-6.svg"
-                        },
-                        new
-                        {
-                            Id = 10,
-                            FileName = "logo-7",
-                            FilePath = "\\Media\\logo-7.svg"
-                        },
-                        new
-                        {
-                            Id = 11,
-                            FileName = "logo-8",
-                            FilePath = "\\Media\\logo-8.svg"
-                        },
-                        new
-                        {
-                            Id = 12,
-                            FileName = "logo-9",
-                            FilePath = "\\Media\\logo-9.svg"
-                        },
-                        new
-                        {
-                            Id = 13,
-                            FileName = "member-1",
-                            FilePath = "\\Media\\member-1.png"
-                        },
-                        new
-                        {
-                            Id = 14,
-                            FileName = "member-2",
-                            FilePath = "\\Media\\member-2.png"
-                        },
-                        new
-                        {
-                            Id = 15,
-                            FileName = "member-3",
-                            FilePath = "\\Media\\member-3.png"
-                        },
-                        new
-                        {
-                            Id = 16,
-                            FileName = "member-4",
-                            FilePath = "\\Media\\member-4.png"
-                        },
-                        new
-                        {
-                            Id = 17,
-                            FileName = "member-5",
-                            FilePath = "\\Media\\member-5.png"
-                        },
-                        new
-                        {
-                            Id = 18,
-                            FileName = "member-6",
-                            FilePath = "\\Media\\member-6.png"
-                        },
-                        new
-                        {
-                            Id = 19,
-                            FileName = "description-1",
-                            FilePath = "\\Media\\description-1.jpg"
-                        },
-                        new
-                        {
-                            Id = 20,
-                            FileName = "description-2",
-                            FilePath = "\\Media\\description-2.jpg"
-                        },
-                        new
-                        {
-                            Id = 21,
-                            FileName = "description-3",
-                            FilePath = "\\Media\\description-3.jpg"
                         });
                 });
 
@@ -692,50 +513,6 @@ namespace ECommerce2.Migrations
                     b.HasIndex("ImageId");
 
                     b.ToTable("Team");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            ImageId = 13,
-                            Name = "Harvey Spector",
-                            Position = "Founder - CEO"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            ImageId = 14,
-                            Name = "Jessica Pearsonn",
-                            Position = "COO"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            ImageId = 15,
-                            Name = "Rachel Zain",
-                            Position = "Marketing Head"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            ImageId = 16,
-                            Name = "Luise Litt",
-                            Position = "Lead Developer"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            ImageId = 17,
-                            Name = "Katrina Bennett",
-                            Position = "Intern Designer"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            ImageId = 18,
-                            Name = "Mike Ross",
-                            Position = "Intern Designer"
-                        });
                 });
 
             modelBuilder.Entity("ECommerce2.Models.Term", b =>
@@ -761,96 +538,6 @@ namespace ECommerce2.Migrations
                     b.HasIndex("AttributeId");
 
                     b.ToTable("AttributeTerms");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            AttributeId = 1,
-                            ColorValue = "#000000",
-                            Name = "Black"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            AttributeId = 1,
-                            ColorValue = "#aa7627",
-                            Name = "Brown"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            AttributeId = 1,
-                            ColorValue = "#ce592f",
-                            Name = "Red"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            AttributeId = 1,
-                            ColorValue = "#1fb1c1",
-                            Name = "Aqua"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            AttributeId = 1,
-                            ColorValue = "#1e73be",
-                            Name = "Blue"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            AttributeId = 1,
-                            ColorValue = "#81d742",
-                            Name = "Green"
-                        },
-                        new
-                        {
-                            Id = 7,
-                            AttributeId = 1,
-                            ColorValue = "#f49922",
-                            Name = "Orange"
-                        },
-                        new
-                        {
-                            Id = 8,
-                            AttributeId = 1,
-                            ColorValue = "#ce25e8",
-                            Name = "Purple"
-                        },
-                        new
-                        {
-                            Id = 9,
-                            AttributeId = 1,
-                            ColorValue = "#eac820",
-                            Name = "Yellow"
-                        },
-                        new
-                        {
-                            Id = 10,
-                            AttributeId = 1,
-                            ColorValue = "#ffffff",
-                            Name = "White"
-                        },
-                        new
-                        {
-                            Id = 11,
-                            AttributeId = 2,
-                            Name = "S"
-                        },
-                        new
-                        {
-                            Id = 12,
-                            AttributeId = 2,
-                            Name = "M"
-                        },
-                        new
-                        {
-                            Id = 13,
-                            AttributeId = 2,
-                            Name = "L"
-                        });
                 });
 
             modelBuilder.Entity("ECommerce2.Models.TermVariation", b =>
@@ -1074,14 +761,15 @@ namespace ECommerce2.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("ECommerce2.Models.Partnership", b =>
+            modelBuilder.Entity("ECommerce2.Models.PartnershipLogo", b =>
                 {
-                    b.HasOne("ECommerce2.Models.SiteMedia", "Image")
-                        .WithMany()
-                        .HasForeignKey("ImageId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                    b.HasOne("ECommerce2.Models.Partnership", "Partnership")
+                        .WithOne("Logo")
+                        .HasForeignKey("ECommerce2.Models.PartnershipLogo", "PartnershipId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("Image");
+                    b.Navigation("Partnership");
                 });
 
             modelBuilder.Entity("ECommerce2.Models.ProductAttributeJoin", b =>
@@ -1272,6 +960,12 @@ namespace ECommerce2.Migrations
             modelBuilder.Entity("ECommerce2.Models.AttributeModel", b =>
                 {
                     b.Navigation("Terms");
+                });
+
+            modelBuilder.Entity("ECommerce2.Models.Partnership", b =>
+                {
+                    b.Navigation("Logo")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("ECommerce2.Models.Product", b =>

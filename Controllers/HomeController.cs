@@ -23,7 +23,7 @@ namespace ECommerce2.Controllers
             HomePageVM homePageVM = new();
 
             List<Partnership> Partnerships = await _context.Partnerships
-                .Include(p => p.Logo)
+                .Include(p => p.Image)
                 .ToListAsync();
 
             List<SpecialPromotion> SpecialPromotions = await _context.SpecialPromotions.Include(sp => sp.SiteMedia).ToListAsync();

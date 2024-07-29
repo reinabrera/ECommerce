@@ -4,6 +4,7 @@ using ECommerce2.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ECommerce2.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240729114641_UpdatedSiteMediaSeedData")]
+    partial class UpdatedSiteMediaSeedData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -173,20 +176,6 @@ namespace ECommerce2.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Attributes");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Color",
-                            Type = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Size",
-                            Type = 0
-                        });
                 });
 
             modelBuilder.Entity("ECommerce2.Models.Category", b =>
@@ -204,23 +193,6 @@ namespace ECommerce2.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Men"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Women"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "Accessories"
-                        });
                 });
 
             modelBuilder.Entity("ECommerce2.Models.Partnership", b =>
@@ -553,37 +525,37 @@ namespace ECommerce2.Migrations
                         {
                             Id = 13,
                             FileName = "member-1",
-                            FilePath = "\\Media\\member-1.png"
+                            FilePath = "\\Media\\member-1.jpg"
                         },
                         new
                         {
                             Id = 14,
                             FileName = "member-2",
-                            FilePath = "\\Media\\member-2.png"
+                            FilePath = "\\Media\\member-2.jpg"
                         },
                         new
                         {
                             Id = 15,
                             FileName = "member-3",
-                            FilePath = "\\Media\\member-3.png"
+                            FilePath = "\\Media\\member-3.jpg"
                         },
                         new
                         {
                             Id = 16,
                             FileName = "member-4",
-                            FilePath = "\\Media\\member-4.png"
+                            FilePath = "\\Media\\member-4.jpg"
                         },
                         new
                         {
                             Id = 17,
                             FileName = "member-5",
-                            FilePath = "\\Media\\member-5.png"
+                            FilePath = "\\Media\\member-5.jpg"
                         },
                         new
                         {
                             Id = 18,
                             FileName = "member-6",
-                            FilePath = "\\Media\\member-6.png"
+                            FilePath = "\\Media\\member-6.jpg"
                         },
                         new
                         {
@@ -692,50 +664,6 @@ namespace ECommerce2.Migrations
                     b.HasIndex("ImageId");
 
                     b.ToTable("Team");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            ImageId = 13,
-                            Name = "Harvey Spector",
-                            Position = "Founder - CEO"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            ImageId = 14,
-                            Name = "Jessica Pearsonn",
-                            Position = "COO"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            ImageId = 15,
-                            Name = "Rachel Zain",
-                            Position = "Marketing Head"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            ImageId = 16,
-                            Name = "Luise Litt",
-                            Position = "Lead Developer"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            ImageId = 17,
-                            Name = "Katrina Bennett",
-                            Position = "Intern Designer"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            ImageId = 18,
-                            Name = "Mike Ross",
-                            Position = "Intern Designer"
-                        });
                 });
 
             modelBuilder.Entity("ECommerce2.Models.Term", b =>
@@ -761,96 +689,6 @@ namespace ECommerce2.Migrations
                     b.HasIndex("AttributeId");
 
                     b.ToTable("AttributeTerms");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            AttributeId = 1,
-                            ColorValue = "#000000",
-                            Name = "Black"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            AttributeId = 1,
-                            ColorValue = "#aa7627",
-                            Name = "Brown"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            AttributeId = 1,
-                            ColorValue = "#ce592f",
-                            Name = "Red"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            AttributeId = 1,
-                            ColorValue = "#1fb1c1",
-                            Name = "Aqua"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            AttributeId = 1,
-                            ColorValue = "#1e73be",
-                            Name = "Blue"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            AttributeId = 1,
-                            ColorValue = "#81d742",
-                            Name = "Green"
-                        },
-                        new
-                        {
-                            Id = 7,
-                            AttributeId = 1,
-                            ColorValue = "#f49922",
-                            Name = "Orange"
-                        },
-                        new
-                        {
-                            Id = 8,
-                            AttributeId = 1,
-                            ColorValue = "#ce25e8",
-                            Name = "Purple"
-                        },
-                        new
-                        {
-                            Id = 9,
-                            AttributeId = 1,
-                            ColorValue = "#eac820",
-                            Name = "Yellow"
-                        },
-                        new
-                        {
-                            Id = 10,
-                            AttributeId = 1,
-                            ColorValue = "#ffffff",
-                            Name = "White"
-                        },
-                        new
-                        {
-                            Id = 11,
-                            AttributeId = 2,
-                            Name = "S"
-                        },
-                        new
-                        {
-                            Id = 12,
-                            AttributeId = 2,
-                            Name = "M"
-                        },
-                        new
-                        {
-                            Id = 13,
-                            AttributeId = 2,
-                            Name = "L"
-                        });
                 });
 
             modelBuilder.Entity("ECommerce2.Models.TermVariation", b =>
