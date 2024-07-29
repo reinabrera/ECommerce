@@ -1,0 +1,26 @@
+﻿@model string
+
+<section class="highlight-subsections" style="background-color: var(@Model)">
+    <div class="container">
+        <div class="subsections row">
+            @for (int i = 0; i < 4; i++)
+            {
+                <div class="col-3">
+                    <div class="subsection">
+                        <div class="icon-wrapper text-center">
+                            <img src="https://websitedemos.net/brandstore-02/wp-content/uploads/sites/150/2018/12/globe-free-img.png" />
+                        </div>
+                        <div class="content text-center mt-3">
+                            <h5 class="content">
+                                Worldwide Shipping
+                            </h5>
+                            <p class="description mt-3">
+                                It elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>

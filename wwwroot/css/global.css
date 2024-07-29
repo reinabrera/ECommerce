@@ -10,6 +10,7 @@
     --global-bg-gray: #f5f7f9;
     --global-text-muted: #6c757d;
     --bs-light: #f8f9fa;
+    --global-white: white;
 }
 
 html {

@@ -477,12 +477,6 @@ namespace ECommerce2.Controllers
         {
             var product = await _context.Products
                 .Include(p => p.ProductImages)
-                //.Include(p => p.FeaturedImage)
-                //.Include(p => p.FeaturedImage)
-                //.Include(p => p.ProductVariations)
-                //    .ThenInclude(pv => pv.VariationItems)
-                //.Include(p => p.AdditionalDetails)
-                //.Include(p => p.AdditionalImages)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             if (product != null)

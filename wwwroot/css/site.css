@@ -329,12 +329,11 @@ section.limited-time-offer .container {
 
 section.highlight-subsections .icon-wrapper img {
     max-width: 52px;
-    max-height: 52px;
+    max-height: 52px;   
     margin: 0 auto;
 }
 
 section.highlight-subsections {
-    background-color: var(--global-bg-gray);
     padding: 100px 0;
 }
 
@@ -432,4 +431,33 @@ section.highlight-subsections {
 
 .variation-section--wrapper #variationAccordion .img--wrapper:hover .remove-variant-img-btn {
     display: flex;
+}
+
+section.about-us-hero {
+    height: 75vh;
+    background: linear-gradient(0deg, rgb(30 87 122 / 50%), rgb(30 87 122 / 50%)), url("../dist/banner-04.jpg");
+    background-attachment: fixed;
+}
+
+section.who-we-are {
+    padding: 100px 0;
+    background-color: var(--global-bg-gray);
+}
+
+@media (min-width: 1200px) {
+    section.who-we-are .container {
+        max-width: 1700px;
+    }
+}
+
+section.who-we-are .custom-divider span {
+    border-bottom: 3px solid var(--global-blue);
+    width: 100px;
+}
+
+section.who-we-are .inner-content--wrapper {
+    padding: 100px;
+    height: 100%;
+    display: flex;
+    align-items: center;
 }
