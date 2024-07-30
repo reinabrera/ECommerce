@@ -6,12 +6,6 @@ namespace ECommerce2.Models.ViewModels
 {
     public class ProductVM
     {
-        //public Product Product { get; set; }
-        //[ValidateNever]
-        //public List<CategoryVM> Category { get; set; }
-        //public ICollection<ProductVariation>? Variations { get; set; }
-        //public ICollection<AdditionalImage>? AdditionalImages { get; set; }
-
         public Guid Id { get; set; }
         public string? Name { get; set; }
         public string? Overview { get; set; }
