@@ -1,20 +1,22 @@
 ﻿using ECommerce2.Data;
 using ECommerce2.Models;
 using ECommerce2.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
-namespace ECommerce2.Controllers
+namespace ECommerce2.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class SiteMediaController : Controller
     {
         private readonly ApplicationDbContext _context;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public SiteMediaController(ApplicationDbContext context, IWebHostEnvironment webHostEnvironment) 
+        public SiteMediaController(ApplicationDbContext context, IWebHostEnvironment webHostEnvironment)
         {
             _context = context;
             _webHostEnvironment = webHostEnvironment;

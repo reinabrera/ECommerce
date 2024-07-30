@@ -1,12 +1,14 @@
 ﻿using ECommerce2.Data;
 using ECommerce2.Models;
 using ECommerce2.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
-namespace ECommerce2.Controllers
+namespace ECommerce2.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class ProductImagesController : Controller
     {
         private readonly ApplicationDbContext _context;

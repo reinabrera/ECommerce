@@ -8,9 +8,11 @@ using Microsoft.EntityFrameworkCore;
 using ECommerce2.Data;
 using ECommerce2.Models;
 using ECommerce2.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 
-namespace ECommerce2.Controllers
+namespace ECommerce2.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class SpecialPromotionsController : Controller
     {
         private readonly ApplicationDbContext _context;

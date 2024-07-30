@@ -13,9 +13,11 @@ using ECommerce2.Models.ViewModels;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using Microsoft.AspNetCore.Authorization;
 
-namespace ECommerce2.Controllers
+namespace ECommerce2.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class ProductAttributesController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -183,7 +185,7 @@ namespace ECommerce2.Controllers
         {
             var attributes = await _context.Attributes.Select(a => new { a.Id, a.Name }).ToListAsync();
 
-            return Json( new { status = "Success", attributes = JsonConvert.SerializeObject(attributes) });
+            return Json(new { status = "Success", attributes = JsonConvert.SerializeObject(attributes) });
         }
 
         [HttpPost]
@@ -195,7 +197,7 @@ namespace ECommerce2.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SaveProductAttributes([FromBody] ProductAttributeVM data) 
+        public async Task<IActionResult> SaveProductAttributes([FromBody] ProductAttributeVM data)
         {
             Product product = await _context.Products.Include(p => p.Attributes).Include(p => p.SelectedTerms).FirstOrDefaultAsync(p => p.Id == data.ProductId);
 
@@ -254,7 +256,7 @@ namespace ECommerce2.Controllers
                 }
             }
 
-            
+
             _context.Products.Update(product);
             _context.SaveChanges();
 
@@ -274,12 +276,12 @@ namespace ECommerce2.Controllers
             {
                 Attributes = product.Attributes.Select(a => new
                 {
-                    Id = a.Id,
-                    Name = a.Name,
+                    a.Id,
+                    a.Name,
                     Terms = product.SelectedTerms.Where(st => st.AttributeId == a.Id).OrderBy(st => st.Id).Select(st => new
                     {
-                        Id = st.Id,
-                        Name = st.Name,
+                        st.Id,
+                        st.Name,
                     }).ToList()
                 }).ToList()
             };
@@ -319,15 +321,18 @@ namespace ECommerce2.Controllers
             if (current == null) current = new List<Term>();
             if (variations == null) variations = new List<Variant>();
 
-            if (n == terms.Count) {
+            if (n == terms.Count)
+            {
                 Variant variant = new Variant()
                 {
                     Terms = new List<Term>(current),
                     TermsConcatenated = string.Join(", ", current.OrderBy(c => c.Id).Select(c => c.Id)),
                 };
                 variations.Add(variant);
-            } else { 
-                foreach(Term term in terms[n])
+            }
+            else
+            {
+                foreach (Term term in terms[n])
                 {
                     current.Add(term);
                     GenerateTermCombinations(terms, n + 1, current, variations);
@@ -354,7 +359,7 @@ namespace ECommerce2.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> UpdateProductVariations([FromBody]ProductVariationVM data)
+        public async Task<IActionResult> UpdateProductVariations([FromBody] ProductVariationVM data)
         {
             if (data == null) return Json(new { status = "Failed", message = "There was an error processing your request." });
 
@@ -383,7 +388,8 @@ namespace ECommerce2.Controllers
                         {
                             variant.Image = image;
                         }
-                    } else
+                    }
+                    else
                     {
                         variant.ImageId = null;
                         variant.Image = null;
@@ -395,7 +401,7 @@ namespace ECommerce2.Controllers
 
             await _context.SaveChangesAsync();
 
-            return Json(new { status = "Success", updated = JsonConvert.SerializeObject(updated)});
+            return Json(new { status = "Success", updated = JsonConvert.SerializeObject(updated) });
         }
 
         [HttpPost]

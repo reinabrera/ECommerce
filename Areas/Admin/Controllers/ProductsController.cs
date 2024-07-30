@@ -13,9 +13,11 @@ using Microsoft.CodeAnalysis;
 using Microsoft.Data.SqlClient;
 using HtmlAgilityPack;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.AspNetCore.Authorization;
 
-namespace ECommerce2.Controllers
+namespace ECommerce2.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class ProductsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -63,7 +65,7 @@ namespace ECommerce2.Controllers
 
             _context.Products.Add(createProduct);
             _context.SaveChanges();
-            return RedirectToAction("Edit", new {Id = createProduct.Id});
+            return RedirectToAction("Edit", new { createProduct.Id });
         }
 
         // POST: Products/Create
@@ -164,7 +166,7 @@ namespace ECommerce2.Controllers
 
                     if (product.AdditionalImages != null)
                     {
-                        foreach (AdditionalImage item in  product.AdditionalImages)
+                        foreach (AdditionalImage item in product.AdditionalImages)
                         {
                             AdditionalImageVM additionalImageVM = new AdditionalImageVM()
                             {
@@ -196,10 +198,10 @@ namespace ECommerce2.Controllers
             }
 
             return NotFound();
-            
+
         }
 
-        
+
 
         // POST: Products/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
@@ -256,7 +258,7 @@ namespace ECommerce2.Controllers
                     UpdateProduct.Categories = await AddOrUpdateCategories(productVM.Categories);
 
 
-                   
+
                     if (ProductImages != null)
                     {
                         /** Featured Image */
@@ -283,7 +285,7 @@ namespace ECommerce2.Controllers
                             foreach (AdditionalImageVM item in productVM.AdditionalImages)
                             {
                                 ProductImage Image = ProductImages.FirstOrDefault(pi => pi.Id == item.ImageId);
-                                
+
                                 if (Image != null)
                                 {
                                     AdditionalImage UpdateAdditionalImage = new AdditionalImage()
@@ -345,7 +347,8 @@ namespace ECommerce2.Controllers
                                 AdditionalDetails.Add(AddAdditionalDetail);
                             }
                         }
-                    } else
+                    }
+                    else
                     {
                         AdditionalDetails.Clear();
                     }
@@ -565,7 +568,8 @@ namespace ECommerce2.Controllers
                 if (ProductCat != null)
                 {
                     ProductCategories.Add(ProductCat);
-                } else
+                }
+                else
                 {
                     Category newCat = new Category()
                     {

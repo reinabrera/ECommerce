@@ -8,26 +8,29 @@ using Microsoft.EntityFrameworkCore;
 using ECommerce2.Data;
 using ECommerce2.Models;
 using ECommerce2.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 
-namespace ECommerce2.Controllers
+namespace ECommerce2.Areas.Admin.Controllers
 {
-    public class TeamMembersController : Controller
+    [Area("Admin")]
+    public class PartnershipsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private IWebHostEnvironment _webHostEnvironment;
 
-        public TeamMembersController(ApplicationDbContext context)
+        public PartnershipsController(ApplicationDbContext context, IWebHostEnvironment webHostEnvironment)
         {
             _context = context;
+            _webHostEnvironment = webHostEnvironment;
         }
 
-        // GET: TeamMembers
+        // GET: Partnerships
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Team.Include(t => t.Image);
-            return View(await applicationDbContext.ToListAsync());
+            return View(await _context.Partnerships.ToListAsync());
         }
 
-        // GET: TeamMembers/Details/5
+        // GET: Partnerships/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -35,47 +38,49 @@ namespace ECommerce2.Controllers
                 return NotFound();
             }
 
-            var teamMember = await _context.Team
-                .Include(t => t.Image)
+            var partnership = await _context.Partnerships
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (teamMember == null)
+            if (partnership == null)
             {
                 return NotFound();
             }
 
-            return View(teamMember);
+            return View(partnership);
         }
 
-        // GET: TeamMembers/Create
+        // GET: Partnerships/Create
         public IActionResult Create()
         {
-            TeamMemberVM teamMemberVM = new();
-            return View(teamMemberVM);
+            return View();
         }
 
-        // POST: TeamMembers/Create
+        // POST: Partnerships/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Position,ImageId")] TeamMemberVM teamMember)
+        public async Task<IActionResult> Create(PartnershipVM partnership)
         {
             if (ModelState.IsValid)
             {
-                TeamMember CreateTeamMember = new TeamMember()
+
+                Partnership CreatePartnership = new Partnership()
                 {
-                    Name = teamMember.Name,
-                    Position = teamMember.Position,
-                    ImageId = teamMember.ImageId,
+                    CompanyName = partnership.CompanyName,
+                    CompanyWebsite = partnership.CompanyWebsite,
+                    ImageId = partnership.ImageId,
                 };
-                _context.Add(CreateTeamMember);
+
+
+                _context.Add(CreatePartnership);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(teamMember);
+            return View(partnership);
         }
 
-        // GET: TeamMembers/Edit/5
+
+        // GET: Partnerships/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -83,32 +88,31 @@ namespace ECommerce2.Controllers
                 return NotFound();
             }
 
-            var teamMember = await _context.Team.Include(t => t.Image).FirstOrDefaultAsync(t => t.Id == id);
-            if (teamMember == null)
+            var partnership = await _context.Partnerships.Include(p => p.Image).FirstOrDefaultAsync(p => p.Id == id);
+
+            if (partnership == null)
             {
                 return NotFound();
             }
 
-            TeamMemberVM EditTeamMember = new TeamMemberVM()
+            PartnershipVM partnershipVM = new PartnershipVM()
             {
-                Id = teamMember.Id,
-                Name = teamMember.Name,
-                Position = teamMember.Position,
-                ImageId = teamMember.ImageId,
-                Image = teamMember.Image,
+                CompanyName = partnership.CompanyName,
+                CompanyWebsite = partnership.CompanyWebsite,
+                Image = partnership.Image,
             };
 
-            return View(EditTeamMember);
+            return View(partnershipVM);
         }
 
-        // POST: TeamMembers/Edit/5
+        // POST: Partnerships/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Position,ImageId")] TeamMember teamMember)
+        public async Task<IActionResult> Edit(int id, PartnershipVM partnershipVM)
         {
-            if (id != teamMember.Id)
+            if (id != partnershipVM.Id)
             {
                 return NotFound();
             }
@@ -117,12 +121,20 @@ namespace ECommerce2.Controllers
             {
                 try
                 {
-                    _context.Update(teamMember);
+                    Partnership partnership = await _context.Partnerships.Include(p => p.Image).FirstOrDefaultAsync();
+
+                    if (partnership == null) return NotFound();
+
+                    partnership.CompanyName = partnershipVM.CompanyName;
+                    partnership.CompanyWebsite = partnershipVM.CompanyWebsite;
+                    partnership.ImageId = partnershipVM.ImageId;
+
+                    _context.Update(partnership);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!TeamMemberExists(teamMember.Id))
+                    if (!PartnershipExists(partnershipVM.Id))
                     {
                         return NotFound();
                     }
@@ -133,11 +145,10 @@ namespace ECommerce2.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ImageId"] = new SelectList(_context.SiteMedias, "Id", "Id", teamMember.ImageId);
-            return View(teamMember);
+            return View(partnershipVM);
         }
 
-        // GET: TeamMembers/Delete/5
+        // GET: Partnerships/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -145,35 +156,30 @@ namespace ECommerce2.Controllers
                 return NotFound();
             }
 
-            var teamMember = await _context.Team
-                .Include(t => t.Image)
+            var partnership = await _context.Partnerships
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (teamMember == null)
+            if (partnership == null)
             {
                 return NotFound();
             }
 
-            return View(teamMember);
+            return View(partnership);
         }
 
-        // POST: TeamMembers/Delete/5
+        // POST: Partnerships/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var teamMember = await _context.Team.FindAsync(id);
-            if (teamMember != null)
-            {
-                _context.Team.Remove(teamMember);
-            }
+            var partnership = await _context.Partnerships.FirstOrDefaultAsync();
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool TeamMemberExists(int id)
+        private bool PartnershipExists(int id)
         {
-            return _context.Team.Any(e => e.Id == id);
+            return _context.Partnerships.Any(e => e.Id == id);
         }
     }
 }
