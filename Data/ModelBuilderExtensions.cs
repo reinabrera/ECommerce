@@ -97,9 +97,10 @@ namespace ECommerce2.Data
                     new Category { Id = 4, Name = "Men's Shoes"},
                     new Category { Id = 5, Name = "Women's Jeans" },
                     new Category { Id = 6, Name = "Women's Shorts" },
-                    new Category { Id = 7, Name = "Men's Shirts" }
-
-
+                    new Category { Id = 7, Name = "Men's Shirts" },
+                    new Category { Id = 8, Name = "Men's Jeans" },
+                    new Category { Id = 9, Name = "Women's Shoes" },
+                    new Category { Id = 10, Name = "Women's Shirts" }
                 );
 
             Guid productId1 = Guid.Parse("11111111-1111-1111-1111-111111111111");
@@ -114,6 +115,16 @@ namespace ECommerce2.Data
             Guid productId10 = Guid.Parse("11111111-1111-1111-1111-111111111120");
             Guid productId11 = Guid.Parse("11111111-1111-1111-1111-111111111121");
             Guid productId12 = Guid.Parse("11111111-1111-1111-1111-111111111122");
+            Guid productId13 = Guid.Parse("11111111-1111-1111-1111-111111111123");
+            Guid productId14 = Guid.Parse("11111111-1111-1111-1111-111111111124");
+            Guid productId15 = Guid.Parse("11111111-1111-1111-1111-111111111125");
+            Guid productId16 = Guid.Parse("11111111-1111-1111-1111-111111111126");
+            Guid productId17 = Guid.Parse("11111111-1111-1111-1111-111111111127");
+            Guid productId18 = Guid.Parse("11111111-1111-1111-1111-111111111128");
+            Guid productId19 = Guid.Parse("11111111-1111-1111-1111-111111111129");
+            Guid productId20 = Guid.Parse("11111111-1111-1111-1111-111111111130");
+            Guid productId21 = Guid.Parse("11111111-1111-1111-1111-111111111131");
+            Guid productId22 = Guid.Parse("11111111-1111-1111-1111-111111111132");
 
             builder.Entity<Product>()
                 .HasData(
@@ -121,111 +132,151 @@ namespace ECommerce2.Data
                     {
                         Id = productId1,
                         Name = "Anchor Bracelet",
+                        IsFeatured = true,
                         Overview = ProductData.Overview,
                         Description = ProductData.Description,
-                        ListPrice = 150,
+                        ListPrice = 150.00m,
                         SalePrice = null,
                         ShippingFee = null,
                         Inventory = 10,
+                        IsPublished = true,
+                        MinPrice = 150.00m,
+                        MaxPrice = 150.00m
                     },
                     new Product
                     {
                         Id = productId2,
                         Name = "Basic Gray Jeans",
+                        IsFeatured = true,
                         Overview = ProductData.Overview,
                         Description = ProductData.Description,
-                        ListPrice = 150,
+                        ListPrice = 150.00m,
                         SalePrice = null,
                         ShippingFee = null,
                         Inventory = 10,
+                        IsPublished = true,
+                        MinPrice = 150.00m,
+                        MaxPrice = 150.00m
                     },
                     new Product
                     {
                         Id = productId3,
                         Name = "Black Hoodie",
+                        IsFeatured = true,
                         Overview = ProductData.Overview,
                         Description = ProductData.Description,
-                        ListPrice = 150,
+                        ListPrice = 150.00m,
                         SalePrice = null,
                         ShippingFee = null,
                         Inventory = 10,
+                        IsPublished = true,
+                        MinPrice = 150.00m,
+                        MaxPrice = 150.00m
                     },
                     new Product
                     {
                         Id = productId4,
                         Name = "Black Over-the-shoulder Handbag",
+                        IsFeatured = true,
                         Overview = ProductData.Overview,
                         Description = ProductData.Description,
-                        ListPrice = 150,
+                        ListPrice = 150.00m,
                         SalePrice = null,
                         ShippingFee = null,
                         Inventory = 10,
+                        IsPublished = true,
+                        MinPrice = 150.00m,
+                        MaxPrice = 150.00m
                     },
                     new Product
                     {
                         Id = productId5,
                         Name = "Blue Denim Jeans",
+                        IsFeatured = true,
                         Overview = ProductData.Overview,
                         Description = ProductData.Description,
-                        ListPrice = 150,
+                        ListPrice = 150.00m,
                         SalePrice = null,
                         ShippingFee = null,
                         Inventory = 10,
+                        IsPublished = true,
+                        MinPrice = 150.00m,
+                        MaxPrice = 150.00m
                     },
                     new Product
                     {
                         Id = productId6,
                         Name = "Blue Denim Shorts",
+                        IsFeatured = true,
                         Overview = ProductData.Overview,
                         Description = ProductData.Description,
-                        ListPrice = 150,
-                        SalePrice = 130,
+                        ListPrice = 150.00m,
+                        SalePrice = 130.00m,
                         ShippingFee = null,
                         Inventory = 10,
+                        IsPublished = true,
+                        MinPrice = 130.00m,
+                        MaxPrice = 130.00m
                     },
                     new Product
                     {
                         Id = productId7,
                         Name = "Blue Hoodie",
+                        IsFeatured = true,
                         Overview = ProductData.Overview,
                         Description = ProductData.Description,
-                        ListPrice = 150,
+                        ListPrice = 150.00m,
                         SalePrice = null,
                         ShippingFee = null,
                         Inventory = 10,
+                        IsPublished = true,
+                        MinPrice = 150.00m,
+                        MaxPrice = 150.00m
                     },
                     new Product
                     {
                         Id = productId8,
                         Name = "T-shirt for Men",
+                        IsFeatured = true,
                         Overview = ProductData.Overview,
                         Description = ProductData.Description,
-                        ListPrice = 40,
+                        ListPrice = 40.00m,
                         SalePrice = null,
                         ShippingFee = null,
                         Inventory = 10,
+                        IsPublished = true,
+                        MinPrice = 40.00m,
+                        MaxPrice = 40.00m
                     },
                     new Product
                     {
                         Id = productId9,
                         Name = "Boho Bangle Bracelet",
+                        IsFeatured = true,
                         Overview = ProductData.Overview,
                         Description = ProductData.Description,
-                        ListPrice = 150,
+                        ListPrice = 150.00m,
                         SalePrice = null,
                         ShippingFee = null,
                         Inventory = 10,
+                        IsPublished = true,
+                        MinPrice = 150.00m,
+                        MaxPrice = 150.00m
                     },
                     new Product
                     {
                         Id = productId10,
                         Name = "Bright Gold Purse With Chain",
+                        IsFeatured = true,
                         Overview = ProductData.Overview,
                         Description = ProductData.Description,
-                        ListPrice = 150,
+                        ListPrice = 150.00m,
                         SalePrice = null,
                         ShippingFee = null,
                         Inventory = 10,
+                        IsPublished = true,
+                        MinPrice = 150.00m,
+                        MaxPrice = 150.00m
                     },
                     new Product
                     {
@@ -233,10 +284,13 @@ namespace ECommerce2.Data
                         Name = "Bright Red Bag",
                         Overview = ProductData.Overview,
                         Description = ProductData.Description,
-                        ListPrice = 100,
+                        ListPrice = 100.00m,
                         SalePrice = null,
                         ShippingFee = null,
                         Inventory = 10,
+                        IsPublished = true,
+                        MinPrice = 100.00m,
+                        MaxPrice = 100.00m
                     },
                     new Product
                     {
@@ -244,37 +298,198 @@ namespace ECommerce2.Data
                         Name = "Buddha Bracelet",
                         Overview = ProductData.Overview,
                         Description = ProductData.Description,
-                        ListPrice = 150,
+                        ListPrice = 150.00m,
                         SalePrice = null,
                         ShippingFee = null,
                         Inventory = 10,
+                        IsPublished = true,
+                        MinPrice = 150.00m,
+                        MaxPrice = 150.00m
+                    },
+                    new Product
+                    {
+                        Id = productId13,
+                        Name = "Dark Blue Denim Jeans",
+                        Overview = ProductData.Overview,
+                        Description = ProductData.Description,
+                        ListPrice = 150.00m,
+                        SalePrice = null,
+                        ShippingFee = null,
+                        Inventory = 10,
+                        IsPublished = true,
+                        MinPrice = 150.00m,
+                        MaxPrice = 150.00m
+                    },
+                    new Product
+                    {
+                        Id = productId14,
+                        Name = "Dark Brown Jeans",
+                        Overview = ProductData.Overview,
+                        Description = ProductData.Description,
+                        ListPrice = 150.00m,
+                        SalePrice = null,
+                        ShippingFee = null,
+                        Inventory = 10,
+                        IsPublished = true,
+                        MinPrice = 150.00m,
+                        MaxPrice = 150.00m
+                    },
+                    new Product
+                    {
+                        Id = productId15,
+                        Name = "Dark Gray Jeans",
+                        Overview = ProductData.Overview,
+                        Description = ProductData.Description,
+                        ListPrice = 150.00m,
+                        SalePrice = null,
+                        ShippingFee = null,
+                        Inventory = 10,
+                        IsPublished = true,
+                        MinPrice = 150.00m,
+                        MaxPrice = 150.00m
+                    },
+                    new Product
+                    {
+                        Id = productId16,
+                        Name = "DNK Women Shoes",
+                        Overview = ProductData.Overview,
+                        Description = ProductData.Description,
+                        ListPrice = 175.00m,
+                        SalePrice = null,
+                        ShippingFee = null,
+                        Inventory = 10,
+                        IsPublished = true,
+                        MinPrice = 175.00m,
+                        MaxPrice = 175.00m
+                    },
+                    new Product
+                    {
+                        Id = productId17,
+                        Name = "Faint Washed Denim Blue Jeans",
+                        Overview = ProductData.Overview,
+                        Description = ProductData.Description,
+                        ListPrice = 150.00m,
+                        SalePrice = null,
+                        ShippingFee = null,
+                        Inventory = 10,
+                        IsPublished = true,
+                        MinPrice = 150.00m,
+                        MaxPrice = 150.00m
+                    },
+                    new Product
+                    {
+                        Id = productId18,
+                        Name = "Green Hoodie",
+                        Overview = ProductData.Overview,
+                        Description = ProductData.Description,
+                        ListPrice = 150.00m,
+                        SalePrice = null,
+                        ShippingFee = null,
+                        Inventory = 10,
+                        IsPublished = true,
+                        MinPrice = 150.00m,
+                        MaxPrice = 150.00m
+                    },
+                    new Product
+                    {
+                        Id = productId19,
+                        Name = "Light Brown Purse",
+                        Overview = ProductData.Overview,
+                        Description = ProductData.Description,
+                        ListPrice = 150.00m,
+                        SalePrice = null,
+                        ShippingFee = null,
+                        Inventory = 10,
+                        IsPublished = true,
+                        MinPrice = 150.00m,
+                        MaxPrice = 150.00m
+                    },
+                    new Product
+                    {
+                        Id = productId20,
+                        Name = "Red Hoodie",
+                        Overview = ProductData.Overview,
+                        Description = ProductData.Description,
+                        ListPrice = 150.00m,
+                        SalePrice = null,
+                        ShippingFee = null,
+                        Inventory = 10,
+                        IsPublished = true,
+                        MinPrice = 150.00m,
+                        MaxPrice = 150.00m
+                    },
+                    new Product
+                    {
+                        Id = productId21,
+                        Name = "Slim Fit Blue Jeans",
+                        Overview = ProductData.Overview,
+                        Description = ProductData.Description,
+                        ListPrice = 150.00m,
+                        SalePrice = null,
+                        ShippingFee = null,
+                        Inventory = 10,
+                        IsPublished = true,
+                        MinPrice = 150.00m,
+                        MaxPrice = 150.00m
+                    },
+                    new Product
+                    {
+                        Id = productId22,
+                        Name = "Flamingo Tshirt",
+                        Overview = ProductData.Overview,
+                        Description = ProductData.Description,
+                        ListPrice = 25.00m,
+                        SalePrice = null,
+                        ShippingFee = null,
+                        Inventory = 10,
+                        IsPublished = true,
+                        MinPrice = 25.00m,
+                        MaxPrice = 25.00m
                     }
                 );
 
             builder.Entity<ProductCategories>()
                 .HasData(
-                    new ProductCategories { Id = 1, ProductId = productId1, CategoryId = 2 },
-                    new ProductCategories { Id = 2, ProductId = productId1, CategoryId = 3 },
-                    new ProductCategories { Id = 3, ProductId = productId2, CategoryId = 2 },
-                    new ProductCategories { Id = 4, ProductId = productId2, CategoryId = 5 },
-                    new ProductCategories { Id = 5, ProductId = productId3, CategoryId = 1 },
-                    new ProductCategories { Id = 6, ProductId = productId4, CategoryId = 2 },
-                    new ProductCategories { Id = 7, ProductId = productId4, CategoryId = 3 },
-                    new ProductCategories { Id = 8, ProductId = productId5, CategoryId = 2 },
-                    new ProductCategories { Id = 9, ProductId = productId5, CategoryId = 5 },
-                    new ProductCategories { Id = 10, ProductId = productId6, CategoryId = 2 },
-                    new ProductCategories { Id = 11, ProductId = productId6, CategoryId = 6 },
-                    new ProductCategories { Id = 12, ProductId = productId7, CategoryId = 1 },
-                    new ProductCategories { Id = 13, ProductId = productId8, CategoryId = 1 },
-                    new ProductCategories { Id = 14, ProductId = productId8, CategoryId = 7 },
-                    new ProductCategories { Id = 15, ProductId = productId9, CategoryId = 2 },
-                    new ProductCategories { Id = 16, ProductId = productId9, CategoryId = 3 },
-                    new ProductCategories { Id = 17, ProductId = productId10, CategoryId = 2 },
-                    new ProductCategories { Id = 18, ProductId = productId10, CategoryId = 3 },
-                    new ProductCategories { Id = 19, ProductId = productId11, CategoryId = 2 },
-                    new ProductCategories { Id = 20, ProductId = productId11, CategoryId = 3 },
-                    new ProductCategories { Id = 21, ProductId = productId11, CategoryId = 2 },
-                    new ProductCategories { Id = 22, ProductId = productId11, CategoryId = 3 }
+                    new ProductCategories { Id = 1, ProductId = productId1, CategoryId = 2, Order = 2 },
+                    new ProductCategories { Id = 2, ProductId = productId1, CategoryId = 3, Order = 1 },
+                    new ProductCategories { Id = 3, ProductId = productId2, CategoryId = 2, Order = 1 },
+                    new ProductCategories { Id = 4, ProductId = productId2, CategoryId = 5, Order = 2 },
+                    new ProductCategories { Id = 5, ProductId = productId3, CategoryId = 1, Order = 1},
+                    new ProductCategories { Id = 6, ProductId = productId4, CategoryId = 2, Order = 2 },
+                    new ProductCategories { Id = 7, ProductId = productId4, CategoryId = 3, Order = 1 },
+                    new ProductCategories { Id = 8, ProductId = productId5, CategoryId = 2, Order = 1 },
+                    new ProductCategories { Id = 9, ProductId = productId5, CategoryId = 5, Order = 2 },
+                    new ProductCategories { Id = 10, ProductId = productId6, CategoryId = 2, Order = 1 },
+                    new ProductCategories { Id = 11, ProductId = productId6, CategoryId = 6, Order = 2 },
+                    new ProductCategories { Id = 12, ProductId = productId7, CategoryId = 1, Order = 1 },
+                    new ProductCategories { Id = 13, ProductId = productId8, CategoryId = 1, Order = 1 },
+                    new ProductCategories { Id = 14, ProductId = productId8, CategoryId = 7, Order = 2 },
+                    new ProductCategories { Id = 15, ProductId = productId9, CategoryId = 2, Order = 2 },
+                    new ProductCategories { Id = 16, ProductId = productId9, CategoryId = 3, Order = 1 },
+                    new ProductCategories { Id = 17, ProductId = productId10, CategoryId = 2, Order = 2 },
+                    new ProductCategories { Id = 18, ProductId = productId10, CategoryId = 3, Order = 1 },
+                    new ProductCategories { Id = 19, ProductId = productId11, CategoryId = 2, Order = 2 },
+                    new ProductCategories { Id = 20, ProductId = productId11, CategoryId = 3, Order = 1 },
+                    new ProductCategories { Id = 21, ProductId = productId12, CategoryId = 2, Order = 2 },
+                    new ProductCategories { Id = 22, ProductId = productId12, CategoryId = 3, Order = 1 },
+                    new ProductCategories { Id = 23, ProductId = productId13, CategoryId = 8, Order = 1 },
+                    new ProductCategories { Id = 24, ProductId = productId13, CategoryId = 1, Order = 2 },
+                    new ProductCategories { Id = 25, ProductId = productId14, CategoryId = 8, Order = 1 },
+                    new ProductCategories { Id = 26, ProductId = productId14, CategoryId = 1, Order = 2 },
+                    new ProductCategories { Id = 27, ProductId = productId15, CategoryId = 8, Order = 1 },
+                    new ProductCategories { Id = 28, ProductId = productId15, CategoryId = 1, Order = 2 },
+                    new ProductCategories { Id = 29, ProductId = productId16, CategoryId = 2, Order = 1 },
+                    new ProductCategories { Id = 39, ProductId = productId16, CategoryId = 9, Order = 2 },
+                    new ProductCategories { Id = 40, ProductId = productId17, CategoryId = 8, Order = 1 },
+                    new ProductCategories { Id = 41, ProductId = productId17, CategoryId = 1, Order = 2 },
+                    new ProductCategories { Id = 42, ProductId = productId18, CategoryId = 8, Order = 1 },
+                    new ProductCategories { Id = 43, ProductId = productId19, CategoryId = 2, Order = 2 },
+                    new ProductCategories { Id = 44, ProductId = productId19, CategoryId = 3, Order = 1 },
+                    new ProductCategories { Id = 45, ProductId = productId20, CategoryId = 1, Order = 1 },
+                    new ProductCategories { Id = 46, ProductId = productId21, CategoryId = 2, Order = 1 },
+                    new ProductCategories { Id = 47, ProductId = productId21, CategoryId = 9, Order = 2 },
+                    new ProductCategories { Id = 48, ProductId = productId22, CategoryId = 10, Order = 1 },
+                    new ProductCategories { Id = 49, ProductId = productId22, CategoryId = 2, Order = 2 }
                 );
 
             builder.Entity<ProductAttributeJoin>()
@@ -282,7 +497,10 @@ namespace ECommerce2.Data
                     new ProductAttributeJoin { Id = 1, ProductId = productId1, AttributeId = 1},
                     new ProductAttributeJoin { Id = 2, ProductId = productId8, AttributeId = 1 },
                     new ProductAttributeJoin { Id = 3, ProductId = productId9, AttributeId = 1 },
-                    new ProductAttributeJoin { Id = 4, ProductId = productId11, AttributeId = 1 }
+                    new ProductAttributeJoin { Id = 4, ProductId = productId11, AttributeId = 1 },
+                    new ProductAttributeJoin { Id = 5, ProductId = productId16, AttributeId = 1 },
+                    new ProductAttributeJoin { Id = 6, ProductId = productId22, AttributeId = 1 },
+                    new ProductAttributeJoin { Id = 7, ProductId = productId22, AttributeId = 2 }
                 );
 
             builder.Entity<ProductTermJoin>()
@@ -300,7 +518,18 @@ namespace ECommerce2.Data
                     new ProductTermJoin { Id = 11, ProductId = productId11, TermId = 5 },
                     new ProductTermJoin { Id = 12, ProductId = productId11, TermId = 7 },
                     new ProductTermJoin { Id = 13, ProductId = productId11, TermId = 8 },
-                    new ProductTermJoin { Id = 14, ProductId = productId11, TermId = 3 }
+                    new ProductTermJoin { Id = 14, ProductId = productId11, TermId = 3 },
+                    new ProductTermJoin { Id = 15, ProductId = productId16, TermId = 3 },
+                    new ProductTermJoin { Id = 16, ProductId = productId16, TermId = 4 },
+                    new ProductTermJoin { Id = 17, ProductId = productId16, TermId = 5 },
+                    new ProductTermJoin { Id = 18, ProductId = productId16, TermId = 6 },
+                    new ProductTermJoin { Id = 19, ProductId = productId22, TermId = 5 },
+                    new ProductTermJoin { Id = 20, ProductId = productId22, TermId = 7 },
+                    new ProductTermJoin { Id = 21, ProductId = productId22, TermId = 8 },
+                    new ProductTermJoin { Id = 22, ProductId = productId22, TermId = 9 },
+                    new ProductTermJoin { Id = 23, ProductId = productId22, TermId = 11 },
+                    new ProductTermJoin { Id = 24, ProductId = productId22, TermId = 12 },
+                    new ProductTermJoin { Id = 25, ProductId = productId22, TermId = 13 }
                 );
 
             builder.Entity<ProductImage>()
@@ -324,8 +553,23 @@ namespace ECommerce2.Data
                     new ProductImage { Id = 17, ProductId = productId11, FileName = "bag-orange-1", FilePath = "\\ProductImages\\bag-orange-1.jpg" },
                     new ProductImage { Id = 18, ProductId = productId11, FileName = "bag-purple-1", FilePath = "\\ProductImages\\bag-purple-1.jpg" },
                     new ProductImage { Id = 19, ProductId = productId11, FileName = "bag-red-1", FilePath = "\\ProductImages\\bag-red-1.jpg" },
-                    new ProductImage { Id = 20, ProductId = productId12, FileName = "bracelet-1", FilePath = "\\ProductImages\\bracelet-1.jpg", IsFeatured = true }
-
+                    new ProductImage { Id = 20, ProductId = productId12, FileName = "bracelet-1", FilePath = "\\ProductImages\\bracelet-1.jpg", IsFeatured = true },
+                    new ProductImage { Id = 21, ProductId = productId13, FileName = "men-jean-1", FilePath = "\\ProductImages\\men-jean-1.jpg", IsFeatured = true },
+                    new ProductImage { Id = 22, ProductId = productId14, FileName = "men-jean-2", FilePath = "\\ProductImages\\men-jean-2.jpg", IsFeatured = true },
+                    new ProductImage { Id = 23, ProductId = productId15, FileName = "men-jean-3", FilePath = "\\ProductImages\\men-jean-3.jpg", IsFeatured = true },
+                    new ProductImage { Id = 24, ProductId = productId16, FileName = "women-shoes-aqua-1", FilePath = "\\ProductImages\\women-shoes-aqua-1.jpg", IsFeatured = true },
+                    new ProductImage { Id = 25, ProductId = productId16, FileName = "women-shoes-blue-1", FilePath = "\\ProductImages\\women-shoes-blue-1.jpg" },
+                    new ProductImage { Id = 26, ProductId = productId16, FileName = "women-shoes-green-1", FilePath = "\\ProductImages\\women-shoes-green-1.jpg" },
+                    new ProductImage { Id = 27, ProductId = productId16, FileName = "women-shoes-red-1", FilePath = "\\ProductImages\\women-shoes-red-1.jpg" },
+                    new ProductImage { Id = 28, ProductId = productId17, FileName = "men-jean-4", FilePath = "\\ProductImages\\men-jean-4.jpg", IsFeatured = true },
+                    new ProductImage { Id = 29, ProductId = productId18, FileName = "hoodie-3", FilePath = "\\ProductImages\\hoodie-3.jpg", IsFeatured = true },
+                    new ProductImage { Id = 30, ProductId = productId19, FileName = "bag-3", FilePath = "\\ProductImages\\bag-3.jpg", IsFeatured = true },
+                    new ProductImage { Id = 31, ProductId = productId20, FileName = "hoodie-4", FilePath = "\\ProductImages\\hoodie-4.jpg", IsFeatured = true },
+                    new ProductImage { Id = 32, ProductId = productId21, FileName = "women-jean-3", FilePath = "\\ProductImages\\women-jean-3.jpg", IsFeatured = true },
+                    new ProductImage { Id = 33, ProductId = productId22, FileName = "tshirt-flamingo-blue-1", FilePath = "\\ProductImages\\tshirt-flamingo-blue-1.jpg", IsFeatured = true },
+                    new ProductImage { Id = 34, ProductId = productId22, FileName = "tshirt-flamingo-orange-1", FilePath = "\\ProductImages\\tshirt-flamingo-orange-1.jpg" },
+                    new ProductImage { Id = 35, ProductId = productId22, FileName = "tshirt-flamingo-purple-1", FilePath = "\\ProductImages\\tshirt-flamingo-purple-1.jpg" },
+                    new ProductImage { Id = 36, ProductId = productId22, FileName = "tshirt-flamingo-yellow-1", FilePath = "\\ProductImages\\tshirt-flamingo-yellow-1.jpg" }
                 );
         }
     }

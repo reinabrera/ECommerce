@@ -16,7 +16,6 @@
 }
 
 
-
 /** Header */
 header {
     margin-bottom: -104px;
@@ -280,14 +279,57 @@ section.featured-product-listing {
     }
 }
 
-section.featured-product-listing .product-details {
+.product-card .product-details {
     font-size: 0.9rem;
 }
-section.featured-product-listing .img--wrapper:hover .add-to-cart {
+
+.product-card .product-details .attribute-color input[type="radio"] {
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    border: 2px solid white;
+    appearance: none;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: 0.2s all ease-in-out;
+    outline: 1px solid transparent;
+}
+
+.product-card .product-details .attribute-color input[type="radio"]:checked {
+    outline: 1px solid black !important;
+}
+
+
+.product-card .product-details .attribute-button input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    cursor: pointer;
+}
+
+
+.product-card .product-details .attribute-button input[type="radio"] + label {
+    padding: 7px 13px;
+    background-color: transparent;
+    border: 1px solid var(--global-border-color);
+    transition: 0.3s all ease-in-out;
+    font-size: 0.8rem;
+    line-height: 0.8rem;
+}
+
+
+.product-card .product-details .attribute-button input[type="radio"]:checked + label {
+    border: 1px solid black;
+}
+
+
+.product-card .img--wrapper:hover .add-to-cart {
     display: flex;
 }
 
-section.featured-product-listing .add-to-cart {
+.product-card .add-to-cart {
     top: 0;
     right: 0;
     margin-top: 8px;
@@ -296,17 +338,17 @@ section.featured-product-listing .add-to-cart {
     z-index: 99;
 }
 
-section.featured-product-listing .add-to-cart button {
+.product-card .add-to-cart button {
     width: 30px;
     height: 30px;
     display: flex;
     background-color: var(--bs-light);
 }
-section.featured-product-listing .add-to-cart button i {
+.product-card .add-to-cart button i {
     margin-right: -1px;
 }
 
-section.featured-product-listing .add-to-cart button:hover i {
+.product-card .add-to-cart button:hover i {
     color: black !important;
 }
 
@@ -525,4 +567,184 @@ section#contact-form .form textarea {
 section#contact-form .form button {
     background-color: var(--global-blue-1);
     color: white;
+}
+
+@media (min-width: 1200px) {
+    section#store .container {
+        max-width: 1380px;
+    }
+}
+
+section#store #store-sidebar form#queryForm input {
+    border: 1px solid var(--global-border-color);
+    padding: 7px 10px;
+    flex: 1;
+}
+
+section#store #store-sidebar form#queryForm button {
+    background-color: var(--global-blue-2);
+    border: none;
+    width: 35px;
+}
+
+section#store #store-sidebar form#queryForm button:hover {
+    background-color: var(--global-blue-1);
+}
+    
+.dual-range-slider--wrapper {
+    position: relative;
+    width: 100%;
+    height: 25px;
+}
+
+.dual-range-slider--wrapper input[type="range"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 100%;
+    outline: none;
+    position: absolute;
+    margin: auto;
+    top: 0;
+    bottom: 0;
+    background-color: transparent;
+    pointer-events: none;
+}
+
+.dual-range-slider--wrapper .slider-track {
+    width: 100%;
+    height: 3px;
+    position: absolute;
+    margin: auto;
+    top: 0;
+    bottom: 0;
+    border-radius: 5px;
+}
+
+.dual-range-slider--wrapper input[type="range"]::-webkit-slider-runnable-track {
+    -webkit-appearance: none;
+    height: 3px;
+}
+
+.dual-range-slider--wrapper input[type="range"]::-moz-range-track {
+    -moz-appearance: none;
+    height: 3px;
+}
+
+.dual-range-slider--wrapper input[type="range"]::-ms-track {
+    appearance: none;
+    height: 3px;
+}
+
+.dual-range-slider--wrapper input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    height: 17px;
+    width: 17px;
+    background-color: black;
+    cursor: pointer;
+    margin-top: -7px;
+    pointer-events: auto;
+    border-radius: 50%;
+}
+
+.dual-range-slider--wrapper input[type="range"]::-moz-range-thumb {
+    -webkit-appearance: none;
+    height: 17px;
+    width: 17px;
+    cursor: pointer;
+    border-radius: 50%;
+    background-color: black;
+    pointer-events: auto;
+    border: none;
+}
+
+.dual-range-slider--wrapper input[type="range"]::-ms-thumb {
+    appearance: none;
+    height: 17px;
+    width: 17px;
+    cursor: pointer;
+    border-radius: 50%;
+    background-color: black;
+    pointer-events: auto;
+}
+
+.dual-range-slider--wrapper.slider-disabled .slider-track {
+    background: linear-gradient(to right, #ebebf1 0%, #000000 0%, #000000 100%, #ebebf1 100%)
+}
+
+.dual-range-slider--wrapper.slider-disabled input[type="range"]:nth-of-type(n + 2) {
+    margin-left: calc(100% - 17px);
+}
+
+#filterForm button {
+    background-color: var(--global-blue-2);
+    padding: 3px 18px;
+    color: white;
+    border: none;
+    font-weight: 600;
+}
+
+#filterForm button:hover {
+    background-color: var(--global-blue-1);
+}
+
+section#store {
+    background-color: var(--global-bg-gray);
+}
+
+section#store .container {
+    padding: 70px 0;
+}
+
+section#store .container > .d-flex {
+    margin-left: -70px;
+}
+
+section#store .container > .d-flex > div {
+    padding-left: 70px;
+}
+
+section#store #product-listing .products-wrapper {
+    padding: 100px;
+}
+
+.pagination .page-link {
+    border-radius: unset !important;
+    padding: .4rem .9rem;
+    background-color: white;
+    color: black;
+    border: 1px solid black;
+    transition: .3s all ease-in-out;
+}
+
+.pagination .page-link:hover {
+    background-color: black;
+    color: white;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: black;
+    color: white;
+    border: 1px solid black;
+}
+
+.pagination .page-item:nth-of-type(n+2) {
+    margin-left: 5px;
+}
+
+.no-products {
+    background-color: var(--global-bg-gray);
+    border-top: 3px solid black;
+}
+
+#store-breadcrumbs li a {
+    text-decoration: none;
+}
+
+#store-breadcrumbs li {
+    padding-left: 0.2rem;
+}
+
+#store-breadcrumbs li::before {
+    padding-right: 0.2rem;
 }

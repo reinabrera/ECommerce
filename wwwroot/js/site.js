@@ -276,3 +276,96 @@ function createTermInput(count, type) {
     }
     return inputEl;
 }
+
+$('.attribute-radios input[type="radio"]').on('change', async function () {
+    let parentEl = $(this).closest('.card');
+    let attrWrapperEl = parentEl.find('.attributes-radios--wrapper');
+    let radioGrpLen = attrWrapperEl.children().length;
+    let checked = attrWrapperEl.find('input[type="radio"]:checked');
+
+    if (checked.length == radioGrpLen) {
+        const termIds = [];
+        checked.each(function () {
+            termIds.push($(this).val())
+        })
+
+        const data = await GetProductImageByVariant(parentEl.data('product-id'),termIds);
+
+        if (data != null || data != undefined) {
+            parentEl.find('.img--wrapper img').attr('src', data);
+        }
+    }
+    
+})
+
+async function GetProductImageByVariant(productId, termIds) {
+
+    const formData = new FormData();
+
+    for (let i = 0; i < termIds.length; i++) {
+        formData.append('productId', productId);
+        formData.append('termId', termIds[i]);
+    }
+
+    try {
+
+        const response = await fetch('/Customer/Products/GetProductImageByVariant', {
+            method: 'POST',
+            body: formData
+        });
+
+        const result = await response.json();
+
+        if (result.status = "Success") {
+            console.log(result);
+            return JSON.parse(result.data);
+        }
+
+    } catch (err) {
+        console.error(err);
+        throw err;
+    }
+}
+
+
+$(document).ready(function () {
+    const dualRangeSlider = $('.dual-range-slider--wrapper');
+
+    if (dualRangeSlider.length > 0) {
+        slideOne();
+        slideTwo();
+    }
+});
+
+let sliderOne = document.getElementById("slider-1");
+let sliderTwo = document.getElementById("slider-2");
+let displayValOne = document.getElementById("sliderMin");
+let displayValTwo = document.getElementById("sliderMax");
+let minGap = 1;
+let sliderTrack = document.querySelector(".slider-track");
+let sliderMinValue = document.getElementById("slider-1").min;
+let sliderMaxValue = document.getElementById("slider-1").max;
+
+function slideOne() {
+    if (parseInt(sliderTwo.value) - parseInt(sliderOne.value) <= minGap) {
+        sliderOne.value = parseInt(sliderTwo.value) - minGap;
+    }
+    displayValOne.textContent = "$" + sliderOne.value + " – ";
+    fillColor();
+}
+function slideTwo() {
+    if (parseInt(sliderTwo.value) - parseInt(sliderOne.value) <= minGap) {
+        sliderTwo.value = parseInt(sliderOne.value) + minGap;
+    }
+    displayValTwo.textContent = "$" + sliderTwo.value;
+    fillColor();
+}
+function fillColor() {
+    percentMin = ((sliderOne.value - sliderMinValue ) / (sliderMaxValue - sliderMinValue)) * 100;
+    percentMax = ((sliderTwo.value - sliderMinValue) / (sliderMaxValue - sliderMinValue)) * 100;
+
+    if (isNaN(percentMin)) {
+        $('.dual-range-slider--wrapper').addClass('slider-disabled');
+    }
+    sliderTrack.style.background = `linear-gradient(to right, #ebebf1 ${percentMin}% , #000000 ${percentMin}% , #000000 ${percentMax}%, #ebebf1 ${percentMax}%)`;
+}

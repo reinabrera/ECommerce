@@ -1,0 +1,94 @@
+﻿@model ECommerce2.Models.ViewModels.ProductCardVM
+
+<div class="card product-card border-0 bg-transparent" data-product-id="@Model.ProductId">
+    <div class="position-relative img--wrapper">
+        <img src="@Model.FeaturedImage.FilePath" class="card-img-top rounded-0">
+        <a href="#" class="stretched-link"></a>
+        <div class="add-to-cart position-absolute">
+            <button type="button" class="btn rounded-pill justify-content-center align-items-center" data-bs-toggle="tooltip" data-bs-placement="left"
+                    data-bs-custom-class="add-to-cart-tooltip"
+                    data-bs-title="Add to cart">
+                <i class="bi bi-handbag-fill text-muted"></i>
+            </button>
+        </div>
+
+    </div>
+    <div class="card-body px-0">
+        <a href="#" class="card-title text-black text-decoration-none fw-600">@Model.Name</a>
+        <div class="product-details mt-1">
+            <div class="product-category">
+                <span class="text-muted">@Model.Category</span>
+            </div>
+            <div class="product-pricing mt-1">
+                @if (Model.MinPrice != null && Model.MaxPrice != null)
+                {
+                    <span class="fw-600">$@Model.MinPrice - </span>
+                    <span class="fw-600">$@Model.MaxPrice</span>
+                } else
+                {
+                    @if (Model.SalePrice == null)
+                    {
+                        <span class="listing-price fw-600">$@Model.ListPrice</span>
+                    }
+                    else
+                    {
+                        <span class="listing-price text-muted fw-600"><del>$@Model.ListPrice</del></span>
+                        <span class="sale-price fw-600">$@Model.SalePrice</span>
+                    }
+                }
+            </div>
+
+
+            @if (@Model.SelectedTermsGrouped.Any())
+            {
+                <div class="mt-2 attributes-radios--wrapper">
+                    @{
+                        int attrIndex = 0;
+                    }
+                    @foreach (List<Term> termGroup in @Model.SelectedTermsGrouped)
+                    {
+                        @if (termGroup.FirstOrDefault().ColorValue != null)
+                        {
+                            <div class="row attribute-radios attribute-color gx-2 @(attrIndex == 1 ? "mt-2" : "")">
+                                @foreach (Term item in termGroup)
+                                {
+                                    <div class="col-auto">
+                                        <input type="radio" name="color-@Model.ProductId" value="@item.Id" style="background-color: @item.ColorValue;" data-bs-toggle="tooltip" data-bs-placement="top"
+                                               data-bs-custom-class="custom-tooltip"
+                                               data-bs-title="@item.Name">
+                                    </div>
+                                }
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="row attribute-radios attribute-button gx-2 @(attrIndex == 1 ? "mt-2" : "")">
+                                @foreach (Term item in termGroup)
+                                {
+                                    <div class="col-auto">
+                                        <div class="position-relative">
+                                            <input type="radio" name="size-@Model.ProductId" value="@item.Id">
+                                            <label for="size" class="rounded">@item.Name</label><br>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        }
+                        attrIndex++;
+                    }
+                </div>
+            }
+
+
+            <div class="star-rating d-flex mt-2">
+                <i class="bi bi-star"></i>
+                <i class="bi bi-star"></i>
+                <i class="bi bi-star"></i>
+                <i class="bi bi-star"></i>
+                <i class="bi bi-star"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+

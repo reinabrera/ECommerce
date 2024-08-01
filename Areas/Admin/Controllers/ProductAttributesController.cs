@@ -14,6 +14,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Build.Framework;
 
 namespace ECommerce2.Areas.Admin.Controllers
 {
@@ -306,7 +307,12 @@ namespace ECommerce2.Areas.Admin.Controllers
             List<List<Term>> termsDividedByAttr = productTerms.GroupBy(a => a.AttributeId).Select(g => g.ToList()).ToList();
             List<Variant> generatedVariations = GenerateTermCombinations(termsDividedByAttr);
 
-            List<Variant> added = generatedVariations.Where(gv => !product.Variations.Any(v => v.TermsConcatenated == gv.TermsConcatenated)).ToList();
+            List<Variant> added = generatedVariations
+                .Where(gv => !product.Variations
+                .Any(v => v.TermsConcatenated == gv.TermsConcatenated))
+                .Select(gv => { gv.ListPrice = product.ListPrice; gv.SalePrice = product.SalePrice; return gv; })
+                .ToList();
+
             product.Variations = generatedVariations;
 
             _context.Products.Update(product);
@@ -363,10 +369,16 @@ namespace ECommerce2.Areas.Admin.Controllers
         {
             if (data == null) return Json(new { status = "Failed", message = "There was an error processing your request." });
 
-            bool productExist = await _context.Products.AnyAsync(p => p.Id == data.ProductId);
-            if (!productExist) return Json(new { status = "Failed", message = "Product does not exist" });
+            Product product = await _context.Products.FirstOrDefaultAsync(p => p.Id == data.ProductId);
+            if (product == null) return Json(new { status = "Failed", message = "Product does not exist" });
 
             List<Variant> updated = new List<Variant>();
+
+            decimal? salePriceMin = int.MaxValue;
+            decimal? salePriceMax = 0;
+
+            decimal? listPriceWithoutSalePriceMin = int.MaxValue;
+            decimal? listPriceWithoutSalePriceMax = 0;
 
             foreach (VariantVM variantVM in data.Variants)
             {
@@ -394,10 +406,41 @@ namespace ECommerce2.Areas.Admin.Controllers
                         variant.ImageId = null;
                         variant.Image = null;
                     }
+
                     _context.Variations.Update(variant);
                     updated.Add(variant);
                 }
+
+                if (variant.SalePrice != null)
+                {
+                    if (variant.SalePrice < salePriceMin) salePriceMin = variant.SalePrice;
+                    if (variant.SalePrice > salePriceMax) salePriceMax = variant.SalePrice;
+                } else
+                {
+                    if (variant.ListPrice < listPriceWithoutSalePriceMin) listPriceWithoutSalePriceMin = variant.ListPrice;
+                    if (variant.ListPrice > listPriceWithoutSalePriceMax) listPriceWithoutSalePriceMax = variant.ListPrice;
+                }
             }
+
+            if (salePriceMin < listPriceWithoutSalePriceMin)
+            {
+                product.MinPrice = salePriceMin;
+            }
+            else
+            {
+                product.MinPrice = listPriceWithoutSalePriceMin;
+            }
+
+            if (salePriceMax > listPriceWithoutSalePriceMax)
+            {
+                product.MaxPrice = salePriceMax;
+            }
+            else
+            {
+                product.MaxPrice = listPriceWithoutSalePriceMax;
+            }
+
+            _context.Products.Update(product);
 
             await _context.SaveChangesAsync();
 

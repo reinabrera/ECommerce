@@ -25,6 +25,12 @@
                     <input asp-for="Name" class="form-control" />
                     <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
+
+                <div class="form-check form-switch ps-0 mt-2">
+                    <label class="form-check-label d-block" for="setAsFeaturedSwitch">Set as Featured Product</label>
+                    <input asp-for="IsFeatured" class="form-check-input ms-0 d-block float-none" type="checkbox" role="switch" id="setAsFeaturedSwitch" style="cursor: pointer;">
+                </div>
+
                 <div class="form-group mt-2">
                     <label class="form-label">Featured Image</label>
                     <div class="position-relative featured-img-wrapper rounded border border-1 ">
@@ -41,7 +47,7 @@
                         }
                         else
                         {
-                            <img src="../../dist/uploadImage.jpg" class="position-absolute default rounded w-100 h-100 top-0 start-0" />
+                            <img src="../../../dist/uploadImage.jpg" class="position-absolute default rounded w-100 h-100 top-0 start-0" />
                         }
                     </div>
                 </div>

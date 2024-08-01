@@ -48,7 +48,6 @@ namespace ECommerce2.Areas.Admin.Controllers
 
             var product = await _context.Products
                 .Include(p => p.Categories)
-                //.Include(p => p.FeaturedImage)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (product == null)
             {
@@ -94,20 +93,7 @@ namespace ECommerce2.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            //Product product = await _context.Products
-            //    .Include(p => p.FeaturedImage)
-            //    .Include(p => p.AdditionalImages)
-            //        .ThenInclude(ai => ai.Image)
-            //    .Include(p => p.Categories)
-            //    .Include(p => p.ProductVariations)
-            //        .ThenInclude(pv => pv.VariationItems)
-            //            .ThenInclude(vi => vi.Image)
-            //    .Include(p => p.AdditionalDetails)
-            //    .Where(p => p.Id == id)
-            //    .FirstOrDefaultAsync();
-
             Product product = await _context.Products
-                .Include(p => p.Categories)
                 .Include(p => p.ProductImages)
                 .Include(p => p.AdditionalImages)
                     .ThenInclude(ai => ai.Image)
@@ -115,15 +101,13 @@ namespace ECommerce2.Areas.Admin.Controllers
                 .Where(p => p.Id == id)
                 .FirstOrDefaultAsync();
 
-            //if (product != null && product.AdditionalImages != null) product.AdditionalImages = product.AdditionalImages.OrderBy(p => p.SortOrder).ToList();
-
-            //List<ProductVariation> mapVar = new List<ProductVariation>();
             if (product != null)
             {
                 /** Map Product to ProductVM */
                 ProductVM mapProduct = new ProductVM()
                 {
                     Name = product.Name,
+                    IsFeatured = product.IsFeatured,
                     Overview = product.Overview,
                     Description = product.Description,
                     ListPrice = product.ListPrice,
@@ -137,17 +121,17 @@ namespace ECommerce2.Areas.Admin.Controllers
 
                 /** Product Categories */
                 List<CategoryVM> Categories = new List<CategoryVM>();
+                List<ProductCategories> ProductCategories = await _context.ProductCategories.Include(pc => pc.Category).OrderBy(pc => pc.Order).Where(pc => pc.ProductId == id).ToListAsync();
 
-                foreach (Category cat in product.Categories)
+                foreach (ProductCategories cat in ProductCategories)
                 {
                     CategoryVM categoryVM = new CategoryVM()
                     {
-                        Name = cat.Name,
+                        Name = cat.Category.Name,
                     };
                     Categories.Add(categoryVM);
                 }
                 mapProduct.Categories = Categories;
-
 
                 /** Images Related */
 
@@ -235,6 +219,9 @@ namespace ECommerce2.Areas.Admin.Controllers
                     /** Product Name */
                     UpdateProduct.Name = productVM.Name;
 
+                    /** IsFeatured */
+                    UpdateProduct.IsFeatured = productVM.IsFeatured;
+
                     /** Product Overview */
                     UpdateProduct.Overview = productVM.Overview;
 
@@ -254,10 +241,12 @@ namespace ECommerce2.Areas.Admin.Controllers
                     UpdateProduct.ShippingFee = productVM.ShippingFee;
 
                     /** Product Categories */
-                    UpdateProduct.Categories.Clear();
-                    UpdateProduct.Categories = await AddOrUpdateCategories(productVM.Categories);
+                    List<ProductCategories> existingProductCategories = await _context.ProductCategories.Where(pc => pc.ProductId ==  id).ToListAsync();
+                    _context.ProductCategories.RemoveRange(existingProductCategories);
 
+                    List<ProductCategories> productCategories = await AddOrUpdateCategories(productVM.Categories, id);
 
+                    _context.ProductCategories.UpdateRange(productCategories);
 
                     if (ProductImages != null)
                     {
@@ -355,6 +344,24 @@ namespace ECommerce2.Areas.Admin.Controllers
 
                     UpdateProduct.AdditionalDetails = AdditionalDetails;
 
+
+                    /** Min and Max Price **/
+
+                    if (UpdateProduct.MinPrice == null && UpdateProduct.MaxPrice == null)
+                    {
+                        if (UpdateProduct.SalePrice != null)
+                        {
+                            UpdateProduct.MinPrice = UpdateProduct.SalePrice;
+                            UpdateProduct.MaxPrice = UpdateProduct.SalePrice;
+                        }
+                        else
+                        {
+                            UpdateProduct.MinPrice = UpdateProduct.ListPrice;
+                            UpdateProduct.MaxPrice = UpdateProduct.ListPrice;
+                        }
+                    }
+
+
                     _context.Update(UpdateProduct);
                     await _context.SaveChangesAsync();
                 }
@@ -373,6 +380,114 @@ namespace ECommerce2.Areas.Admin.Controllers
             }
             return View(productVM);
         }
+
+
+
+        // GET: Products/Delete/5
+        public async Task<IActionResult> Delete(Guid? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var product = await _context.Products
+                .Include(p => p.Categories)
+                //.Include(p => p.FeaturedImage)
+                .FirstOrDefaultAsync(m => m.Id == id);
+
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            return View(product);
+        }
+
+        // POST: Products/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(Guid id)
+        {
+            var product = await _context.Products
+                .Include(p => p.ProductImages)
+                .FirstOrDefaultAsync(m => m.Id == id);
+
+            if (product != null)
+            {
+
+                if (product.ProductImages != null && product.ProductImages.Any())
+                {
+                    foreach (ProductImage item in product.ProductImages)
+                    {
+                        string filePath = Path.Combine(_webHostEnvironment.WebRootPath, item.FilePath.TrimStart('\\'));
+
+                        if (System.IO.File.Exists(filePath))
+                        {
+                            System.IO.File.Delete(filePath);
+                        }
+                        _context.ProductImages.Remove(item);
+                    }
+                }
+
+                _context.Products.Remove(product);
+            }
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+
+        /* Functions */
+
+        private bool ProductExists(Guid id)
+        {
+            return _context.Products.Any(e => e.Id == id);
+        }
+
+        public async Task<List<ProductCategories>> AddOrUpdateCategories(List<CategoryVM> categories, Guid productId)
+        {
+            List<Category> ExistingCategories = await _context.Categories.ToListAsync();
+            List<ProductCategories> ProductCategories = new List<ProductCategories>();
+
+            int order = 1;
+            foreach (CategoryVM categoryVM in categories)
+            {
+                Category ProductCat = ExistingCategories.FirstOrDefault(c => c.Name == categoryVM.Name);
+
+                if (ProductCat != null)
+                {
+                    ProductCategories productCategory = new ProductCategories()
+                    {
+                        ProductId = productId,
+                        Order = order,
+                        Category = ProductCat,
+                    };
+                    ProductCategories.Add(productCategory);
+                }
+                else
+                {
+                    Category newCat = new Category()
+                    {
+                        Name = categoryVM.Name,
+                    };
+
+                    ProductCategories productCategory = new ProductCategories()
+                    {
+                        ProductId = productId,
+                        Order = order,
+                        Category = newCat,
+                    };
+
+                    _context.Categories.Add(newCat);
+                    ProductCategories.Add(productCategory);
+                }
+                order++;
+            }
+
+            return ProductCategories;
+        }
+
         public string updateProductDescription(string description, Guid productId)
         {
             HtmlDocument document = new HtmlDocument();
@@ -449,138 +564,6 @@ namespace ECommerce2.Areas.Admin.Controllers
 
             ProductImages.Add(productImage);
             return "\\ProductImages\\" + fileName;
-        }
-
-
-        // GET: Products/Delete/5
-        public async Task<IActionResult> Delete(Guid? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var product = await _context.Products
-                .Include(p => p.Categories)
-                //.Include(p => p.FeaturedImage)
-                .FirstOrDefaultAsync(m => m.Id == id);
-
-            if (product == null)
-            {
-                return NotFound();
-            }
-
-            return View(product);
-        }
-
-        // POST: Products/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(Guid id)
-        {
-            var product = await _context.Products
-                .Include(p => p.ProductImages)
-                .FirstOrDefaultAsync(m => m.Id == id);
-
-            if (product != null)
-            {
-
-                if (product.ProductImages != null && product.ProductImages.Any())
-                {
-                    foreach (ProductImage item in product.ProductImages)
-                    {
-                        string filePath = Path.Combine(_webHostEnvironment.WebRootPath, item.FilePath.TrimStart('\\'));
-
-                        if (System.IO.File.Exists(filePath))
-                        {
-                            System.IO.File.Delete(filePath);
-                        }
-                        _context.ProductImages.Remove(item);
-                    }
-                }
-
-                _context.Products.Remove(product);
-            }
-
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-
-        /* Functions */
-
-        public async Task<List<Category>> AddOrUpdateCategory(List<CategoryVM> categoryVMs)
-        {
-            List<Category> Categories = await _context.Categories.ToListAsync();
-            List<Category> ProductCategories = new List<Category>();
-
-            foreach (CategoryVM cat in categoryVMs)
-            {
-                Category Category = Categories.FirstOrDefault(c => c.Name == cat.Name);
-                if (Category != null)
-                {
-                    ProductCategories.Add(Category);
-                }
-                else
-                {
-                    Category newCat = new Category()
-                    {
-                        Name = cat.Name,
-                    };
-                    _context.Categories.Add(newCat);
-                    ProductCategories.Add(newCat);
-                }
-            }
-
-
-            return ProductCategories;
-
-            //Category GetCategory = await _context.Categories.FirstOrDefaultAsync(c => c.Name == name);
-
-            //if (GetCategory != null)
-            //{
-            //    return GetCategory;
-            //}
-            //else
-            //{
-            //    Category NewCategory = new Category()
-            //    {
-            //        Name = name,
-            //    };
-            //    return NewCategory;
-            //}
-        }
-
-        private bool ProductExists(Guid id)
-        {
-            return _context.Products.Any(e => e.Id == id);
-        }
-
-        public async Task<List<Category>> AddOrUpdateCategories(List<CategoryVM> categories)
-        {
-            List<Category> ExistingCategories = await _context.Categories.ToListAsync();
-            List<Category> ProductCategories = new List<Category>();
-
-            foreach (CategoryVM categoryVM in categories)
-            {
-                Category ProductCat = ExistingCategories.FirstOrDefault(c => c.Name == categoryVM.Name);
-
-                if (ProductCat != null)
-                {
-                    ProductCategories.Add(ProductCat);
-                }
-                else
-                {
-                    Category newCat = new Category()
-                    {
-                        Name = categoryVM.Name,
-                    };
-                    _context.Categories.Add(newCat);
-                    ProductCategories.Add(newCat);
-                }
-            }
-
-            return ProductCategories;
         }
     }
 }

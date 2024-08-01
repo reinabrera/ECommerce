@@ -78,48 +78,13 @@
         </div>
         <div class="products-wrapper mt-5">
             <div class="row row-cols-5 gy-4">
-                @for (int i = 0; i < 10; i++)
+                @for (int i = 0; i < Model.FeaturedProducts.Count; i++)
                 {
+                    var Product = Model.FeaturedProducts[i];
                     <div class="col">
-                        <div class="card border-0 bg-transparent">
-                            <div class="position-relative img--wrapper">
-                                <img src="https://websitedemos.net/brandstore-02/wp-content/uploads/sites/150/2021/03/sports-shoe3-300x300.jpg" class="card-img-top" alt="...">
-                                <a href="#" class="stretched-link"></a>
-                                <div class="add-to-cart position-absolute">
-@*                                     <span class="bg-dark text-light rounded-1 px-2 py-1 toolto">
-                                        <small>Add to cart</small>
-                                    </span> *@
-                                    <button type="button" class="btn rounded-pill justify-content-center align-items-center" data-bs-toggle="tooltip" data-bs-placement="left"
-                                            data-bs-custom-class="add-to-cart-tooltip"
-                                            data-bs-title="Add to cart">
-                                        <i class="bi bi-handbag-fill text-muted"></i>
-                                    </button>
-                                </div>
-
-                            </div>
-                            <div class="card-body px-0">
-                                <a href="#" class="card-title text-black text-decoration-none fw-600">DNK Yellow Shoes</a>
-                                <div class="product-details mt-1">
-                                    <div class="product-category">
-                                        <span class="text-muted">Men</span>
-                                    </div>
-                                    <div class="product-pricing mt-1">
-                                        <span class="listing-price text-muted fw-600"><del>$150.00</del></span>
-                                        <span class="sale-price fw-600">$120.00</span>
-                                    </div>
-                                    <div class="star-rating d-flex">
-                                        <i class="bi bi-star"></i>
-                                        <i class="bi bi-star"></i>
-                                        <i class="bi bi-star"></i>
-                                        <i class="bi bi-star"></i>
-                                        <i class="bi bi-star"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        @Html.Partial("_ProductCard", Product)
                     </div>
                 }
-                
             </div>
         </div>
     </div>

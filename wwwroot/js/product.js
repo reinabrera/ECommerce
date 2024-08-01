@@ -157,7 +157,7 @@ async function uploadImages(uploads) {
     }
 
     try {
-        const response = await fetch('/ProductImages/UploadProductImages', {
+        const response = await fetch('/Admin/ProductImages/UploadProductImages', {
             method: 'POST',
             body: formData
         });
@@ -187,7 +187,7 @@ async function deleteProductImages(images) {
     }
 
     try {
-        const response = await fetch('/ProductImages/DeleteProductImages', {
+        const response = await fetch('/Admin/ProductImages/DeleteProductImages', {
             method: 'POST',
             body: formData
         });
@@ -220,7 +220,7 @@ async function getProductImages() {
     formData.append("productId", productId);
 
     try {
-        const response = await fetch('/ProductImages/GetProductImages', {
+        const response = await fetch('/Admin/ProductImages/GetProductImages', {
             method: 'POST',
             body: formData
         });
@@ -251,7 +251,7 @@ $(document).on('click', '#removeFeaturedImgBtn', () => {
     featuredImgWrapper.find('img, input, .remove-featured-img-btn').remove();
     featuredImgWrapper.addClass("no-featured-img");
 
-    let defaultImg = `<img src="../../dist/uploadImage.jpg" class="position-absolute default rounded w-100 h-100 top-0 start-0" />`
+    let defaultImg = `<img src="../../../dist/uploadImage.jpg" class="position-absolute default rounded w-100 h-100 top-0 start-0" />`
     featuredImgWrapper.append(defaultImg);
 });
 
@@ -464,7 +464,7 @@ attributeSelectEl.on('click', function () {
 
 async function getAttributes() {
     try {
-        const response = await fetch('/ProductAttributes/GetAttributes', {
+        const response = await fetch('/Admin/ProductAttributes/GetAttributes', {
             method: 'POST',
         });
 
@@ -616,7 +616,7 @@ async function getAttributeTerms(id) {
         formData.append('id', id);
 
         try {
-            const response = await fetch('/ProductAttributes/GetAttributeTerms', {
+            const response = await fetch('/Admin/ProductAttributes/GetAttributeTerms', {
                 method: 'POST',
                 body: formData
             });
@@ -651,7 +651,7 @@ saveAttributeBtn.on('click', async function () {
     try {
         attributeParentEl.addClass('loading');
         attributeParentEl.append(loaderEl());
-        const response = await fetch('/ProductAttributes/SaveProductAttributes', {
+        const response = await fetch('/Admin/ProductAttributes/SaveProductAttributes', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -731,7 +731,7 @@ async function getProductAttribute() {
         attrAccordion.addClass('loading');
         attrAccordion.append(loaderEl());
 
-        const response = await fetch('/ProductAttributes/GetProductAttributes', {
+        const response = await fetch('/Admin/ProductAttributes/GetProductAttributes', {
             method: 'POST',
             body: formData
         })
@@ -772,7 +772,7 @@ genVariationBtn.on('click', async function () {
         variationAccordion.addClass('loading');
         variationAccordion.append(loaderEl());
 
-        const response = await fetch('/ProductAttributes/GenerateProductVariation', {
+        const response = await fetch('/Admin/ProductAttributes/GenerateProductVariation', {
             method: 'POST',
             body: formData,
         })
@@ -847,7 +847,7 @@ async function getProductVariations() {
         variationAccordion.addClass('loading');
         variationAccordion.append(loaderEl());
 
-        const response = await fetch('/ProductAttributes/GetProductVariations', {
+        const response = await fetch('/Admin/ProductAttributes/GetProductVariations', {
             method: 'POST',
             body: formData
         });
@@ -907,7 +907,7 @@ function createVariationEl(index, variationId, terms, listPrice, salePrice, inve
                     <div class="d-flex justify-content-between">
                         <div class="img--wrapper col-2 position-relative">
                             <button type="button" class="position-absolute w-100 h-100 top-0 start-0 select-variation-img opacity-0"></button>
-                            <img src="../../dist/uploadImage.jpg" class="w-100 h-100 rounded border default ${image != null ? 'd-none' : ''}"/>
+                            <img src="../../../dist/uploadImage.jpg" class="w-100 h-100 rounded border default ${image != null ? 'd-none' : ''}"/>
                             ${image != null ? imgEl : ""}
                         </div>
                         <div>
@@ -948,7 +948,7 @@ saveVariationBtn.on('click', async function () {
     try {
         variationAccordion.append(loaderEl);
         variationAccordion.addClass('loading');
-        const response = await fetch('/ProductAttributes/UpdateProductVariations', {
+        const response = await fetch('/Admin/ProductAttributes/UpdateProductVariations', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -1012,7 +1012,7 @@ $(document).on('click', '.delete-variation', async function () {
         variationAccordion.append(loaderEl);
         variationAccordion.addClass('loading');
 
-        const response = await fetch('/ProductAttributes/DeleteProductVariation', {
+        const response = await fetch('/Admin/ProductAttributes/DeleteProductVariation', {
             method: 'POST',
             body: formData
         });

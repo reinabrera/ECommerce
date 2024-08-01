@@ -2,6 +2,7 @@
 using ECommerce2.Utility;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Emit;
 
 namespace ECommerce2.Data
 {
@@ -47,6 +48,10 @@ namespace ECommerce2.Data
                 .HasMany(p => p.Categories)
                 .WithMany(p => p.Products)
                 .UsingEntity<ProductCategories>();
+
+            builder.Entity<ProductCategories>()
+                .HasIndex(pc => new { pc.ProductId, pc.Order })
+                .IsUnique();
 
             builder.Entity<AdditionalImage>()
                 .HasOne(p => p.Image)
