@@ -7,6 +7,14 @@
     {
         currentPage = (int)ViewData["CurrentPage"];
     }
+
+    int productCount = 0;
+    if (ViewData["ProductCount"] != null)
+    {
+        productCount = (int)ViewData["ProductCount"];
+    }
+
+    int pageSize = (int)ViewData["PageSize"];
 }
 
 <section id="store" class="container-fix">
@@ -83,6 +91,18 @@
                     </div>
                 </div>
 
+                <div class="mt-5">
+                    <span class="fs-4">
+                        Our Best Sellers
+                    </span>
+                    <ul class="best-selling-products list-unstyled mt-2">
+                        @foreach (ProductCardListItemVM item in Model.BestSelling)
+                        {
+                            @Html.Partial("_ProductCardListItem", item)
+                        }
+                    </ul>
+                </div>
+
             </div>
             <div id="product-listing" class="col-9">
                 <div class="products-wrapper bg-white">
@@ -90,33 +110,40 @@
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item"><a asp-action="Index" class="text-muted">Home</a></li>
-                                <li class="breadcrumb-item"><a asp-action="Store" class="text-muted">Store</a></li>
 
-                                @if (ViewData["SelectedCategory"] != null)
+                                @if (currentPage < 2)
                                 {
-                                    if (currentPage < 2)
+                                    if (ViewData["CurrentQuery"] != null || ViewData["SelectedCategory"] != null)
                                     {
-                                        <li class="breadcrumb-item active text-capitalize" aria-current="page">@ViewData["SelectedCategory"]</li>
+                                        <li class="breadcrumb-item"><a asp-action="Store" class="text-muted">Store</a></li>
+                                        <li class="breadcrumb-item active" aria-current="page">
+                                            @if (ViewData["CurrentQuery"] != null)
+                                            {
+                                                <span>Search results for "@ViewData["CurrentQuery"]"</span>
+                                            }
+                                            @if (ViewData["SelectedCategory"] != null)
+                                            {
+                                                <span class="text-capitalize">@ViewData["SelectedCategory"]</span>
+                                            }
+                                        </li>
                                     } else
                                     {
-                                        <li class="breadcrumb-item active text-capitalize" aria-current="page">
-                                            <a asp-action="Store" asp-route-category="@ViewData["SelectedCategory"]" class="text-muted">@ViewData["SelectedCategory"]</a>
-                                        </li>
-                                    }
-                                }
-
-                                @if (ViewData["CurrentQuery"] != null)
+                                        <li class="breadcrumb-item text-muted" aria-current="page">Store</li>
+                                    }              
+                                } else 
                                 {
-                                    if (currentPage < 2)
-                                    {
-                                        <li class="breadcrumb-item active text-capitalize" aria-current="page">Search results for “@ViewData["CurrentQuery"]”</li>
-                                    }
-                                    else
-                                    {
-                                        <li class="breadcrumb-item active text-capitalize" aria-current="page">
+                                    <li class="breadcrumb-item"><a asp-action="Store" class="text-muted">Store</a></li>
+                                    <li class="breadcrumb-item active text-capitalize" aria-current="page">
+                                        @if (ViewData["CurrentQuery"] != null)
+                                        {
                                             <a asp-action="Store" asp-route-query="@ViewData["CurrentQuery"]" class="text-muted">Search results for “@ViewData["CurrentQuery"]”</a>
-                                        </li>
-                                    }
+                                        }
+
+                                        @if (ViewData["SelectedCategory"] != null)
+                                        {
+                                            <a asp-action="Store" asp-route-category="@ViewData["SelectedCategory"]" class="text-muted">@ViewData["SelectedCategory"]</a>
+                                        }
+                                    </li>
                                 }
 
                                 @if (currentPage > 1)
@@ -126,6 +153,42 @@
                             </ol>
                         </nav>
                     </div>
+                    <div class="product-count-and-filter mt-4 mb-5 d-flex justify-content-between align-items-center">
+                        <div class="product-count">
+                            @if (productCount <= pageSize)
+                            {
+                                <span>Showing all @productCount results</span>
+                            }
+                            else
+                            {
+                                int min = (pageSize * currentPage) - (pageSize - 1);
+                                int max = pageSize * currentPage;
+                                if (max > productCount)
+                                {
+                                    max = productCount;
+                                }
+                                <span>Showing @min–@max of @productCount</span>
+                            }
+                        </div>
+                        <div class="dropdown">
+                            <select class="form-select text-muted" aria-label="Dropdown filter products" id="filterSelect">
+                                <option value="default" selected>Default sorting</option>
+                                <option value="rating">Sort by average rating</option>
+                                <option value="date">Sort by latest</option>
+                                <option value="price">Sort by price: low to high</option>
+                                <option value="price-desc">Sort by price: high to low</option>
+                            </select>
+                            <a hidden id="selectAction" 
+                                asp-action="Store"
+                                asp-route-category="@ViewData["SelectedCategory"]" 
+                                asp-route-query="@ViewData["CurrentQuery"]"
+                                asp-route-sliderMinVal="@ViewData["SliderMinVal"]"
+                                asp-route-sliderMaxVal="@ViewData["SliderMaxVal"]"
+                                asp-route-orderBy="@ViewData["OrderBy"]"
+                                asp-route-pageNumber="@(currentPage > 1 ? currentPage : null)"></a>
+                        </div>
+                    </div>
+                    
 
                     @if (Model.ProductPageCount > 0)
                     {
@@ -148,8 +211,9 @@
                                             <a class="page-link" asp-action="Store"
                                                asp-route-query="@ViewData["CurrentQuery"]"
                                                asp-route-category="@ViewData["SelectedCategory"]"
-                                               asp-route-sliderMin="@ViewData["SliderMinVal"]"
-                                               asp-route-sliderMax="@ViewData["SliderMaxVal"]"
+                                               asp-route-sliderMinVal="@ViewData["SliderMinVal"]"
+                                               asp-route-sliderMaxVal="@ViewData["SliderMaxVal"]"
+                                               asp-route-orderBy="@ViewData["OrderBy"]"
                                                asp-route-pageNumber="@(currentPage - 1)">
                                                 <i class="bi bi-arrow-left"></i>
                                             </a>
@@ -168,8 +232,9 @@
                                             <li class="page-item">
                                                 <a class="page-link" asp-route-query="@ViewData["CurrentQuery"]"
                                                    asp-route-category="@ViewData["SelectedCategory"]"
-                                                   asp-route-sliderMin="@ViewData["SliderMinVal"]"
-                                                   asp-route-sliderMax="@ViewData["SliderMaxVal"]"
+                                                   asp-route-sliderMinVal="@ViewData["SliderMinVal"]"
+                                                   asp-route-sliderMaxVal="@ViewData["SliderMaxVal"]"
+                                                   asp-route-orderBy="@ViewData["OrderBy"]"
                                                    asp-route-pageNumber="@i">@i</a>
                                             </li>
                                         }
@@ -180,8 +245,9 @@
                                             <a class="page-link" asp-action="Store"
                                                asp-route-query="@ViewData["CurrentQuery"]"
                                                asp-route-category="@ViewData["SelectedCategory"]"
-                                               asp-route-sliderMin="@ViewData["SliderMinVal"]"
-                                               asp-route-sliderMax="@ViewData["SliderMaxVal"]"
+                                               asp-route-sliderMinVal="@ViewData["SliderMinVal"]"
+                                               asp-route-sliderMaxVal="@ViewData["SliderMaxVal"]"
+                                               asp-route-orderBy="@ViewData["OrderBy"]"
                                                asp-route-pageNumber="@(currentPage + 1)">
                                                 <i class="bi bi-arrow-right"></i>
                                             </a>

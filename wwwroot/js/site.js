@@ -335,6 +335,19 @@ $(document).ready(function () {
         slideOne();
         slideTwo();
     }
+
+    const filterSelect = $('#filterSelect');
+    const selectActionEl = $('#selectAction'); 
+
+    const currentParams = new URLSearchParams(selectActionEl.attr('href').split("?")[1]);
+
+    const currentSort = currentParams.get('orderBy');
+
+    if (currentSort == null || currentSort == "default") {
+        filterSelect.find('option[value="default]').prop('selected', true);
+    } else {
+        filterSelect.find(`option[value=${currentSort}]`).prop('selected', true);
+    }
 });
 
 let sliderOne = document.getElementById("slider-1");
@@ -369,3 +382,31 @@ function fillColor() {
     }
     sliderTrack.style.background = `linear-gradient(to right, #ebebf1 ${percentMin}% , #000000 ${percentMin}% , #000000 ${percentMax}%, #ebebf1 ${percentMax}%)`;
 }
+
+$('#filterSelect').on('change', function () {
+    const orderByVal = $(this).find(':selected').val();
+    
+    const selectActionEl = $('#selectAction');
+
+    let currentHref = selectActionEl.attr('href');
+    const params = currentHref.split('?')[1];
+
+    let searchParams = new URLSearchParams(params);
+
+    if (searchParams.has('orderBy') == null) {
+        searchParams.append('orderBy', orderByVal);
+    } else {
+        searchParams.set('orderBy', orderByVal);
+    }
+
+    let updatedHref;
+    if (params != null) {
+        updatedHref = currentHref.replace(params, searchParams.toString());
+    } else {
+        updatedHref = currentHref.concat("?" + searchParams.toString());
+    }
+
+    selectActionEl.attr('href', updatedHref);
+
+    selectActionEl[0].click();
+})

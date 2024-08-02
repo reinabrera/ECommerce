@@ -741,10 +741,23 @@ section#store #product-listing .products-wrapper {
     text-decoration: none;
 }
 
-#store-breadcrumbs li {
+#store-breadcrumbs li:nth-of-type(n + 2) {
     padding-left: 0.2rem;
 }
 
 #store-breadcrumbs li::before {
     padding-right: 0.2rem;
+}
+
+.dropdown select {
+    border: none;
+    padding: .375rem 1.00rem .375rem .75rem;
+}
+
+.best-selling-products li .card {
+    border: unset;
+}
+
+.best-selling-products li:nth-of-type(n + 2) .card {
+    border-top: 1px solid var(--global-border-color);
 }

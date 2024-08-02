@@ -66,17 +66,51 @@ namespace ECommerce2.Areas.Customer.Controllers
             return View(homePageVM);
         }
 
-        public async Task<IActionResult> Store(string? query, string? category, int? sliderMinVal, int? sliderMaxVal, int? pageNumber)
+        public async Task<IActionResult> Store(string? query, string? category, int? sliderMinVal, int? sliderMaxVal, int? pageNumber, string? orderBy)
         {
             int pageSize = 12;
+            ViewData["PageSize"] = 12;
             int skipCount = 0;
             int productsCount;
             ViewData["CurrentPage"] = 1;
 
             StoreVM storeVM = new StoreVM();
             storeVM.Categories = new List<StoreCategoryVM>();
-            IQueryable<Product> products = _context.Products.Include(p => p.Categories).Include(p => p.SelectedTerms).AsQueryable();
+            storeVM.BestSelling = new List<ProductCardListItemVM>();
+            IQueryable<Product> products = _context.Products.Include(p => p.Variations).AsQueryable();
 
+
+            /** Best Selling Product - UNFINISHED **/
+            List<Product> topProducts = new List<Product>(await products.Take(5).ToListAsync());
+
+            foreach (Product product in topProducts)
+            {
+
+                int variantCount = product.Variations.Count();
+                decimal? minPrice = null;
+                decimal? maxPrice = null;
+
+                if (variantCount > 1 && product.MinPrice != product.MaxPrice)
+                {
+                    minPrice = product.MinPrice;
+                    maxPrice = product.MaxPrice;
+                }
+
+                ProductCardListItemVM listItem = new ProductCardListItemVM()
+                {
+                    ProductId = product.Id,
+                    Name = product.Name,
+                    Image = await _context.ProductImages.FirstOrDefaultAsync(pi => pi.ProductId == product.Id && pi.IsFeatured == true),
+                    ListPrice = product.ListPrice,
+                    SalePrice = product.SalePrice,
+                    MinPrice = minPrice,
+                    MaxPrice = maxPrice,
+                };
+
+                storeVM.BestSelling.Add(listItem);
+            }
+
+            products = products.Include(p => p.Categories).Include(p => p.SelectedTerms);
 
             if (query != null)
             {
@@ -110,6 +144,28 @@ namespace ECommerce2.Areas.Customer.Controllers
                 productsCount = products.Count();
             }
 
+            if (orderBy != null)
+            {
+                ViewData["OrderBy"] = orderBy;
+
+                switch (orderBy)
+                {
+                    case "date":
+                        products = products.OrderBy(p => p.CreatedDate);
+                        break;
+                    case "price":
+                        products = products.OrderBy(p => p.MinPrice);
+                        break;
+                    case "price-desc":
+                        products = products.OrderByDescending(p => p.MinPrice);
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            ViewData["ProductCount"] = productsCount;
+
             storeVM.ProductPageCount = (productsCount + pageSize - 1) / pageSize;
 
             if (pageNumber != null && pageNumber > 1)
@@ -120,12 +176,11 @@ namespace ECommerce2.Areas.Customer.Controllers
             /** Retrieve Product after Query **/
             List<Product> productList = await products.Skip(skipCount).Take(pageSize).ToListAsync();
 
-
             /** Categories **/
             List<Category> categories = await _context.Categories
                 .Include(p => p.Products)
                 .Where(c => c.Products.Count > 0)
-                .OrderByDescending(c => c.Products.Count)
+                .OrderBy(c => c.Name)
                 .ToListAsync();
 
             foreach (Category item in categories)
@@ -155,7 +210,7 @@ namespace ECommerce2.Areas.Customer.Controllers
                     SelectedTermsGrouped = product.SelectedTerms.OrderBy(st => st.AttributeId).GroupBy(st => st.AttributeId).Select(g => g.ToList()).ToList(),
                 };
 
-                int variantCount = await _context.Variations.Where(v => v.ProductId == product.Id).CountAsync();
+                int variantCount = product.Variations.Count();
 
                 if (variantCount > 1 && product.MinPrice != product.MaxPrice)
                 {

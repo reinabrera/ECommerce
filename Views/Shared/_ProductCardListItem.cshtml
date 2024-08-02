@@ -1,0 +1,42 @@
+﻿@using ECommerce2.Models.ViewModels
+@model ProductCardListItemVM
+
+<li>
+    <div class="card py-3 bg-transparent" style="max-width: 540px;">
+        <div class="row g-0">
+            <div class="col-md-3 position-relative">
+                <img src="@Model.Image.FilePath.ToString()" class="img-fluid rounded-start" alt="...">
+                <a href="#" class="stretched-link"></a>
+            </div>
+            <div class="col-md-9">
+                <div class="card-body p-0 ps-3">
+                    <a href="#" class="card-title text-dark text-decoration-none">@Model.Name</a>
+                    <div class="star-rating d-flex">
+                        <i class="bi bi-star"></i>
+                        <i class="bi bi-star"></i>
+                        <i class="bi bi-star"></i>
+                        <i class="bi bi-star"></i>
+                        <i class="bi bi-star"></i>
+                    </div>
+                    @if (Model.MinPrice != null && Model.MaxPrice != null)
+                    {
+                        <span>$@Model.MinPrice - </span>
+                        <span>$@Model.MaxPrice</span>
+                    }
+                    else
+                    {
+                        @if (Model.SalePrice == null)
+                        {
+                            <span class="listing-price fw-600">$@Model.ListPrice</span>
+                        }
+                        else
+                        {
+                            <span class="listing-price text-muted fw-600"><del>$@Model.ListPrice</del></span>
+                            <span class="sale-price fw-600">$@Model.SalePrice</span>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</li>

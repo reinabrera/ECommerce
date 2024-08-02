@@ -3,6 +3,7 @@
     public class StoreVM
     {
         public List<ProductCardVM> Products { get; set; }
+        public List<ProductCardListItemVM> BestSelling { get; set; }
         public int ProductPageCount { get; set; }
         public List<StoreCategoryVM> Categories { get; set; }
     }
