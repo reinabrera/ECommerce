@@ -7,11 +7,11 @@ namespace ECommerce2.Models.ViewModels
     public class ProductVM
     {
         public Guid Id { get; set; }
-        public string? Name { get; set; }
+        public string Name { get; set; }
         public bool IsFeatured { get; set; }
-        public string? Overview { get; set; }
+        public string Overview { get; set; }
         public string? Description { get; set; }
-        public int? FeaturedImageId { get; set; }
+        public int FeaturedImageId { get; set; }
         public ProductImage? FeaturedImage { get; set; }
         public List<AdditionalImageVM>? AdditionalImages { get; set; }
         public decimal? ListPrice { get; set; }

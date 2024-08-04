@@ -4,6 +4,7 @@
     {
         public Guid ProductId { get; set; }
         public string Name { get; set; }
+        public string Slug { get; set; }
         public ProductImage FeaturedImage { get; set; }
         public string Category { get; set; }
         public decimal? MinPrice { get; set; }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ECommerce2.Models
@@ -13,6 +14,7 @@ namespace ECommerce2.Models
         public bool IsFromEditor { get; set; }
         public Guid ProductId { get; set; }
         [ForeignKey("ProductId")]
+        [JsonIgnore]
         public Product Product { get; set; }
         public ProductImage()
         {

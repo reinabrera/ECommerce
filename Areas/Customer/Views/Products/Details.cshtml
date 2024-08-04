@@ -1,0 +1,145 @@
+﻿@using ECommerce2.Models.ViewModels
+@model ProductDetailsVM
+
+@section CssOverrides {
+    <link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/42.0.0/ckeditor5.css">
+}
+
+<div id="details-page-content" class="container-fix">
+    <div class="container">
+        <section id="product-details">
+            <div class="image-gallery-and-details py-5">
+
+                <div class="row gx-5">
+                    <div class="col-6">
+                        <div class="img--wrapper">
+                            <img src="https://websitedemos.net/brandstore-02/wp-content/uploads/sites/150/2017/12/product-hoodie1.jpg" class="w-100" />
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="details-breadcrumbs">
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index" class="text-muted">Home</a></li>
+                                    <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Store" asp-route-category="@Model.Categories.FirstOrDefault()" class="text-muted">@Model.Categories.FirstOrDefault()</a></li>
+                                    <li class="breadcrumb-item"><span class="text-muted">@Model.Name</span></li>
+                                </ol>
+                            </nav>
+                            <div class="product-content">
+                                <h5 class="category fw-normal fs-6">@Model.Categories.FirstOrDefault()</h5>
+                                <h2 class="fw-normal mt-3">@Model.Name</h2>
+
+                                <div class="price-and-shipping mt-3">
+
+                                    @if (Model.MinPrice == Model.MaxPrice)
+                                    {
+                                        if (Model.SalePrice == null)
+                                        {
+                                            <span class="fs-3 fw-600">$@Model.ListPrice</span>
+                                        } else
+                                        {
+                                            <span class="fs-3 fw-600 text-muted"><del>$@Model.ListPrice</del></span> <span class="fs-3 fw-600">$@Model.SalePrice</span>
+                                        }
+                                    } else
+                                    {
+                                        <span class="fs-3 fw-600">$@Model.MinPrice – $@Model.MaxPrice</span>
+                                    }
+                                    
+                                    @if (Model.ShippingFee == null)
+                                    {
+                                        <span>+ Free Shipping</span>
+                                    }
+                                </div>
+
+                                <div class="overview lh-lg mt-2">
+                                    <p>@Model.Overview</p>
+                                </div>
+
+                                <form id="add-to-cart-form">
+                                    <div class="d-flex">
+                                        <input type="number" min="1" max="@Model.Inventory" value="1" class="text-muted" />
+                                        <button type="submit" class="btn btn-blue ms-3 fw-600">ADD TO CART</button>
+                                    </div>
+                                </form>
+                                <hr />
+                                <div class="category-list">
+                                    <span>Category:
+                                        @for (int i = 0; i < Model.Categories.Count; i++)
+                                        {
+                                            string cat = Model.Categories[i];
+                                            <a asp-controller="Home" asp-action="Store" asp-route-category="@cat">@cat</a>@(i != Model.Categories.Count - 1 ? ", " : "")
+                                        }
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-tabs mt-5">
+                    <ul class="nav nav-tabs border-top" id="myTab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="description-tab" data-bs-toggle="tab" data-bs-target="#description-tab-pane" type="button" role="tab" aria-controls="description-tab-pane" aria-selected="true">Description</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="addtl-info-tab" data-bs-toggle="tab" data-bs-target="#addtl-info-tab-pane" type="button" role="tab" aria-controls="addtl-info-tab-pane" aria-selected="false">Additonal Information</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="reviews-tab" data-bs-toggle="tab" data-bs-target="#reviews-tab-pane" type="button" role="tab" aria-controls="reviews-tab-pane" aria-selected="false">Reviews (0)</button>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="myTabContent">
+                        <div class="tab-pane fade show active py-3" id="description-tab-pane" role="tabpanel" aria-labelledby="description-tab" tabindex="0">
+                            <h4>
+                                Product description
+                            </h4>
+                            <div id="displayCkContent">
+                                @Html.Raw(Model.Description)
+                            </div>
+                        </div>
+                        <div class="tab-pane fade py-3" id="addtl-info-tab-pane" role="tabpanel" aria-labelledby="addtl-info-tab" tabindex="0">
+                            <table class="table table-bordered">
+                                <tr>
+                                    <th>
+                                        Color
+                                    </th>
+                                    <th>
+                                        Black
+                                    </th>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="tab-pane fade py-3" id="reviews-tab-pane" role="tabpanel" aria-labelledby="reviews-tab" tabindex="0">
+                            <p>There are no reviews yet.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="related-products" class="py-5">
+                    <h3 class="fs-1 mt-4">Related Products</h3>
+                    <div class="row row-cols-4 mt-4">
+                        @foreach (ProductCardVM card in Model.RelatedProducts)
+                        {
+                            <div class="col">
+                                @Html.Partial("_ProductCard", card)
+                            </div>
+                        }
+                    </div>
+
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+
+@section Scripts {
+    <script type="importmap">
+        {
+            "imports": {
+                "ckeditor5": "https://cdn.ckeditor.com/ckeditor5/42.0.0/ckeditor5.js",
+                "ckeditor5/": "https://cdn.ckeditor.com/ckeditor5/42.0.0/"
+            }
+        }
+    </script>
+    <script type="module" src="~/js/product-cke.js"></script>
+}

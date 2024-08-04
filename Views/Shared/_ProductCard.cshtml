@@ -3,7 +3,7 @@
 <div class="card product-card border-0 bg-transparent" data-product-id="@Model.ProductId">
     <div class="position-relative img--wrapper">
         <img src="@Model.FeaturedImage.FilePath" class="card-img-top rounded-0">
-        <a href="#" class="stretched-link"></a>
+        <a asp-controller="Products" asp-action="Details" asp-route-id="@Model.Slug" class="stretched-link"></a>
         <div class="add-to-cart position-absolute">
             <button type="button" class="btn rounded-pill justify-content-center align-items-center" data-bs-toggle="tooltip" data-bs-placement="left"
                     data-bs-custom-class="add-to-cart-tooltip"

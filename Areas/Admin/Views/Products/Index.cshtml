@@ -4,12 +4,23 @@
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
+@section CssOverrides {
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.css" integrity="sha512-oe8OpYjBaDWPt2VmSFR+qYOdnTjeV9QPLJUeqZyprDEQvQLJ9C5PCFclxwNuvb/GQgQngdCXzKSFltuHD3eCxA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+}
+
 <div class="container container-fix">
     <h1>Index</h1>
 
-    <p>
-        <a asp-action="Create">Create New</a>
-    </p>
+    <div class="d-flex justify-content-between align-items-center mt-2">
+        <div>
+            <a asp-action="Create">Create New</a>
+        </div>
+        <div>
+            <button type="button" class="btn btn-outline-primary" id="generateSlug">Generate Product Slugs</button>
+        </div>
+    </div>
+
     <table class="table">
         <thead>
             <tr>
@@ -67,3 +78,34 @@
     </table>
 
 </div>
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js" integrity="sha512-lbwH47l/tPXJYG9AcFNoJaTMhGvYWhVM9YI43CT+uteTRRaiLCui8snIgyAN8XWgNjNhCqlAUdzZptso6OCoFQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script>
+        const generateSlugBtn = $('#generateSlug');
+
+        generateSlugBtn.on('click', async function () {
+
+            let result;
+            try {
+                const response = await fetch('/Admin/Products/GenerateProductSlug', {
+                    method: 'POST'
+                });
+
+                result = await response.json();
+
+            } catch (err) {
+                console.error(err);
+                throw err;
+            } finally {
+                if (result.status == "Success") {
+                    toastr.success(JSON.parse(result.message));
+                } else {
+                    toastr.error("There was an error processing your request");
+                }
+            }
+
+        });
+    </script>
+}

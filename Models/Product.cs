@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.EntityFrameworkCore;
+using Slugify;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ECommerce2.Models
@@ -7,6 +8,7 @@ namespace ECommerce2.Models
     public class Product
     {
         public Guid Id { get; set; }
+        public string? Slug { get; set; }
         public string? Name { get; set; }
         public bool IsFeatured { get; set; }
         public ICollection<AdditionalImage>? AdditionalImages { get; set; }
@@ -23,7 +25,7 @@ namespace ECommerce2.Models
         public decimal? MinPrice { get; set; }
         [Precision(16, 2)]
         public decimal? MaxPrice { get; set; }
-        public ICollection<Category> Categories { get; set; }
+        public ICollection<Category>? Categories { get; set; }
         public ICollection<AttributeModel>? Attributes { get; set; }
         public ICollection<Term>? SelectedTerms { get; set; }
         public ICollection<Variant>? Variations { get; set; }

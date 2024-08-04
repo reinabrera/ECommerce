@@ -943,7 +943,7 @@ saveVariationBtn.on('click', async function () {
 
     data.Variants = BindProductVariations(variationAccordion.children());
 
-    let updated;
+    let updatedVariation;
 
     try {
         variationAccordion.append(loaderEl);
@@ -959,8 +959,7 @@ saveVariationBtn.on('click', async function () {
         const result = await response.json();
 
         if (result.status == "Success") {
-            updated = JSON.parse(result.updated);
-            console.log(updated);
+            updatedVariation = JSON.parse(result.update);
         }
 
     } catch (err) {
@@ -968,8 +967,8 @@ saveVariationBtn.on('click', async function () {
         throw err;
     } finally {
         variationAccordion.find('> div').not('.spinner').remove();
-        if (updated.length > 0) {
-            updated.forEach((item, index) => {
+        if (updatedVariation.length > 0) {
+            updatedVariation.forEach((item, index) => {
                 const variationEl = createVariationEl(index, item.Id, item.Terms, item.ListPrice, item.SalePrice, item.Inventory, item.Image);
 
                 variationAccordion.append(variationEl);

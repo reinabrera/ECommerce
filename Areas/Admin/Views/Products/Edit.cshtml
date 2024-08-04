@@ -35,7 +35,7 @@
                     <label class="form-label">Featured Image</label>
                     <div class="position-relative featured-img-wrapper rounded border border-1 ">
                         <button type="button" class="h-100 w-100 btn" id="featuredImgtBtn"></button>
-                        @if (Model.FeaturedImageId != null)
+                        @if (Model.FeaturedImageId != 0)
                         {
                             <input asp-for="FeaturedImageId" type="hidden" />
                             <img src="@Model.FeaturedImage.FilePath" class="position-absolute featured-img w-100 h-100 top-0 start-0 rounded" />

@@ -332,56 +332,61 @@ $(document).ready(function () {
     const dualRangeSlider = $('.dual-range-slider--wrapper');
 
     if (dualRangeSlider.length > 0) {
-        slideOne();
-        slideTwo();
+        //slideOne();
+        //slideTwo();
     }
 
     const filterSelect = $('#filterSelect');
     const selectActionEl = $('#selectAction'); 
 
-    const currentParams = new URLSearchParams(selectActionEl.attr('href').split("?")[1]);
+    if (filterSelect.length > 0) {
 
-    const currentSort = currentParams.get('orderBy');
+        const currentParams = new URLSearchParams(selectActionEl.attr('href').split("?")[1]);
 
-    if (currentSort == null || currentSort == "default") {
-        filterSelect.find('option[value="default]').prop('selected', true);
-    } else {
-        filterSelect.find(`option[value=${currentSort}]`).prop('selected', true);
+        const currentSort = currentParams.get('orderBy');
+
+        if (currentSort == null || currentSort == "default") {
+            filterSelect.find('option[value="default]').prop('selected', true);
+        } else {
+            filterSelect.find(`option[value=${currentSort}]`).prop('selected', true);
+        }
     }
+
 });
 
-let sliderOne = document.getElementById("slider-1");
-let sliderTwo = document.getElementById("slider-2");
-let displayValOne = document.getElementById("sliderMin");
-let displayValTwo = document.getElementById("sliderMax");
-let minGap = 1;
-let sliderTrack = document.querySelector(".slider-track");
-let sliderMinValue = document.getElementById("slider-1").min;
-let sliderMaxValue = document.getElementById("slider-1").max;
 
-function slideOne() {
-    if (parseInt(sliderTwo.value) - parseInt(sliderOne.value) <= minGap) {
-        sliderOne.value = parseInt(sliderTwo.value) - minGap;
-    }
-    displayValOne.textContent = "$" + sliderOne.value + " – ";
-    fillColor();
-}
-function slideTwo() {
-    if (parseInt(sliderTwo.value) - parseInt(sliderOne.value) <= minGap) {
-        sliderTwo.value = parseInt(sliderOne.value) + minGap;
-    }
-    displayValTwo.textContent = "$" + sliderTwo.value;
-    fillColor();
-}
-function fillColor() {
-    percentMin = ((sliderOne.value - sliderMinValue ) / (sliderMaxValue - sliderMinValue)) * 100;
-    percentMax = ((sliderTwo.value - sliderMinValue) / (sliderMaxValue - sliderMinValue)) * 100;
+//let sliderOne = document.getElementById("slider-1");
+//let sliderTwo = document.getElementById("slider-2");
+//let displayValOne = document.getElementById("sliderMin");
+//let displayValTwo = document.getElementById("sliderMax");
+//let minGap = 1;
+//let sliderTrack = document.querySelector(".slider-track");
+//let sliderMinValue = document.getElementById("slider-1").min;
+//let sliderMaxValue = document.getElementById("slider-1").max;
 
-    if (isNaN(percentMin)) {
-        $('.dual-range-slider--wrapper').addClass('slider-disabled');
-    }
-    sliderTrack.style.background = `linear-gradient(to right, #ebebf1 ${percentMin}% , #000000 ${percentMin}% , #000000 ${percentMax}%, #ebebf1 ${percentMax}%)`;
-}
+//function slideOne() {
+//    if (parseInt(sliderTwo.value) - parseInt(sliderOne.value) <= minGap) {
+//        sliderOne.value = parseInt(sliderTwo.value) - minGap;
+//    }
+//    displayValOne.textContent = "$" + sliderOne.value + " – ";
+//    fillColor();
+//}
+//function slideTwo() {
+//    if (parseInt(sliderTwo.value) - parseInt(sliderOne.value) <= minGap) {
+//        sliderTwo.value = parseInt(sliderOne.value) + minGap;
+//    }
+//    displayValTwo.textContent = "$" + sliderTwo.value;
+//    fillColor();
+//}
+//function fillColor() {
+//    percentMin = ((sliderOne.value - sliderMinValue ) / (sliderMaxValue - sliderMinValue)) * 100;
+//    percentMax = ((sliderTwo.value - sliderMinValue) / (sliderMaxValue - sliderMinValue)) * 100;
+
+//    if (isNaN(percentMin)) {
+//        $('.dual-range-slider--wrapper').addClass('slider-disabled');
+//    }
+//    sliderTrack.style.background = `linear-gradient(to right, #ebebf1 ${percentMin}% , #000000 ${percentMin}% , #000000 ${percentMax}%, #ebebf1 ${percentMax}%)`;
+//}
 
 $('#filterSelect').on('change', function () {
     const orderByVal = $(this).find(':selected').val();

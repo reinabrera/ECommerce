@@ -41,6 +41,7 @@ namespace ECommerce2.Areas.Customer.Controllers
                 {
                     ProductId = product.Id,
                     Name = product.Name,
+                    Slug = product.Slug,
                     Category = await _context.ProductCategories.Where(pc => pc.ProductId == product.Id).Select(pc => pc.Category.Name).FirstOrDefaultAsync(),
                     FeaturedImage = await _context.ProductImages.FirstOrDefaultAsync(pi => pi.ProductId == product.Id && pi.IsFeatured == true),
                     ListPrice = product.ListPrice,
@@ -100,6 +101,7 @@ namespace ECommerce2.Areas.Customer.Controllers
                 {
                     ProductId = product.Id,
                     Name = product.Name,
+                    Slug = product.Slug,
                     Image = await _context.ProductImages.FirstOrDefaultAsync(pi => pi.ProductId == product.Id && pi.IsFeatured == true),
                     ListPrice = product.ListPrice,
                     SalePrice = product.SalePrice,
@@ -203,6 +205,7 @@ namespace ECommerce2.Areas.Customer.Controllers
                 {
                     ProductId = product.Id,
                     Name = product.Name,
+                    Slug = product.Slug,
                     Category = await _context.ProductCategories.Where(pc => pc.ProductId == product.Id).OrderBy(pc => pc.Order).Select(pc => pc.Category.Name).FirstOrDefaultAsync(),
                     FeaturedImage = await _context.ProductImages.FirstOrDefaultAsync(pi => pi.ProductId == product.Id && pi.IsFeatured == true),
                     ListPrice = product.ListPrice,

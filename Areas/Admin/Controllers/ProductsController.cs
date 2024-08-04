@@ -14,6 +14,8 @@ using Microsoft.Data.SqlClient;
 using HtmlAgilityPack;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.AspNetCore.Authorization;
+using Slugify;
+using Newtonsoft.Json;
 
 namespace ECommerce2.Areas.Admin.Controllers
 {
@@ -219,6 +221,13 @@ namespace ECommerce2.Areas.Admin.Controllers
                     /** Product Name */
                     UpdateProduct.Name = productVM.Name;
 
+                    /** Slug **/
+                    if (UpdateProduct.Name != null)
+                    {
+                        string idStr = UpdateProduct.Id.ToString();
+                        UpdateProduct.Slug = GenerateSlug(UpdateProduct.Name, idStr);
+                    }
+
                     /** IsFeatured */
                     UpdateProduct.IsFeatured = productVM.IsFeatured;
 
@@ -381,7 +390,26 @@ namespace ECommerce2.Areas.Admin.Controllers
             return View(productVM);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> GenerateProductSlug()
+        {
+            List<Product> products = await _context.Products
+                .Where(p => p.Slug == null && p.Name != null)
+                .ToListAsync();
 
+            foreach (Product product in products)
+            {
+                string idStr = product.Id.ToString();
+                product.Slug = GenerateSlug(product.Name, idStr.Substring(idStr.Length - 12));
+                _context.Products.Update(product);
+            }
+
+            await _context.SaveChangesAsync();
+
+            string message = $"Successfully updated {products.Count} product slugs.";
+
+            return Json(new { status = "Success", message = JsonConvert.SerializeObject(message) });
+        }
 
         // GET: Products/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
@@ -564,6 +592,15 @@ namespace ECommerce2.Areas.Admin.Controllers
 
             ProductImages.Add(productImage);
             return "\\ProductImages\\" + fileName;
+        }
+
+        public string GenerateSlug(string name, string id)        
+        {
+            SlugHelper helper = new SlugHelper();
+
+            string slugTemp = helper.GenerateSlug(name);
+
+            return string.Join("-", slugTemp, id);
         }
     }
 }

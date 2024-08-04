@@ -444,7 +444,9 @@ namespace ECommerce2.Areas.Admin.Controllers
 
             await _context.SaveChangesAsync();
 
-            return Json(new { status = "Success", updated = JsonConvert.SerializeObject(updated) });
+            var SerializedUpdated = JsonConvert.SerializeObject(updated);
+
+            return Json(new { status = "Success", update = SerializedUpdated });
         }
 
         [HttpPost]

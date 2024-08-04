@@ -204,7 +204,31 @@ const editorConfig = {
 	},
 };
 
-ClassicEditor.create(document.querySelector('#editor'), editorConfig);
+const editorEl = document.getElementById("editor");
+
+if (editorEl != null) {
+	ClassicEditor.create(document.querySelector('#editor'), editorConfig);
+}
+
+const displayEl = document.getElementById("displayCkContent");
+
+if (displayEl != null) {
+	ClassicEditor
+		.create(document.querySelector('#displayCkContent'),
+			{ ...editorConfig, isReadOnly: true }
+		)
+		.then(editor => {
+			const toolbarElement = editor.ui.view.toolbar.element;
+			editor.enableReadOnlyMode("displayCkContent");
+			toolbarElement.style.display = 'none';
+		})
+		.catch(error => {
+			console.log(error);
+		});
+}
+
+
+
 
 class MyUploadAdapter {
 	constructor(loader) {
