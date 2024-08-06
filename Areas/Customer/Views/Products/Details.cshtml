@@ -32,17 +32,21 @@
                                 </div>
                             </section>
 
-                            <ul id="thumbnails" class="thumbnails row row-cols-4 gx-3 mt-3 list-unstyled">
-                                @foreach (ProductImageVM image in Model.Images)
-                                {
-                                    <div class="col">
+                            @if (Model.Images.Count > 1)
+                            {
+                                <ul id="thumbnails" class="thumbnails row row-cols-4 gx-3 mt-3 list-unstyled">
+                                    @foreach (ProductImageVM image in Model.Images)
+                                    {
+                                        <div class="col">
                                         <li class="thumbnail" data-thumbnail-img-id="@image.Id">
                                             <img src="@image.FilePath" alt="@image.FileName">
                                         </li>
                                     </div>
-                                    
-                                }
-                            </ul>
+
+                                    }
+                                </ul>
+                            }
+                            
                         </div>
                         
                     </div>

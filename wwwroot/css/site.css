@@ -21,8 +21,23 @@ header {
     margin-bottom: -104px;
 }
 
-header .navbar {
+header .navbar.bg-translucent {
     background-color: rgba(0,0,0,0.07) !important;
+}
+
+header .navbar.bg-translucent a {
+    color: white !important;
+}
+
+header .navbar.bg-white a {
+    color: var(--global-black-1) !important;
+}
+
+header .navbar.bg-white .navbar-brand img {
+    filter: invert(1) grayscale(100%) brightness(200%)
+}
+
+header .navbar {
     border-bottom: none !important;
 }
 
