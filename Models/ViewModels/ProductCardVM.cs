@@ -11,6 +11,6 @@
         public decimal? MaxPrice { get; set; }
         public decimal? ListPrice { get; set; }
         public decimal? SalePrice { get; set; }
-        public List<List<Term>> SelectedTermsGrouped { get; set; }
+        public List<List<Term>> VariantTermsGrouped { get; set; }
     }
 }

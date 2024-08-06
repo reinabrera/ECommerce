@@ -9,8 +9,8 @@
     public class VariantVM
     {
         public int Id { get; set; }
-        public int? ListPrice { get; set; }
-        public int? SalePrice { get; set; }
+        public decimal? ListPrice { get; set; }
+        public decimal? SalePrice { get; set; }
         public int? Inventory { get; set; }
         public int? ImageId { get; set; }
     }

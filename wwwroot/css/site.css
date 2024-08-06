@@ -215,32 +215,27 @@ section.hero {
 /*********************************************************** */
 /** Homepage */
 
-.splide {
+#logo-carousel .splide {
     padding: 0 50px;
 }
 
-.splide__slide img {
+#logo-carousel .splide__slide img {
     width: 100%;
     height: auto;
 }
 
-/*.splide__track {
-    padding-left: 20px;
-    padding-right: 20px;
-}*/
-
-.splide__arrows button {
+#logo-carousel .splide__arrows button {
     background: none;
 }
 
-.splide__arrows button svg {
+#logo-carousel .splide__arrows button svg {
     opacity: 0.2;
 }
-.splide__arrow--prev {
+#logo-carousel .splide__arrow--prev {
     left: 0 !important;
 }
 
-.splide__arrow--next {
+#logo-carousel .splide__arrow--next {
     right: 0 !important;
 }
 
@@ -283,7 +278,7 @@ section.featured-product-listing {
     font-size: 0.9rem;
 }
 
-.product-card .product-details .attribute-color input[type="radio"] {
+.attributes-radios--wrapper .attribute-color input[type="radio"] {
     width: 20px;
     height: 20px;
     padding: 0;
@@ -295,12 +290,11 @@ section.featured-product-listing {
     outline: 1px solid transparent;
 }
 
-.product-card .product-details .attribute-color input[type="radio"]:checked {
+.attributes-radios--wrapper .attribute-color input[type="radio"]:checked {
     outline: 1px solid black !important;
 }
 
-
-.product-card .product-details .attribute-button input[type="radio"] {
+.attributes-radios--wrapper .attribute-button input[type="radio"] {
     position: absolute;
     opacity: 0;
     width: 100%;
@@ -309,8 +303,7 @@ section.featured-product-listing {
     cursor: pointer;
 }
 
-
-.product-card .product-details .attribute-button input[type="radio"] + label {
+.attributes-radios--wrapper .attribute-button input[type="radio"] + label {
     padding: 7px 13px;
     background-color: transparent;
     border: 1px solid var(--global-border-color);
@@ -319,8 +312,7 @@ section.featured-product-listing {
     line-height: 0.8rem;
 }
 
-
-.product-card .product-details .attribute-button input[type="radio"]:checked + label {
+.attributes-radios--wrapper .attribute-button input[type="radio"]:checked + label {
     border: 1px solid black;
 }
 
@@ -766,17 +758,21 @@ section#store #product-listing .products-wrapper {
     background-color: var(--global-bg-gray);
 }
 
-#add-to-cart-form input {
+#add-to-cart-form input.item-count {
     max-width: 60px;
     padding: 5px 5px 5px 15px;
     border: 1px solid var(--global-border-color);
 }
 
-#add-to-cart-form button {
+#add-to-cart-form button#submit-btn {
     background-color: var(--global-blue-2);
     text-align: center;
     width: 100%;
     max-width: 300px;
+}
+
+#add-to-cart-form #clear-form-btn {
+    font-size: 12px;
 }
 
 #details-page-content .category-list a {
@@ -824,4 +820,20 @@ section#store #product-listing .products-wrapper {
 
 #details-page-content #addtl-info-tab-pane table tr > th:first-child {
     width: 150px;
+}
+
+
+.product-gallery-carousel .thumbnail {
+    cursor: pointer;
+
+}
+
+.product-gallery-carousel .thumbnail.is-active img {
+    opacity: 1;
+}
+
+.product-gallery-carousel .thumbnail img {
+    width: 100%;
+    height: auto;
+    opacity: 0.5;
 }

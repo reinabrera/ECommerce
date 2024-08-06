@@ -4,6 +4,7 @@ using ECommerce2.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
+using System.Text.RegularExpressions;
 
 namespace ECommerce2.Areas.Customer.Controllers
 {
@@ -30,7 +31,8 @@ namespace ECommerce2.Areas.Customer.Controllers
             List<SpecialPromotion> SpecialPromotions = await _context.SpecialPromotions.Include(sp => sp.SiteMedia).ToListAsync();
 
             List<Product> FeaturedProducts = await _context.Products
-                .Include(p => p.SelectedTerms)
+                .Include(p => p.Variations)
+                    .ThenInclude(v => v.Terms)
                 .Where(p => p.IsFeatured).ToListAsync();
 
             List<ProductCardVM> productCards = new List<ProductCardVM>();
@@ -46,8 +48,9 @@ namespace ECommerce2.Areas.Customer.Controllers
                     FeaturedImage = await _context.ProductImages.FirstOrDefaultAsync(pi => pi.ProductId == product.Id && pi.IsFeatured == true),
                     ListPrice = product.ListPrice,
                     SalePrice = product.SalePrice,
-                    SelectedTermsGrouped = product.SelectedTerms.OrderBy(st => st.AttributeId).GroupBy(st => st.AttributeId).Select(g => g.ToList()).ToList(),
+                    VariantTermsGrouped = product.Variations.SelectMany(v => v.Terms).GroupBy(t => t.AttributeId).Select(g => g.Distinct().ToList()).ToList(),
                 };
+
 
                 int variantCount = await _context.Variations.Where(v => v.ProductId == product.Id).CountAsync();
 
@@ -112,7 +115,7 @@ namespace ECommerce2.Areas.Customer.Controllers
                 storeVM.BestSelling.Add(listItem);
             }
 
-            products = products.Include(p => p.Categories).Include(p => p.SelectedTerms);
+            products = products.Include(p => p.Categories);
 
             if (query != null)
             {
@@ -176,7 +179,12 @@ namespace ECommerce2.Areas.Customer.Controllers
             }
 
             /** Retrieve Product after Query **/
-            List<Product> productList = await products.Skip(skipCount).Take(pageSize).ToListAsync();
+            List<Product> productList = await products
+                .Include(p => p.Variations)
+                .ThenInclude(v => v.Terms)
+                .Skip(skipCount)
+                .Take(pageSize)
+                .ToListAsync();
 
             /** Categories **/
             List<Category> categories = await _context.Categories
@@ -210,7 +218,7 @@ namespace ECommerce2.Areas.Customer.Controllers
                     FeaturedImage = await _context.ProductImages.FirstOrDefaultAsync(pi => pi.ProductId == product.Id && pi.IsFeatured == true),
                     ListPrice = product.ListPrice,
                     SalePrice = product.SalePrice,
-                    SelectedTermsGrouped = product.SelectedTerms.OrderBy(st => st.AttributeId).GroupBy(st => st.AttributeId).Select(g => g.ToList()).ToList(),
+                    VariantTermsGrouped = product.Variations.SelectMany(v => v.Terms).GroupBy(t => t.AttributeId).Select(g => g.Distinct().ToList()).ToList(),
                 };
 
                 int variantCount = product.Variations.Count();

@@ -42,11 +42,10 @@ const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstra
 
 /** Logo Carousel */
 
-let splideEl = $('.splide');
+let splideEl = $('#logo-carousel .splide');
 
 if (splideEl.length > 0) {
-    console.log('hello');
-    var splide = new Splide('.splide', {
+    var splide = new Splide('#logo-carousel .splide', {
         type: 'loop',
         perPage: 6,
         perMove: 1,
@@ -277,7 +276,7 @@ function createTermInput(count, type) {
     return inputEl;
 }
 
-$('.attribute-radios input[type="radio"]').on('change', async function () {
+$('#product-card .attribute-radios input[type="radio"]').on('change', async function () {
     let parentEl = $(this).closest('.card');
     let attrWrapperEl = parentEl.find('.attributes-radios--wrapper');
     let radioGrpLen = attrWrapperEl.children().length;
@@ -289,16 +288,26 @@ $('.attribute-radios input[type="radio"]').on('change', async function () {
             termIds.push($(this).val())
         })
 
-        const data = await GetProductImageByVariant(parentEl.data('product-id'),termIds);
+        const data = await GetProductVariantData(parentEl.data('product-id'),termIds);
 
         if (data != null || data != undefined) {
-            parentEl.find('.img--wrapper img').attr('src', data);
+            parentEl.find('.img--wrapper img').attr('src', data.Image.FilePath);
+            parentEl.find('.product-pricing').empty();
+
+            let priceEl;
+            if (data.SalePrice == null) {
+                priceEl = `<span class="listing-price fw-600">$${data.ListPrice.toFixed(2) }</span>`;
+            } else {
+                priceEl = `<span class="listing-price fw-600 text-muted"><del>$${data.ListPrice.toFixed(2)}</del></span><span class="sale-price fw-600"> $${data.SalePrice.toFixed(2) }</span>`;
+            }
+
+            parentEl.find('.product-pricing').append(priceEl);
         }
     }
     
 })
 
-async function GetProductImageByVariant(productId, termIds) {
+async function GetProductVariantData(productId, termIds) {
 
     const formData = new FormData();
 
@@ -309,7 +318,7 @@ async function GetProductImageByVariant(productId, termIds) {
 
     try {
 
-        const response = await fetch('/Customer/Products/GetProductImageByVariant', {
+        const response = await fetch('/Customer/Products/GetProductVariantData', {
             method: 'POST',
             body: formData
         });
@@ -317,7 +326,6 @@ async function GetProductImageByVariant(productId, termIds) {
         const result = await response.json();
 
         if (result.status = "Success") {
-            console.log(result);
             return JSON.parse(result.data);
         }
 
@@ -332,8 +340,8 @@ $(document).ready(function () {
     const dualRangeSlider = $('.dual-range-slider--wrapper');
 
     if (dualRangeSlider.length > 0) {
-        //slideOne();
-        //slideTwo();
+        slideOne();
+        slideTwo();
     }
 
     const filterSelect = $('#filterSelect');
@@ -355,38 +363,38 @@ $(document).ready(function () {
 });
 
 
-//let sliderOne = document.getElementById("slider-1");
-//let sliderTwo = document.getElementById("slider-2");
-//let displayValOne = document.getElementById("sliderMin");
-//let displayValTwo = document.getElementById("sliderMax");
-//let minGap = 1;
-//let sliderTrack = document.querySelector(".slider-track");
-//let sliderMinValue = document.getElementById("slider-1").min;
-//let sliderMaxValue = document.getElementById("slider-1").max;
+let sliderOne = document.getElementById("slider-1");
+let sliderTwo = document.getElementById("slider-2");
+let displayValOne = document.getElementById("sliderMin");
+let displayValTwo = document.getElementById("sliderMax");
+let minGap = 1;
+let sliderTrack = document.querySelector(".slider-track");
+let sliderMinValue = document.getElementById("slider-1")?.min;
+let sliderMaxValue = document.getElementById("slider-1")?.max;
 
-//function slideOne() {
-//    if (parseInt(sliderTwo.value) - parseInt(sliderOne.value) <= minGap) {
-//        sliderOne.value = parseInt(sliderTwo.value) - minGap;
-//    }
-//    displayValOne.textContent = "$" + sliderOne.value + " – ";
-//    fillColor();
-//}
-//function slideTwo() {
-//    if (parseInt(sliderTwo.value) - parseInt(sliderOne.value) <= minGap) {
-//        sliderTwo.value = parseInt(sliderOne.value) + minGap;
-//    }
-//    displayValTwo.textContent = "$" + sliderTwo.value;
-//    fillColor();
-//}
-//function fillColor() {
-//    percentMin = ((sliderOne.value - sliderMinValue ) / (sliderMaxValue - sliderMinValue)) * 100;
-//    percentMax = ((sliderTwo.value - sliderMinValue) / (sliderMaxValue - sliderMinValue)) * 100;
+function slideOne() {
+    if (parseInt(sliderTwo.value) - parseInt(sliderOne.value) <= minGap) {
+        sliderOne.value = parseInt(sliderTwo.value) - minGap;
+    }
+    displayValOne.textContent = "$" + sliderOne.value + " – ";
+    fillColor();
+}
+function slideTwo() {
+    if (parseInt(sliderTwo.value) - parseInt(sliderOne.value) <= minGap) {
+        sliderTwo.value = parseInt(sliderOne.value) + minGap;
+    }
+    displayValTwo.textContent = "$" + sliderTwo.value;
+    fillColor();
+}
+function fillColor() {
+    percentMin = ((sliderOne.value - sliderMinValue ) / (sliderMaxValue - sliderMinValue)) * 100;
+    percentMax = ((sliderTwo.value - sliderMinValue) / (sliderMaxValue - sliderMinValue)) * 100;
 
-//    if (isNaN(percentMin)) {
-//        $('.dual-range-slider--wrapper').addClass('slider-disabled');
-//    }
-//    sliderTrack.style.background = `linear-gradient(to right, #ebebf1 ${percentMin}% , #000000 ${percentMin}% , #000000 ${percentMax}%, #ebebf1 ${percentMax}%)`;
-//}
+    if (isNaN(percentMin)) {
+        $('.dual-range-slider--wrapper').addClass('slider-disabled');
+    }
+    sliderTrack.style.background = `linear-gradient(to right, #ebebf1 ${percentMin}% , #000000 ${percentMin}% , #000000 ${percentMax}%, #ebebf1 ${percentMax}%)`;
+}
 
 $('#filterSelect').on('change', function () {
     const orderByVal = $(this).find(':selected').val();

@@ -13,7 +13,9 @@
         public decimal? MinPrice { get; init; }
         public decimal? MaxPrice { get; init; }
         public decimal? ShippingFee { get; init; }
-        public List<Variant>? Variant { get; init; }
+        public List<ProductImageVM> Images { get; set; }
+        public List<AdditionalDetailVM> AdditionalDetails { get; set; }
+        public List<List<Term>> VariantTermsGrouped { get; set; }
         public List<ProductCardVM>? RelatedProducts { get; init; }
     }
 }

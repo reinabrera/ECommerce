@@ -917,8 +917,8 @@ function createVariationEl(index, variationId, terms, listPrice, salePrice, inve
 
                     <hr />
                     <div class="input-group">
-                        <input type="number" class="form-control list-price" placeholder="Listing Price" ${listPrice != null && "value=" + listPrice} />
-                        <input type="number" class="form-control sale-price" placeholder="Sale Price" ${salePrice != null && "value=" + salePrice} />
+                        <input type="number" step=".01" class="form-control list-price" placeholder="Listing Price" ${listPrice != null && "value=" + listPrice} />
+                        <input type="number" step=".01" class="form-control sale-price" placeholder="Sale Price" ${salePrice != null && "value=" + salePrice} />
                         <input type="number" class="form-control inventory" placeholder="Inventory" ${inventory != null && "value=" + inventory} />
                     </div>
                 </div>
@@ -942,6 +942,8 @@ saveVariationBtn.on('click', async function () {
     let data = { "ProductId": productId };
 
     data.Variants = BindProductVariations(variationAccordion.children());
+
+    console.log(data);
 
     let updatedVariation;
 

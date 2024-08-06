@@ -1,0 +1,38 @@
+﻿@model List<List<Term>>
+
+<div class="mt-2 attributes-radios--wrapper">
+    @{
+        int attrIndex = 0;
+    }
+    @foreach (List<Term> termGroup in @Model)
+    {
+        @if (termGroup.FirstOrDefault().ColorValue != null)
+        {
+            <div class="row attribute-radios attribute-color gx-2 @(attrIndex == 1 ? "mt-2" : "")">
+                @foreach (Term item in termGroup)
+                {
+                    <div class="col-auto">
+                        <input type="radio" name="color" value="@item.Id" style="background-color: @item.ColorValue;" data-bs-toggle="tooltip" data-bs-placement="top"
+                               data-bs-custom-class="custom-tooltip"
+                               data-bs-title="@item.Name">
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="row attribute-radios attribute-button gx-2 @(attrIndex == 1 ? "mt-2" : "")">
+                @foreach (Term item in termGroup)
+                {
+                    <div class="col-auto">
+                        <div class="position-relative">
+                            <input type="radio" name="size" value="@item.Id">
+                            <label for="size" class="rounded">@item.Name</label><br>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        attrIndex++;
+    }
+</div>

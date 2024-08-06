@@ -4,6 +4,8 @@ using ECommerce2.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using System.Drawing;
+using System.Linq;
 
 
 namespace ECommerce2.Areas.Customer.Controllers
@@ -21,18 +23,19 @@ namespace ECommerce2.Areas.Customer.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> GetProductImageByVariant(Guid productId, List<int> termId)
+        public async Task<IActionResult> GetProductVariantData(Guid productId, List<int> termId)
         {
             termId = termId.OrderBy(x => x).ToList();
 
             string concatenatedTermIds = string.Join(", ", termId);
 
-            string imgUrl = await _context.Variations
+            Variant variantData = await _context.Variations
                 .Include(v => v.Image)
+                .Include(v => v.Terms)
                 .Where(v => v.ProductId == productId && v.TermsConcatenated == concatenatedTermIds)
-                .Select(v => v.Image.FilePath).FirstOrDefaultAsync();
+                .FirstOrDefaultAsync();
 
-            return Json(new { status = "Success", data = JsonConvert.SerializeObject(imgUrl) });
+            return Json(new { status = "Success", data = JsonConvert.SerializeObject(variantData) });
         }
 
         public async Task<IActionResult> Details(string id)
@@ -44,13 +47,21 @@ namespace ECommerce2.Areas.Customer.Controllers
 
             Product product = await _context.Products
                 .Include(p => p.Categories)
+                .Include(p => p.SelectedTerms)
+                .Include(p => p.Variations)
+                    .ThenInclude(v => v.Image)
+                 .Include(p => p.Variations)
+                    .ThenInclude(v => v.Terms)
+                .Include(v => v.Attributes)
+                .Include(v => v.AdditionalDetails)
+                .Include(v => v.AdditionalImages)
+                    .ThenInclude(ai => ai.Image)
+                .Include(v => v.ProductImages)
                 .FirstOrDefaultAsync(p => p.Slug == id);
-
-            int variantCount = await _context.Variations.Where(v => v.ProductId == product.Id).CountAsync();
 
             decimal? minPrice = null;
             decimal? maxPrice = null;
-            if (variantCount > 1 && product.MinPrice != product.MaxPrice)
+            if (product.Variations.Count > 1 && product.MinPrice != product.MaxPrice)
             {
                 minPrice = product.MinPrice;
                 maxPrice = product.MaxPrice;
@@ -69,13 +80,66 @@ namespace ECommerce2.Areas.Customer.Controllers
                 MaxPrice = maxPrice,
                 ShippingFee = product.ShippingFee,
                 Inventory = (int)product.Inventory,
+                Images = new List<ProductImageVM>(),
+                AdditionalDetails = new List<AdditionalDetailVM>(),
                 RelatedProducts = new List<ProductCardVM>(),
+                VariantTermsGrouped = product.Variations.SelectMany(v => v.Terms).GroupBy(t => t.AttributeId).Select(g => g.Distinct().ToList()).ToList()
             };
+
+            /** Product Images **/
+
+            List<ProductImage> distinctImgs = product.Variations.Select(v => v.Image)
+                .Concat(product.AdditionalImages.Select(v => v.Image))
+                .Concat(product.ProductImages.Where(pi => pi.IsFeatured == true))
+                .Distinct().OrderByDescending(i => i.IsFeatured).ToList();
+
+            foreach (ProductImage item in distinctImgs)
+            {
+                ProductImageVM itemVM = new ProductImageVM()
+                {
+                    Id = item.Id,
+                    FileName = item.FileName,
+                    FilePath = item.FilePath,
+                };
+                productDetailsVM.Images.Add(itemVM);
+            }
+
+            foreach (AdditionalDetail additionalDetail in product.AdditionalDetails) 
+            {
+                AdditionalDetailVM item = new AdditionalDetailVM()
+                {
+                    Name = additionalDetail.Name,
+                    Value = additionalDetail.Value,
+                };
+                productDetailsVM.AdditionalDetails.Add(item);
+            }
+
+            if (product.SelectedTerms.Any())
+            {
+                List<List<Term>> groupedTerms = product.SelectedTerms.GroupBy(st => st.AttributeId).Select(g => g.ToList()).ToList();
+
+                int attrId = 0;
+
+                foreach (List<Term> grp in groupedTerms)
+                {
+                    string attrName = product.Attributes.Where(a => a.Id == grp[0].AttributeId).Select(a => a.Name).FirstOrDefault();
+
+                    if (attrName != null)
+                    {
+                        AdditionalDetailVM item = new AdditionalDetailVM()
+                        {
+                            Name = attrName,
+                            Value = string.Join(", ", grp.Select(t => t.Name)),
+                        };
+                        productDetailsVM.AdditionalDetails.Add(item);
+                    }
+                }
+            }
 
             List<Product> relatedProducts = await _context.Products
                 .Include(p => p.ProductImages.Where(pi => pi.IsFeatured == true))
-                .Include(p => p.SelectedTerms)
-                .Include(p => p.Categories)
+                .Include(p => p.Variations)
+                    .ThenInclude(v => v.Terms)
                 .Where(p => p.Categories.Any(pc => product.Categories.Contains(pc)))
                 .OrderBy(p => Guid.NewGuid())
                 .Take(3)
@@ -94,7 +158,7 @@ namespace ECommerce2.Areas.Customer.Controllers
                         Category = await _context.ProductCategories.Where(c => c.ProductId == relatedProduct.Id).OrderBy(c => c.Order).Select(c => c.Category.Name).FirstOrDefaultAsync(),
                         ListPrice = relatedProduct.ListPrice,
                         SalePrice = relatedProduct.SalePrice,
-                        SelectedTermsGrouped = relatedProduct.SelectedTerms.GroupBy(st => st.AttributeId).Select(g => g.ToList()).ToList()
+                        VariantTermsGrouped = relatedProduct.Variations.SelectMany(v => v.Terms).GroupBy(t => t.AttributeId).Select(g => g.Distinct().ToList()).ToList(),
                     };
 
                     int vc = await _context.Variations.Where(v => v.ProductId == relatedProduct.Id).CountAsync();

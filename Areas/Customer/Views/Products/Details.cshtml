@@ -12,9 +12,39 @@
 
                 <div class="row gx-5">
                     <div class="col-6">
-                        <div class="img--wrapper">
+                        @* <div class="img--wrapper">
                             <img src="https://websitedemos.net/brandstore-02/wp-content/uploads/sites/150/2017/12/product-hoodie1.jpg" class="w-100" />
+                        </div> *@
+
+                        <div class="product-gallery-carousel">
+                            <section id="main-carousel" class="splide" aria-label="Products Gallery">
+                                <div class="splide__track">
+                                    <ul class="splide__list">
+                                        @{int imgIndex = 0;}
+                                        @foreach (ProductImageVM image in Model.Images)
+                                        {
+                                            <li class="splide__slide" data-index="@imgIndex" data-img-id="@image.Id">
+                                                <img src="@image.FilePath" class="w-100" alt="@image.FileName">
+                                            </li>
+                                            imgIndex++;
+                                        }
+                                    </ul>
+                                </div>
+                            </section>
+
+                            <ul id="thumbnails" class="thumbnails row row-cols-4 gx-3 mt-3 list-unstyled">
+                                @foreach (ProductImageVM image in Model.Images)
+                                {
+                                    <div class="col">
+                                        <li class="thumbnail" data-thumbnail-img-id="@image.Id">
+                                            <img src="@image.FilePath" alt="@image.FileName">
+                                        </li>
+                                    </div>
+                                    
+                                }
+                            </ul>
                         </div>
+                        
                     </div>
                     <div class="col-6">
                         <div class="details-breadcrumbs">
@@ -47,7 +77,7 @@
                                     
                                     @if (Model.ShippingFee == null)
                                     {
-                                        <span>+ Free Shipping</span>
+                                        <span class="shipping">+ Free Shipping</span>
                                     }
                                 </div>
 
@@ -55,10 +85,17 @@
                                     <p>@Model.Overview</p>
                                 </div>
 
+
                                 <form id="add-to-cart-form">
+                                    <input type="hidden" asp-for="ProductId" />
+                                    @Html.Partial("_VariantRadios", Model.VariantTermsGrouped)
+                                    <button type="button" class="btn text-muted p-0" id="clear-form-btn" style="visibility: hidden">CLEAR</button>
+                                    <hr />
+                                    <div class="variant-price my-3" style="display: none;">
+                                    </div>
                                     <div class="d-flex">
-                                        <input type="number" min="1" max="@Model.Inventory" value="1" class="text-muted" />
-                                        <button type="submit" class="btn btn-blue ms-3 fw-600">ADD TO CART</button>
+                                        <input type="number" min="1" max="@Model.Inventory" value="1" class="text-muted item-count" />
+                                        <button type="submit" class="btn btn-blue ms-3 fw-600" id="submit-btn" disabled>ADD TO CART</button>
                                     </div>
                                 </form>
                                 <hr />
@@ -99,14 +136,18 @@
                         </div>
                         <div class="tab-pane fade py-3" id="addtl-info-tab-pane" role="tabpanel" aria-labelledby="addtl-info-tab" tabindex="0">
                             <table class="table table-bordered">
-                                <tr>
-                                    <th>
-                                        Color
-                                    </th>
-                                    <th>
-                                        Black
-                                    </th>
-                                </tr>
+                                @foreach (AdditionalDetailVM item in Model.AdditionalDetails)
+                                {
+                                    <tr>
+                                        <th>
+                                            @item.Name
+                                        </th>
+                                        <th>
+                                            @item.Value
+                                        </th>
+                                    </tr>
+                                }
+                                
                             </table>
                         </div>
                         <div class="tab-pane fade py-3" id="reviews-tab-pane" role="tabpanel" aria-labelledby="reviews-tab" tabindex="0">
@@ -140,6 +181,104 @@
                 "ckeditor5/": "https://cdn.ckeditor.com/ckeditor5/42.0.0/"
             }
         }
+    </script>
+    <script>
+        var splide = new Splide('#main-carousel', {
+            perPage: 1,
+            pagination: false,
+            arrows: false,
+        });
+
+        var thumbnails = document.getElementsByClassName('thumbnail');
+        var current;
+
+        for (var i = 0; i < thumbnails.length; i++) {
+            initThumbnail(thumbnails[i], i);
+        }
+
+        function initThumbnail(thumbnail, index) {
+            thumbnail.addEventListener('click', function () {
+                splide.go(index);
+            });
+        }
+
+        splide.on('mounted move', function () {
+            var thumbnail = thumbnails[splide.index];
+
+            if (thumbnail) {
+                if (current) {
+                    current.classList.remove('is-active');
+                }
+
+                thumbnail.classList.add('is-active');
+                current = thumbnail;
+            }
+        });
+
+        splide.mount();
+
+        const addToCartClearBtn = $('#clear-form-btn');
+
+        $('#add-to-cart-form .attribute-radios input[type="radio"]').on('change', async function () {
+            const productId = $('#ProductId').val();
+            let attrWrapperEl = $(this).closest('.attributes-radios--wrapper');
+            let radioGrpLen = attrWrapperEl.children().length;
+            let checked = attrWrapperEl.find('input[type="radio"]:checked');
+            const submitBtn = $("#add-to-cart-form").find('#submit-btn');
+
+            if (checked.length == radioGrpLen) {
+
+                addToCartClearBtn.css('visibility', 'visible');
+                submitBtn.removeAttr('disabled');
+
+                const termIds = [];
+                checked.each(function () {
+                    termIds.push($(this).val())
+                })
+
+                const data = await GetProductVariantData(productId, termIds);
+
+                if (data != null) {
+                    const imgCarouselIndex = $(`li[data-img-id="${data.ImageId}"]`).data('index');
+                    const variantPriceEl = $('.variant-price');
+
+                    variantPriceEl.empty();
+
+                    if (data.SalePrice == null) {
+                        priceEl = `<span class="listing-price fs-4 fw-600">$${data.ListPrice.toFixed(2)}</span>`;
+                    } else {
+                        priceEl = `<span class="listing-price fs-4 fw-600 text-muted"><del>$${data.ListPrice.toFixed(2)}</del></span><span class="sale-price fs-4 fw-600"> $${data.SalePrice.toFixed(2)}</span>`;
+                    }
+
+                    variantPriceEl.append(priceEl);
+
+                    if (variantPriceEl.is(":hidden") == true) {
+                        variantPriceEl.slideDown();
+                    }
+
+                    splide.go(imgCarouselIndex);
+                }
+            } else {
+                if (submitBtn.prop('disabled') == true) {
+                    submitBtn.prop('disabled', true);
+                }
+            }
+        })
+
+        addToCartClearBtn.on('click', function () {
+            const variantPriceEl = $('.variant-price');
+
+            variantPriceEl.empty();
+            variantPriceEl.hide();
+
+            $('#add-to-cart-form .attribute-radios input[type="radio"]:checked').prop('checked', false);
+            $('#add-to-cart-form #submit-btn').prop('disabled', true);
+
+            $(this).css('visibility', 'hidden');
+        });
+
+
+
     </script>
     <script type="module" src="~/js/product-cke.js"></script>
 }
