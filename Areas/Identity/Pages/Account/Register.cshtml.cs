@@ -84,18 +84,6 @@ namespace ECommerce2.Areas.Identity.Pages.Account
             [Display(Name = "Email")]
             public string Email { get; set; }
 
-            [Required]
-
-            public string Address { get; set; }
-            [Required]
-
-            public string City { get; set; }
-            [Required]
-
-            public string Province { get; set; }
-            [Display(Name ="Postal Code")]
-            public string PostalCode { get; set; }
-
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
@@ -137,19 +125,15 @@ namespace ECommerce2.Areas.Identity.Pages.Account
             {
                 var user = CreateUser();
 
-                user.Address = Input.Address;
-                user.City = Input.City;
-                user.Province = Input.Province;
-                user.PostalCode = Input.PostalCode;
-
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
                 var result = await _userManager.CreateAsync(user, Input.Password);
-                await _userManager.AddToRoleAsync(user, UserRoles.Admin);
 
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
+
+                    await _userManager.AddToRoleAsync(user, UserRoles.Admin);
 
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);

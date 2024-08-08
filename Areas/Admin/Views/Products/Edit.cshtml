@@ -2,7 +2,8 @@
 
 @{
     ViewData["Title"] = "Edit";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["ActivePage"] = DashboardPages.Products;
+    Layout = "~/Areas/Admin/Views/_Layout.cshtml";
 }
 
 @section CssOverrides {
@@ -10,7 +11,7 @@
     <link rel="stylesheet" href="~/css//ckeditor.css" />
 }
 
-<div class="container container-fix">
+<div>
     <h1>Edit</h1>
 
     <h4>Product</h4>

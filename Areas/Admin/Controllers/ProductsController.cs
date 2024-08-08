@@ -20,6 +20,7 @@ using Newtonsoft.Json;
 namespace ECommerce2.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "Admin")]
     public class ProductsController : Controller
     {
         private readonly ApplicationDbContext _context;

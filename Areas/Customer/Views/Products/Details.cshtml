@@ -12,10 +12,6 @@
 
                 <div class="row gx-5">
                     <div class="col-6">
-                        @* <div class="img--wrapper">
-                            <img src="https://websitedemos.net/brandstore-02/wp-content/uploads/sites/150/2017/12/product-hoodie1.jpg" class="w-100" />
-                        </div> *@
-
                         <div class="product-gallery-carousel">
                             <section id="main-carousel" class="splide" aria-label="Products Gallery">
                                 <div class="splide__track">
@@ -37,16 +33,14 @@
                                 <ul id="thumbnails" class="thumbnails row row-cols-4 gx-3 mt-3 list-unstyled">
                                     @foreach (ProductImageVM image in Model.Images)
                                     {
-                                        <div class="col">
-                                        <li class="thumbnail" data-thumbnail-img-id="@image.Id">
-                                            <img src="@image.FilePath" alt="@image.FileName">
+                                        <li class="col">
+                                            <div class="thumbnail" data-thumbnail-img-id="@image.Id">
+                                                <img src="@image.FilePath" alt="@image.FileName">
+                                            </div>
                                         </li>
-                                    </div>
-
                                     }
                                 </ul>
                             }
-                            
                         </div>
                         
                     </div>
@@ -90,16 +84,20 @@
                                 </div>
 
 
-                                <form id="add-to-cart-form">
+                                <form id="add-to-cart-form" asp-controller="AddToCart" asp-action="Add">
                                     <input type="hidden" asp-for="ProductId" />
+                                    <input type="hidden" id="VariantId" name="VariantId" required />
+
                                     @Html.Partial("_VariantRadios", Model.VariantTermsGrouped)
+
                                     <button type="button" class="btn text-muted p-0" id="clear-form-btn" style="visibility: hidden">CLEAR</button>
                                     <hr />
-                                    <div class="variant-price my-3" style="display: none;">
-                                    </div>
+
+                                    <div class="variant-price my-3" style="display: none;"></div>
+
                                     <div class="d-flex">
-                                        <input type="number" min="1" max="@Model.Inventory" value="1" class="text-muted item-count" />
-                                        <button type="submit" class="btn btn-blue ms-3 fw-600" id="submit-btn" disabled>ADD TO CART</button>
+                                        <input type="number" min="1" max="@Model.Inventory" value="1" name="itemCount" class="text-muted item-count" />
+                                        <button type="submit" class="btn btn-blue ms-3 fw-600" id="submit-btn" @(Model.VariantTermsGrouped.Any() ? "disabled" : "")>ADD TO CART</button>
                                     </div>
                                 </form>
                                 <hr />
@@ -245,6 +243,7 @@
                 if (data != null) {
                     const imgCarouselIndex = $(`li[data-img-id="${data.ImageId}"]`).data('index');
                     const variantPriceEl = $('.variant-price');
+                    const variantIdField = $('#VariantId');
 
                     variantPriceEl.empty();
 
@@ -260,6 +259,8 @@
                         variantPriceEl.slideDown();
                     }
 
+                    variantIdField.val(data.Id);
+
                     splide.go(imgCarouselIndex);
                 }
             } else {
@@ -271,9 +272,11 @@
 
         addToCartClearBtn.on('click', function () {
             const variantPriceEl = $('.variant-price');
+            const variantIdField = $('#VariantId');
 
             variantPriceEl.empty();
             variantPriceEl.hide();
+            variantIdField.val("");
 
             $('#add-to-cart-form .attribute-radios input[type="radio"]:checked').prop('checked', false);
             $('#add-to-cart-form #submit-btn').prop('disabled', true);

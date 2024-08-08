@@ -2,7 +2,8 @@
 
 @{
     ViewData["Title"] = "Create";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["ActivePage"] = DashboardPages.Partnerships;
+    Layout = "~/Areas/Admin/Views/_Layout.cshtml";
 }
 
 @{
@@ -12,7 +13,7 @@
     };
 }
 
-<div class="container container-fix">
+<div>
     <h1>Create</h1>
 
     <h4>Partnership</h4>

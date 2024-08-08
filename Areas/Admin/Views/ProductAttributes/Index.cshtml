@@ -2,10 +2,11 @@
 
 @{
     ViewData["Title"] = "Index";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["ActivePage"] = DashboardPages.Attributes;
+    Layout = "~/Areas/Admin/Views/_Layout.cshtml";
 }
-<div class="container container-fix">
-    <h1>Index</h1>
+<div>
+    <h1>Attributes</h1>
 
     <p>
         <a asp-action="Create">Create New</a>

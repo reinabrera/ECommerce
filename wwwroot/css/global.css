@@ -55,6 +55,14 @@ html {
     transition: 0.3s all;
 }
 
+.btn-light-blue {
+    background-color: var(--global-blue-2);
+}
+
+.btn-light-blue:hover, .btn-light-blue:focus-visible, .btn-light-blue:active {
+    background-color: var(--global-blue-1) !important;
+}
+
 .btn-blue {
     background-color: var(--global-blue-1);
     color: white !important;
@@ -64,6 +72,12 @@ html {
     background-color: black;
     color: white;
     border-color: black;
+}
+
+/** Container Fix from Header */
+
+.container-fix {
+    padding-top: 104px;
 }
 
 .fw-600 {

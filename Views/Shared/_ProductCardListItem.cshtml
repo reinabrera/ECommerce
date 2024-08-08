@@ -6,11 +6,11 @@
         <div class="row g-0">
             <div class="col-md-3 position-relative">
                 <img src="@Model.Image.FilePath.ToString()" class="img-fluid rounded-start" alt="...">
-                <a href="#" class="stretched-link"></a>
+                <a asp-controller="Products" asp-action="Details" asp-route-id="@Model.Slug" class="stretched-link"></a>
             </div>
             <div class="col-md-9">
                 <div class="card-body p-0 ps-3">
-                    <a href="#" class="card-title text-dark text-decoration-none">@Model.Name</a>
+                    <a asp-controller="Products" asp-action="Details" asp-route-id="@Model.Slug" class="card-title text-dark text-decoration-none">@Model.Name</a>
                     <div class="star-rating d-flex">
                         <i class="bi bi-star"></i>
                         <i class="bi bi-star"></i>

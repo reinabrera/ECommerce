@@ -38,28 +38,3 @@ button.accept-policy {
   font-size: 1rem;
   line-height: inherit;
 }
-
-.footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  white-space: nowrap;
-}
-
-
-footer .footer-links ul li a {
-    color: var(--global-text-muted);
-    text-decoration: none;
-}
-
-footer .primary-footer .brand-img--wrapper img {
-    max-width: 90px;
-}
-
-footer .social-links ul li {
-    margin-left: 2rem;
-}
-
-footer .social-links ul li a:hover i {
-    color: var(--global-blue-1) !important;
-}

@@ -16,5 +16,6 @@ namespace ECommerce2.Models
         public int? ImageId { get; set; }
         public ProductImage? Image { get; set; }
         public string TermsConcatenated { get; set; }
+        public ICollection<CartItem>? CartItems { get; set; }
     }
 }

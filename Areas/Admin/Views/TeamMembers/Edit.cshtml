@@ -2,7 +2,8 @@
 
 @{
     ViewData["Title"] = "Edit";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["ActivePage"] = DashboardPages.TeamMembers;
+    Layout = "~/Areas/Admin/Views/_Layout.cshtml";
 }
 
 @{
@@ -12,7 +13,7 @@
         Image = Model.Image
     };
 }
-<div class="container container-fix">
+<div>
     <h1>Edit</h1>
 
     <h4>TeamMember</h4>

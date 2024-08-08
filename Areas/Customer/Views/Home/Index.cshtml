@@ -54,9 +54,9 @@
             {
                 SpecialPromotion item = Model.SpecialPromotions[i];
                 <div class="col-4">
-                    <div class="card text-bg-dark position-relative">
+                    <div class="card text-bg-dark border-0 rounded-0 position-relative">
                         <div class="img-color-overlay position-absolute w-100 h-100"></div>
-                        <img src="@(item.SiteMedia != null ? item.SiteMedia.FilePath : "")" class="card-img" alt="...">
+                        <img src="@(item.SiteMedia != null ? item.SiteMedia.FilePath : "")" class="card-img rounded-0" alt="...">
                         <div class="card-img-overlay d-flex">
                             <div class="card-content mt-auto  text-light p-4">
                                 <h5 class="card-title fs-4">@item.Title</h5>

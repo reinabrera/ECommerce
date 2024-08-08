@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace ECommerce2.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "Admin")]
     public class TeamMembersController : Controller
     {
         private readonly ApplicationDbContext _context;

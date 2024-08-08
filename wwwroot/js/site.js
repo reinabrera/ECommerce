@@ -276,7 +276,7 @@ function createTermInput(count, type) {
     return inputEl;
 }
 
-$('#product-card .attribute-radios input[type="radio"]').on('change', async function () {
+$('.product-card .attribute-radios input[type="radio"]').on('change', async function () {
     let parentEl = $(this).closest('.card');
     let attrWrapperEl = parentEl.find('.attributes-radios--wrapper');
     let radioGrpLen = attrWrapperEl.children().length;

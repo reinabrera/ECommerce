@@ -2,15 +2,16 @@
 
 @{
     ViewData["Title"] = "Index";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["ActivePage"] = DashboardPages.Products;
+    Layout = "~/Areas/Admin/Views/_Layout.cshtml";
 }
 
 @section CssOverrides {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.css" integrity="sha512-oe8OpYjBaDWPt2VmSFR+qYOdnTjeV9QPLJUeqZyprDEQvQLJ9C5PCFclxwNuvb/GQgQngdCXzKSFltuHD3eCxA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 }
 
-<div class="container container-fix">
-    <h1>Index</h1>
+<div>
+    <h1>Products</h1>
 
     <div class="d-flex justify-content-between align-items-center mt-2">
         <div>

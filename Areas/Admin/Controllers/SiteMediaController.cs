@@ -11,6 +11,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 namespace ECommerce2.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "Admin")]
     public class SiteMediaController : Controller
     {
         private readonly ApplicationDbContext _context;

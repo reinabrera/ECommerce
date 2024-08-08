@@ -14,7 +14,7 @@
                     <div class="col-auto">
                         <input type="radio" name="color" value="@item.Id" style="background-color: @item.ColorValue;" data-bs-toggle="tooltip" data-bs-placement="top"
                                data-bs-custom-class="custom-tooltip"
-                               data-bs-title="@item.Name">
+                               data-bs-title="@item.Name" required>
                     </div>
                 }
             </div>
@@ -26,7 +26,7 @@
                 {
                     <div class="col-auto">
                         <div class="position-relative">
-                            <input type="radio" name="size" value="@item.Id">
+                            <input type="radio" name="size" value="@item.Id" required>
                             <label for="size" class="rounded">@item.Name</label><br>
                         </div>
                     </div>

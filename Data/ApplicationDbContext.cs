@@ -28,6 +28,7 @@ namespace ECommerce2.Data
         public DbSet<ProductAttributeJoin> ProductAttributeJoinTable { get; set; }
         public DbSet<ProductTermJoin> ProductTermJoinTable { get; set; }
         public DbSet<TeamMember> Team { get; set; }
+        public DbSet<CartItem> CartItems { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -107,6 +108,26 @@ namespace ECommerce2.Data
                 .WithMany()
                 .HasForeignKey(tm => tm.ImageId)
                 .OnDelete(DeleteBehavior.SetNull);
+
+            builder.Entity<CartItem>()
+                .HasOne(ci => ci.User)
+                .WithMany(ci => ci.CartItems)
+                .HasForeignKey(ci => ci.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<CartItem>()
+                .HasOne(ci => ci.Product)
+                .WithMany()
+                .HasForeignKey(ci => ci.ProductId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+
+            /** NOTE: Create a function for client casade delete **/
+            builder.Entity<CartItem>()
+                .HasOne(ci => ci.Variant)
+                .WithMany(ci => ci.CartItems)
+                .HasForeignKey(ci => ci.VariantId)
+                .OnDelete(DeleteBehavior.ClientCascade);
 
             builder.Seed();
         }

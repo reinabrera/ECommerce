@@ -1,0 +1,56 @@
+﻿@model ECommerce2.Models.ViewModels.CartItemVM
+
+@{
+    string concatenatedTerms = Model.Variant != null ? " - " + string.Join(" | ", Model.Variant.Terms.Select(t => t.Name)) : "";
+}
+<li class="cart-item">
+    <div class="row gx-3">
+        <div class="col-auto">
+            <div class="img--wrapper position-relative">
+                @if (Model.Variant != null)
+                {
+                    <img src="@Model.Variant.Image.FilePath" />
+                } else
+                {
+                    <img src="@Model.Product.ProductImages.FirstOrDefault().FilePath" />
+                }
+                <a asp-area="Customer" asp-controller="Home" asp-action="Store" asp-route-id="@Model.Product.Slug" class="stretched-link"></a>
+            </div>
+        </div>
+        <div class="col d-flex align-items-center">
+            <div class="details w-100">
+                <div class="d-flex justify-content-between">
+                    <a href="#" class="text-decoration-none text-dark">@Model.Product.Name @concatenatedTerms
+                    
+                    </a>
+                    <button type="button" class="btn p-0">
+                        <i class="bi bi-x-circle"></i>
+                    </button>
+                </div>
+                <span>@Model.ItemCount x
+                    @if (Model.Variant != null)
+                    {
+                        @if (Model.Variant.SalePrice != null)
+                        {
+                            <del class="text-muted">@Model.Variant.ListPrice</del>
+                            @Model.Variant.SalePrice
+                        } else
+                        {
+                            @Model.Variant.ListPrice
+                        }
+                    } else
+                    {
+                        @if (Model.Product.SalePrice != null)
+                        {
+                            <del class="text-muted">@Model.Product.ListPrice</del>
+                            @Model.Product.SalePrice
+                        } else
+                        {
+                            @Model.Product.ListPrice
+                        }
+                    }
+                </span>
+            </div>
+        </div>
+    </div>
+</li>

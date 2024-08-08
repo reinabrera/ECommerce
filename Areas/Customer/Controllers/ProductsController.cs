@@ -13,12 +13,10 @@ namespace ECommerce2.Areas.Customer.Controllers
     [Area("Customer")]
     public class ProductsController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
         private readonly ApplicationDbContext _context;
 
-        public ProductsController(ILogger<HomeController> logger, ApplicationDbContext context)
+        public ProductsController(ApplicationDbContext context)
         {
-            _logger = logger;
             _context = context;
         }
 
@@ -58,6 +56,12 @@ namespace ECommerce2.Areas.Customer.Controllers
                     .ThenInclude(ai => ai.Image)
                 .Include(v => v.ProductImages)
                 .FirstOrDefaultAsync(p => p.Slug == id);
+
+            if (product == null)
+            {
+                return NotFound();
+            }
+
 
             decimal? minPrice = null;
             decimal? maxPrice = null;
@@ -174,6 +178,5 @@ namespace ECommerce2.Areas.Customer.Controllers
 
             return View(productDetailsVM);
         }
-
     }
 }
