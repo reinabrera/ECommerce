@@ -423,3 +423,51 @@ $('#filterSelect').on('change', function () {
 
     selectActionEl[0].click();
 })
+
+
+async function removeCartItem(id) {
+    const formData = new FormData();
+
+    formData.append("cartId", id);
+
+    try {
+        const response = await fetch('/Customer/Cart/Remove', {
+            method: 'POST',
+            body: formData
+        });
+
+        const result = await response.json();
+        console.log(result);
+
+        if (result.status == "Success") {
+            return JSON.parse(result.data);
+        }
+    } catch (err) {
+        console.error(err);
+        throw err;
+    }
+}
+
+$('.cart-remove-btn').on('click', async function () {
+
+    const cartId = $(this).data('cart-id');
+
+    if (cartId != null || cartId != undefined) {
+
+        const data = await removeCartItem(cartId);
+
+        if (data != null) {
+            if (cartId == data.Removed.Id) {
+                $(`.cart-item[data-cart-id="${data.Removed.Id}"]`).each(function () {
+                    $(this).remove();
+                });
+            }
+
+            const cartTotalEls = $('.cart-total');
+            const cartCountEl = $('.cart-count');
+
+            cartTotalEls.text("$" + data.UpdatedTotalSum.toFixed(2))
+            cartCountEl.text(data.CartCount);
+        }
+    }
+})

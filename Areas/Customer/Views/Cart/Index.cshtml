@@ -1,0 +1,160 @@
+﻿@using ECommerce2.Models.ViewModels
+@model List<CartItemVM>
+
+@{
+    decimal? totalSum = Model.Sum(m => (m.Variant?.SalePrice ?? m.Variant?.ListPrice ?? m.Product.SalePrice ?? m.Product.ListPrice) * m.Quantity);
+}
+
+<div class="cart-page py-5">
+    <div class="container-fix container">
+        @if (Model.Any())
+        {
+            <section id="cart">
+                <h1 class="text-center display-3 fw-600 text-muted">Cart</h1>
+
+                <table class="w-100 border mt-5">
+                    <thead>
+                        <tr>
+                            <th class="product-remove p-3"></th>
+                            <th class="product-img p-3"></th>
+                            <th class="product-name p-3">Product</th>
+                            <th class="product-price p-3">Price</th>
+                            <th class="product-quantity p-3">Quantity</th>
+                            <th class="product-subtotal p-3">Subtotal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (CartItemVM item in Model)
+                        {
+                            @(await Html.PartialAsync("_CartPageCartItem", item))
+                        }
+                        <tr>
+                            <td colspan="6" class="px-3 py-2">
+                                <div class="d-flex">
+                                    <button class="btn btn-light-blue text-light fw-600 py-2 px-3 ms-auto btn-muted" id="update-cart-btn">UPDATE CART</button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </section>
+
+            <section id="cart-total" class="mt-5">
+                <div class="row">
+                    <div class="ms-auto col-6">
+                        <div class="border">
+                            <div class="cart-total-header px-3 py-2 border-bottom">
+                                <h4 class="m-0">Cart totals</h4>
+                            </div>
+                            <div class="cart-total-body p-3">
+                                <table class="w-100">
+                                    <tr class="cart-subtotal-tr border-bottom">
+                                        <th class="px-3 py-2 fw-normal">
+                                            Subtotal
+                                        </th>
+                                        <th class="px-3 py-2 fw-normal cart-total">
+                                            $@totalSum
+                                        </th>
+                                    </tr>
+                                    <tr class="cart-total-tr border-bottom">
+                                        <th class="px-3 py-2 fw-normal">
+                                            Total
+                                        </th>
+                                        <th class="px-3 py-2 fw-normal cart-total">
+                                            $@totalSum
+                                        </th>
+                                    </tr>
+                                </table>
+                                <a class="btn btn-light-blue p-3 w-100 fs-5 text-light fw-600 mt-4">
+                                    CHECKOUT
+                                </a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+        } else
+        {
+            <div class="cart-co-items d-flex flex-column">
+                <h1 class="text-center display-3 fw-600 text-muted">Cart</h1>
+
+                <div class="mt-5">
+                    <div class="no-products">
+                        <div class="p-4 w-100">
+                            <div class="d-inline-block">
+                                <i class="bi bi-file-x"></i>
+                            </div>
+                            <div class="ms-2 d-inline-block">
+                                No products were found matching your selection.
+                            </div>
+                        </div>
+                    </div>
+                    <a asp-area="Customer" asp-controller="Home" asp-action="Store" class="btn btn-light-blue px-4 py-2 fw-600 text-light mt-5">RETURN TO SHOP</a>
+                </div>
+            </div>
+        }
+
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+
+        $('.item-quantity').on('change', function () {
+            $('#update-cart-btn').removeClass('btn-muted');
+        })
+
+        $('#update-cart-btn').on('click', async function () {
+            const items = $('.cart-page table tbody .cart-item');
+
+            let toUpdate = { "CartItems": [] };
+
+            items.each(function () {
+                toUpdate.CartItems.push({ "Id": $(this).data('cart-id'), "Quantity": $(this).find('.item-quantity').val() });
+            })
+
+            const data = await updateCartItems(toUpdate);
+
+            if (data != null) {
+                data.Updated.forEach((item) => {
+                    const itemEl = $(`.cart-item[data-cart-id="${item.Id}"]`);
+
+                    itemEl.find('.item-quantity').val(item.Quantity);
+                    itemEl.find('.product-subtotal span').text("$" + item.Subtotal.toFixed(2));
+                })
+
+                $('.cart-total').text("$" + data.Total);
+            }
+
+        });
+
+        async function updateCartItems(data) {
+
+            console.log(data);
+            try {
+                const response = await fetch('/Customer/Cart/UpdateCartItems', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                })
+
+                const result = await response.json();
+                
+                if (result.status == "Success") {
+                    console.log(JSON.parse(result.data));
+                    return JSON.parse(result.data);
+                }
+
+            } catch (err) {
+                console.error(err);
+                throw err;
+            }
+
+        }
+
+    </script>
+}

@@ -226,7 +226,7 @@ namespace ECommerce2.Areas.Admin.Controllers
                     if (UpdateProduct.Name != null)
                     {
                         string idStr = UpdateProduct.Id.ToString();
-                        UpdateProduct.Slug = GenerateSlug(UpdateProduct.Name, idStr);
+                        UpdateProduct.Slug = GenerateSlug(UpdateProduct.Name, idStr.Substring(idStr.Length - 12));
                     }
 
                     /** IsFeatured */

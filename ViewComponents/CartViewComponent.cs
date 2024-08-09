@@ -22,6 +22,10 @@ namespace ECommerce2.ViewComponents
         public async Task<IViewComponentResult> InvokeAsync()
         {
             ApplicationUser user = await _userManager.GetUserAsync(HttpContext.User);
+            List<CartItemVM> cartItemsVM = new List<CartItemVM>();
+
+            TempData["CartTotal"] = "0.00";
+            TempData["CartCount"] = 0;
 
             if (user != null)
             {
@@ -35,21 +39,28 @@ namespace ECommerce2.ViewComponents
                     .Where(c => c.UserId == user.Id)
                     .ToListAsync();
 
-                List<CartItemVM> cartItemsVM = new List<CartItemVM>();
-                foreach (CartItem cartItem in cartItems)
+                if (cartItems.Any())
                 {
-                    CartItemVM item = new CartItemVM()
+                    TempData["CartTotal"] = cartItems.Sum(ci => (ci.Variant?.SalePrice ?? ci.Variant?.ListPrice ?? ci.Product.SalePrice ?? ci.Product.ListPrice) * ci.Quantity)?.ToString("0.00");
+                    TempData["CartCount"] = cartItems.Count();
+
+
+                    foreach (CartItem cartItem in cartItems)
                     {
-                        Id = cartItem.Id,
-                        Product = cartItem.Product,
-                        Variant = cartItem.Variant,
-                        ItemCount = cartItem.ItemCount,
-                    };
-                    cartItemsVM.Add(item);
+                        CartItemVM item = new CartItemVM()
+                        {
+                            Id = cartItem.Id,
+                            Product = cartItem.Product,
+                            Variant = cartItem.Variant,
+                            Quantity = cartItem.Quantity,
+                        };
+                        cartItemsVM.Add(item);
+                    }
                 }
+
                 return View(cartItemsVM);
             }
-            return View();
+            return View(cartItemsVM);
         }
     }
 }

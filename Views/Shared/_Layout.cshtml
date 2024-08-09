@@ -3,6 +3,10 @@
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 
+@{
+    var cartOffcanvas = await Component.InvokeAsync("Cart");
+}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -63,10 +67,11 @@
                         }
 
                         <li class="nav-item ms-5 d-flex">
-                            <button type="button" class="nav-link p-0 d-flex justify-content-center align-items-center position-relative" type="button" data-bs-toggle="offcanvas" data-bs-target="#userCart" aria-controls="userCart">
-                                <span class="fw-bold">$0.00</span>
+                            <button type="button" class="nav-link p-0 d-flex justify-content-center align-items-center position-relative cart-details-btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#userCart" aria-controls="userCart">
+                                <span class="fw-bold cart-total">$@TempData["CartTotal"]</span>
                                 <i class="bi bi-handbag-fill ms-3 fs-5"></i>
-                                <div class="position-absolute rounded-pill bg-white text-dark cart-count">
+                                <div class="position-absolute rounded-pill cart-count--wrapper d-flex justify-content-center align-items-center shadow">
+                                    <span class="cart-count">@TempData["CartCount"]</span>
                                 </div>
                             </button>
                         </li>
@@ -82,8 +87,8 @@
         @RenderBody()
     </main>
 
-    @(await Component.InvokeAsync("Cart"))
-
+    @cartOffcanvas
+   
     <partial name="_Footer" />
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>

@@ -1,6 +1,7 @@
 ﻿@using ECommerce2.Models.ViewModels
 @model List<CartItemVM>
 
+
 <div class="offcanvas offcanvas-end" tabindex="-1" id="userCart" aria-labelledby="userCart">
     <div class="offcanvas-header px-4 py-3 border-bottom">
         <h5 class="offcanvas-title fw-normal fs-6" id="userCart">Shopping Cart</h5>
@@ -9,7 +10,7 @@
     <div class="offcanvas-body p-4 d-flex flex-column">
         <div class="h-100 d-flex">
 
-            @if (Model.Count != 0)
+            @if (Model.Any())
             {
                 <ul class="list-unstyled w-100">
                     @foreach (CartItemVM item in Model)
@@ -27,8 +28,25 @@
                 </div>
             }
         </div>
-        <div>
-            <a asp-area="Customer" class="btn btn-light-blue w-100 text-center fw-600 text-light mt-auto" asp-controller="Home" asp-action="Store">CONTINUE SHOPPING</a>
+    </div>
+    @if (Model.Any())
+    {
+        <div class="border-top border-bottom py-3 px-4">
+            <div class="d-flex justify-content-between">
+                <div>
+                    Subtotal:
+                </div>
+                <div class="cart-total">
+                    $@TempData["CartTotal"]
+                </div>
+            </div>
         </div>
+    }
+    <div class="p-4 mt-auto">
+        @if (Model.Any())
+        {
+            <a asp-area="Customer" asp-controller="Cart" asp-action="Index" class="btn btn-light-blue w-100 text-center fw-600 text-light mb-2 py-2">VIEW CART</a>
+        }
+        <button class="btn btn-light-blue w-100 text-center fw-600 text-light py-2" data-bs-dismiss="offcanvas" aria-label="Close">CONTINUE SHOPPING</button>
     </div>
 </div>

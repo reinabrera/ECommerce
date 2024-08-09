@@ -13,7 +13,7 @@ header .navbar.bg-translucent .nav-link {
 }
 
 header .navbar.bg-white .nav-link {
-    color: var(--global-black-1) !important;
+    color: black !important;
 }
 
 header .navbar.bg-white .nav-link:hover {
@@ -39,15 +39,27 @@ header .container-fluid {
     background-color: unset;
 }
 
-header .cart-count {
-    width: 15px;
-    height: 15px;
-    text-align: center;
-    line-height: .8rem;
-    font-size: .8rem;
+header .navbar.bg-white .cart-count--wrapper {
+    background-color: black;
+    color: white;
+    transition: all 0.15s ease-in-out;
+}
+
+header .navbar.bg-white .cart-details-btn:hover .cart-count--wrapper {
+    background-color: var(--global-blue-1);
+}
+
+header .cart-count--wrapper {
+    width: 18px;
+    height: 18px;
     top: 2px;
-    right: -8px;
-    box-shadow: 0 0.125rem 0.25rem rgb(0 0 0 / 48%);
+    right: -12px;
+    text-align: center;
+    line-height: .7rem;
+    font-size: .7rem;
+    background-color: white;
+    color: black;
+    font-weight: 600;
 }
 
 header .nav-link .bi {
@@ -235,17 +247,17 @@ section.featured-product-listing {
     z-index: 99;
 }
 
-.product-card .add-to-cart button {
+.product-card .add-to-cart .btn {
     width: 30px;
     height: 30px;
     display: flex;
     background-color: var(--bs-light);
 }
-.product-card .add-to-cart button i {
+.product-card .add-to-cart .btn i {
     margin-right: -1px;
 }
 
-.product-card .add-to-cart button:hover i {
+.product-card .add-to-cart .btn:hover i {
     color: black !important;
 }
 
@@ -646,4 +658,42 @@ section#store #product-listing .products-wrapper {
     width: 100%;
     height: auto;
     opacity: 0.5;
+}
+
+.cart-page {
+    background-color: var(--global-bg-gray);
+}
+
+.cart-page #cart table img {
+    width: 100%;
+    max-width: 70px;
+}
+
+.cart-page #cart table {
+    color: var(--global-black-1);
+}
+
+.cart-page #cart table input[type="number"] {
+    max-width: 60px;
+    
+}
+
+.cart-page #cart table tr {
+    border: inherit;
+}
+
+.cart-page #cart table thead, .cart-page #cart-total .cart-total-header {
+    background-color: #f9f9f9;
+}
+
+.cart-page #cart table thead th {
+    font-weight: 600;
+}
+
+.cart-page #cart table tbody {
+    border: inherit;
+}
+
+.cart-page .no-products {
+    background-color: #f5f5f5;
 }

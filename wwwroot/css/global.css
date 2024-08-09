@@ -18,6 +18,7 @@
 
 html {
     font-size: 14px;
+    scroll-behavior: auto;
 }
 
 @media (min-width: 768px) {
@@ -49,6 +50,11 @@ html {
 
 .btn {
     border-radius: 0;
+}
+
+.btn-muted {
+    opacity: 0.7;
+    pointer-events: none;
 }
 
 .btn-light {

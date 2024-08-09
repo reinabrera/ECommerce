@@ -5,6 +5,6 @@
         public int Id { get; set; }
         public Guid ProductId { get; set; }
         public int? VariantId { get; set; }
-        public int ItemCount { get; set; }
+        public int Quantity { get; set; }
     }
 }

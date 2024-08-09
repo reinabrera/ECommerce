@@ -133,7 +133,7 @@ namespace ECommerce2.Areas.Identity.Pages.Account
                 {
                     _logger.LogInformation("User created a new account with password.");
 
-                    await _userManager.AddToRoleAsync(user, UserRoles.Admin);
+                    await _userManager.AddToRoleAsync(user, UserRoles.Customer);
 
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);

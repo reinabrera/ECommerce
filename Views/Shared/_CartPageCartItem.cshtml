@@ -1,0 +1,69 @@
+﻿@using ECommerce2.Models.ViewModels
+@model CartItemVM
+
+@{
+    string? concatenatedTerms = null;
+    string imgFilePath;
+    decimal? listPrice = null;
+    decimal? salePrice = null;
+    if (Model.Variant != null)
+    {
+        concatenatedTerms = " - " + string.Join(" | ", Model.Variant.Terms.Select(t => t.Name));
+        imgFilePath = Model.Variant.Image.FilePath;
+        listPrice = Model.Variant.ListPrice;
+        if (Model.Variant.SalePrice != null)
+        {
+            salePrice = Model.Variant.SalePrice;
+        }
+    }
+    else
+    {
+        imgFilePath = Model.Product.ProductImages.FirstOrDefault().FilePath;
+        listPrice = Model.Product.ListPrice;
+        if (Model.Product.SalePrice != null)
+        {
+            salePrice = Model.Product.SalePrice;
+        }
+    }
+}
+
+<tr class="cart-item" data-cart-id="@Model.Id">
+    <td class="product-remove p-3">
+        <div class="d-flex justify-content-center align-items-center">
+            <button type="button" class="btn p-0 cart-remove-btn" data-cart-id="@Model.Id">
+                <i class="bi bi-x-circle text-muted"></i>
+            </button>
+        </div>
+
+    </td>
+    <td class="product-img p-3">
+        <a asp-area="Customer" asp-controller="Home" asp-action="Store" asp-route-id="@Model.Product.Slug"><img src="@imgFilePath" /></a>
+    </td>
+    <td class="product-name p-3">
+        <a asp-area="Customer" asp-controller="Home" asp-action="Store" asp-route-id="@Model.Product.Slug" class="text-decoration-none text-dark">
+            @Model.Product.Name @concatenatedTerms
+        </a>
+    </td>
+    <td class="product-price p-3">
+        <span>
+            @if (salePrice != null)
+            {
+                <del class="text-muted">$@listPrice</del>
+                @:$@salePrice
+            }
+            else
+            {
+                @:$@listPrice
+            }
+        </span>
+       
+    </td>
+    <td class="product-quantity p-3">
+        <input type="number" class="border text-center text-muted py-1 item-quantity" min="1" value="@Model.Quantity" required />
+    </td>
+    <td class="product-subtotal p-3">
+        <span>
+            $@((salePrice ?? listPrice) * Model.Quantity)
+        </span>
+    </td>
+</tr>

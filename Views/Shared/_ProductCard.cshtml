@@ -5,11 +5,26 @@
         <img src="@Model.FeaturedImage.FilePath" class="card-img-top rounded-0">
         <a asp-controller="Products" asp-action="Details" asp-route-id="@Model.Slug" class="stretched-link"></a>
         <div class="add-to-cart position-absolute">
-            <button type="button" class="btn rounded-pill justify-content-center align-items-center" data-bs-toggle="tooltip" data-bs-placement="left"
-                    data-bs-custom-class="add-to-cart-tooltip"
-                    data-bs-title="Add to cart">
-                <i class="bi bi-handbag-fill text-muted"></i>
-            </button>
+            @if (Model.VariantTermsGrouped.Any())
+            {
+                <a asp-area="Customer" asp-controller="Products" asp-action="Details" asp-route-id="@Model.Slug" class="btn rounded-pill justify-content-center align-items-center" data-bs-toggle="tooltip" data-bs-placement="left"
+                        data-bs-custom-class="add-to-cart-tooltip"
+                        data-bs-title="Select Options">
+                    <i class="bi bi-handbag-fill text-muted"></i>
+                </a>
+            } else
+            {
+                <form asp-area="Customer" asp-controller="Cart" asp-action="Add" asp-route-returnUrl="@Context.Request.Path@Context.Request.QueryString">
+                    <input type="hidden" name="ProductId" value="@Model.ProductId" required />
+                    <input type="hidden" name="Quantity" value="1" required />
+                    <button type="submit" class="btn rounded-pill justify-content-center align-items-center" data-bs-toggle="tooltip" data-bs-placement="left"
+                       data-bs-custom-class="add-to-cart-tooltip"
+                       data-bs-title="Add to cart">
+                        <i class="bi bi-handbag-fill text-muted"></i>
+                    </button>
+                </form>
+            }
+
         </div>
 
     </div>

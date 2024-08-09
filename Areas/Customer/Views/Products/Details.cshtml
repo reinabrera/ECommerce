@@ -84,19 +84,21 @@
                                 </div>
 
 
-                                <form id="add-to-cart-form" asp-controller="AddToCart" asp-action="Add">
+                                <form id="add-to-cart-form" asp-controller="Cart" asp-action="Add">
                                     <input type="hidden" asp-for="ProductId" />
-                                    <input type="hidden" id="VariantId" name="VariantId" required />
+                                    @if (Model.VariantTermsGrouped.Any())
+                                    {
+                                        <input type="hidden" id="VariantId" name="VariantId" required />
 
-                                    @Html.Partial("_VariantRadios", Model.VariantTermsGrouped)
+                                        @Html.Partial("_VariantRadios", Model.VariantTermsGrouped)
 
-                                    <button type="button" class="btn text-muted p-0" id="clear-form-btn" style="visibility: hidden">CLEAR</button>
-                                    <hr />
+                                        <button type="button" class="btn text-muted p-0" id="clear-form-btn" style="visibility: hidden">CLEAR</button>
+                                        <hr />
 
-                                    <div class="variant-price my-3" style="display: none;"></div>
-
+                                        <div class="variant-price my-3" style="display: none;"></div>
+                                    }
                                     <div class="d-flex">
-                                        <input type="number" min="1" max="@Model.Inventory" value="1" name="itemCount" class="text-muted item-count" />
+                                        <input type="number" min="1" max="@Model.Inventory" value="1" name="Quantity" class="text-muted item-count" />
                                         <button type="submit" class="btn btn-blue ms-3 fw-600" id="submit-btn" @(Model.VariantTermsGrouped.Any() ? "disabled" : "")>ADD TO CART</button>
                                     </div>
                                 </form>
