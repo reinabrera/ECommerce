@@ -1,0 +1,63 @@
+﻿@using ECommerce2.Models.ViewModels
+@model Review
+
+@{
+    TimeSpan diff = DateTime.Now - Model.CreatedDate;
+
+    int years = Convert.ToInt32(diff.TotalDays / 365);
+    int months = Convert.ToInt32(diff.TotalDays / 30);
+    int days = Convert.ToInt32(diff.TotalDays);
+    int hours = Convert.ToInt32(diff.TotalHours);
+    int minutes =Convert.ToInt32(diff.TotalMinutes);
+
+    string postedData = null;
+
+    if (years > 0)
+    {
+        postedData = years.ToString() + " year";
+    }
+    else if (months > 0)
+    {
+        postedData = months.ToString() + " months";
+    } else if (days > 0)
+    {
+        postedData = days.ToString() + " days";
+    } else if (hours > 0)
+    {
+        postedData = hours.ToString() + " hours";
+    } else
+    {
+        postedData = minutes.ToString() + " minutes";
+    }
+}
+<li class="item">
+    <div class="review-item-header d-flex justify-content-between">
+        <div>
+            <div class="d-flex align-items-center">
+                <div>
+                    <i class="bi bi-person-circle fs-1"></i>
+                </div>
+
+                <div class="ms-3">
+                    <span>@(Model.User != null ? Model.User.FirstName + " " + Model.User.LastName : "Deleted user")</span>
+                    <div class="star-rating d-flex">
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div>
+            <span class="text-muted">@postedData</span>
+        </div>
+    </div>
+    <div class="review-item-body mt-3">
+        <p>
+            @Model.ReviewText
+        </p>
+    </div>
+</li>

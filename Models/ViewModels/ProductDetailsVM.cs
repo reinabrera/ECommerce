@@ -17,5 +17,6 @@
         public List<AdditionalDetailVM> AdditionalDetails { get; set; }
         public List<List<Term>> VariantTermsGrouped { get; set; }
         public List<ProductCardVM>? RelatedProducts { get; init; }
+        public List<Review>? Reviews { get; init; }
     }
 }

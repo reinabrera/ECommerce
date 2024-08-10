@@ -15,7 +15,7 @@
             <ul class="dropdown-menu rounded-0 border-0 box-shadow">
                 <li><a class="dropdown-item text-dark" asp-area="Identity" asp-page="/Account/Manage/Index">Account</a></li>
                 <li>
-                    <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                    <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Context.Request.Path@Context.Request.QueryString">
                         <button type="submit" class="dropdown-item text-dark">Logout</button>
                     </form>
                 </li>

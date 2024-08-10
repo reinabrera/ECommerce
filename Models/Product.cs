@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Slugify;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq.Expressions;
 
 namespace ECommerce2.Models
 {
@@ -31,6 +32,7 @@ namespace ECommerce2.Models
         public ICollection<Variant>? Variations { get; set; }
         public ICollection<AdditionalDetail>? AdditionalDetails { get; set; }
         public ICollection<ProductImage>? ProductImages { get; set; }
+        public ICollection<Review> Reviews { get; set; }
         public bool IsPublished { get; set; }
         public DateTime CreatedDate { get; set; }
         public Product()

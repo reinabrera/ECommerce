@@ -29,6 +29,7 @@ namespace ECommerce2.Data
         public DbSet<ProductTermJoin> ProductTermJoinTable { get; set; }
         public DbSet<TeamMember> Team { get; set; }
         public DbSet<CartItem> CartItems { get; set; }
+        public DbSet<Review> Reviews { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -128,6 +129,19 @@ namespace ECommerce2.Data
                 .WithMany(ci => ci.CartItems)
                 .HasForeignKey(ci => ci.VariantId)
                 .OnDelete(DeleteBehavior.ClientCascade);
+
+
+            builder.Entity<Review>()
+                .HasOne<Product>()
+                .WithMany(r => r.Reviews)
+                .HasForeignKey(r => r.ProductId)
+                .OnDelete(DeleteBehavior.ClientCascade);
+
+            builder.Entity<Review>()
+                .HasOne(r => r.User)
+                .WithMany()
+                .HasForeignKey(r => r.UserId)
+                .OnDelete(DeleteBehavior.SetNull);
 
             builder.Seed();
         }

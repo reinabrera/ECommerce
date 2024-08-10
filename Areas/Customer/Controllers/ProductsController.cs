@@ -55,6 +55,8 @@ namespace ECommerce2.Areas.Customer.Controllers
                 .Include(v => v.AdditionalImages)
                     .ThenInclude(ai => ai.Image)
                 .Include(v => v.ProductImages)
+                .Include(v => v.Reviews)
+                    .ThenInclude(v => v.User)
                 .FirstOrDefaultAsync(p => p.Slug == id);
 
             if (product == null)
@@ -87,7 +89,8 @@ namespace ECommerce2.Areas.Customer.Controllers
                 Images = new List<ProductImageVM>(),
                 AdditionalDetails = new List<AdditionalDetailVM>(),
                 RelatedProducts = new List<ProductCardVM>(),
-                VariantTermsGrouped = product.Variations.SelectMany(v => v.Terms).GroupBy(t => t.AttributeId).Select(g => g.Distinct().ToList()).ToList()
+                VariantTermsGrouped = product.Variations.SelectMany(v => v.Terms).GroupBy(t => t.AttributeId).Select(g => g.Distinct().ToList()).ToList(),
+                Reviews = product.Reviews?.ToList(),
             };
 
             /** Product Images **/

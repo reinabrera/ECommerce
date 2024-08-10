@@ -44,7 +44,6 @@ namespace ECommerce2.ViewComponents
                     TempData["CartTotal"] = cartItems.Sum(ci => (ci.Variant?.SalePrice ?? ci.Variant?.ListPrice ?? ci.Product.SalePrice ?? ci.Product.ListPrice) * ci.Quantity)?.ToString("0.00");
                     TempData["CartCount"] = cartItems.Count();
 
-
                     foreach (CartItem cartItem in cartItems)
                     {
                         CartItemVM item = new CartItemVM()

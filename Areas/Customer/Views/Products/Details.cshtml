@@ -83,7 +83,6 @@
                                     <p>@Model.Overview</p>
                                 </div>
 
-
                                 <form id="add-to-cart-form" asp-controller="Cart" asp-action="Add">
                                     <input type="hidden" asp-for="ProductId" />
                                     @if (Model.VariantTermsGrouped.Any())
@@ -116,7 +115,9 @@
                         </div>
                     </div>
                 </div>
-
+                @{
+                    int reviews = 1;
+                }
                 <div class="product-tabs mt-5">
                     <ul class="nav nav-tabs border-top" id="myTab" role="tablist">
                         <li class="nav-item" role="presentation">
@@ -126,7 +127,7 @@
                             <button class="nav-link" id="addtl-info-tab" data-bs-toggle="tab" data-bs-target="#addtl-info-tab-pane" type="button" role="tab" aria-controls="addtl-info-tab-pane" aria-selected="false">Additonal Information</button>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="reviews-tab" data-bs-toggle="tab" data-bs-target="#reviews-tab-pane" type="button" role="tab" aria-controls="reviews-tab-pane" aria-selected="false">Reviews (0)</button>
+                            <button class="nav-link" id="reviews-tab" data-bs-toggle="tab" data-bs-target="#reviews-tab-pane" type="button" role="tab" aria-controls="reviews-tab-pane" aria-selected="false">Reviews (@reviews)</button>
                         </li>
                     </ul>
                     <div class="tab-content" id="myTabContent">
@@ -151,11 +152,95 @@
                                         </th>
                                     </tr>
                                 }
-                                
                             </table>
                         </div>
                         <div class="tab-pane fade py-3" id="reviews-tab-pane" role="tabpanel" aria-labelledby="reviews-tab" tabindex="0">
-                            <p>There are no reviews yet.</p>
+
+                            @if (reviews == 0)
+                            {
+                                <p>There are no reviews yet.</p>
+                            }
+
+                            <div class="border p-4">
+                                @if (reviews == 0)
+                                {
+                                    <h5 class="fw-normal fs-4">
+                                        Be the first to review “@Model.Name”
+                                    </h5>
+                                } else
+                                {
+                                    <h5 class="fw-normal fs-4">Add review for “@Model.Name”</h5>
+                                }
+
+                                <form class="mt-4" id="product-review-form" asp-controller="Reviews" asp-action="Add" asp-route-returnUrl="@Context.Request.Path">
+                                    <input type="hidden" asp-for="@Model.ProductId" />
+                                    <div class="d-flex">
+                                        <label class="fs-5">
+                                            Your rating *
+                                        </label>
+                                        <div class="star-rating-inputs ms-2 fs-6">
+                                            <input type="radio" name="Rating" value="1" id="st-1" required />
+                                            <label for="st-1"><i class="bi bi-star-fill"></i></label>
+                                            <input type="radio" name="Rating" value="2" id="st-2" required />
+                                            <label for="st-2"><i class="bi bi-star-fill"></i></label>
+                                            <input type="radio" name="Rating" value="3" id="st-3" required />
+                                            <label for="st-3"><i class="bi bi-star-fill"></i></label>
+                                            <input type="radio" name="Rating" value="4" id="st-4" required />
+                                            <label for="st-4"><i class="bi bi-star-fill"></i></label>
+                                            <input type="radio" name="Rating" value="5" id="st-5" required />
+                                            <label for="st-5"><i class="bi bi-star-fill"></i></label>
+                                        </div>
+                                    </div>
+                                    <div class="mt-2">
+                                        <label class="d-block fs-5">
+                                            Your review *
+                                        </label>
+                                        <textarea maxlength="300" minlength="100" class="w-100 border" name="ReviewText" required></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-light-blue px-4 py-2 text-light fw-600 mt-2">SUBMIT</button>
+                                </form>
+                            </div>
+
+                            <div class="product-reviews mt-4">
+                                <div class="row gx-5">
+                                    <div class="col-4">
+                                        <h4>Customer Reviews</h4>
+                                        <div class="d-flex">
+                                            <div class="star-rating d-flex">
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star-fill"></i>
+                                            </div>
+                                            <div class="ms-2">
+                                                <span>5 out of 5</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="ratings-chart mt-2">
+                                            @for (int i = 0; i < 5; i++)
+                                            {
+                                                @(await Html.PartialAsync("_RatingBarChart"))
+                                            }
+                                        </div>
+                                        
+
+                                    </div>
+
+                                    <div class="col">
+                                        @if (Model.Reviews.Any())
+                                        {
+                                            <ul class="review-items list-unstyled">
+                                                @foreach (Review review in Model.Reviews)
+                                                {
+                                                    @(await Html.PartialAsync("_ReviewItem", review))
+                                                }
+                                            </ul>
+                                        }
+                                    </div>
+                                </div>    
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -285,8 +370,6 @@
 
             $(this).css('visibility', 'hidden');
         });
-
-
 
     </script>
     <script type="module" src="~/js/product-cke.js"></script>

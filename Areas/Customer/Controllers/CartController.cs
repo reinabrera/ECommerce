@@ -61,9 +61,9 @@ namespace ECommerce2.Areas.Customer.Controllers
         [HttpPost]
         public async Task<IActionResult> Add(AddToCartVM data, string returnUrl = null)
         {
-            if (_signInManager.IsSignedIn(User))
+            if (!_signInManager.IsSignedIn(User))
             {
-                RedirectToPage("/Account/Login", new { area = "Identity" });
+                return RedirectToPage("/Account/Login", new { area = "Identity" });
             }
 
             if (ModelState.IsValid)
@@ -84,7 +84,7 @@ namespace ECommerce2.Areas.Customer.Controllers
                 Variant? productVariant = await _context.Variations
                     .FirstOrDefaultAsync(v => v.ProductId == data.ProductId && v.Id == data.VariantId);
                 CartItem? existingCartItem = await _context.CartItems
-                    .FirstOrDefaultAsync(ci => ci.ProductId == product.Id
+                    .FirstOrDefaultAsync(ci => ci.User == currentUser && ci.ProductId == product.Id
                     && (productVariant == null || ci.VariantId == productVariant.Id));
 
                 if (existingCartItem != null)
