@@ -90,7 +90,7 @@ namespace ECommerce2.Areas.Customer.Controllers
                 AdditionalDetails = new List<AdditionalDetailVM>(),
                 RelatedProducts = new List<ProductCardVM>(),
                 VariantTermsGrouped = product.Variations.SelectMany(v => v.Terms).GroupBy(t => t.AttributeId).Select(g => g.Distinct().ToList()).ToList(),
-                Reviews = product.Reviews?.ToList(),
+                Reviews = product.Reviews?.OrderByDescending(r => r.CreatedDate).ToList(),
             };
 
             /** Product Images **/
