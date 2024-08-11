@@ -151,13 +151,13 @@ footer .social-links ul li a:hover i {
 /** Hero section */
 
 section.hero {
-    background: linear-gradient(0deg, rgb(30 87 122 / 50%), rgb(30 87 122 / 50%)), url(../dist/home-new-bg-free-img.jpg);
+    background: linear-gradient(180deg, #0084D4 -50%, #0000002b 100%), url(../dist/home-new-bg-free-img.jpg);
+    background-position: center;
     background-repeat: no-repeat;
     height: calc(100vh - 25px);
     background-attachment: fixed;
     padding-top: 104px;
 }
-
 
 /*********************************************************** */
 /** Homepage */
@@ -202,6 +202,7 @@ section.hero {
     object-position: center;
 }
 
+
 /** Featured Products Listing */
 
 section.featured-product-listing .divider span {
@@ -224,6 +225,7 @@ section.featured-product-listing {
 .product-card .product-details {
     font-size: 0.9rem;
 }
+
 
 .attributes-radios--wrapper .attribute-color input[type="radio"] {
     width: 20px;
@@ -292,6 +294,8 @@ section.featured-product-listing {
 }
 
 
+
+
 /** Limited Time Offer */
 @media (min-width: 1400px) {
     section .limited-time-offer .container {
@@ -303,10 +307,22 @@ section.limited-time-offer {
     background-color: var(--global-bg-gray);
 }
 
-section.limited-time-offer .container {
-    background-image: linear-gradient(0deg, rgb(25 149 211 / 28%), rgb(25 149 211 / 28%)), url("../dist/banner-03.jpg");
-    background-attachment: fixed;
+@media (min-width: 992px) {
+    section.limited-time-offer .container-bg {
+        background-attachment: fixed;
+
+    }
+
+    section.limited-time-offer .content {
+        padding: 100px !important;
+    }
 }
+section.limited-time-offer .container-bg {
+    background-image: linear-gradient(0deg, rgb(25 149 211 / 28%), rgb(25 149 211 / 28%)), url("../dist/banner-03.jpg");
+    background-position: center;
+    background-size: cover;
+}
+
 
 section.highlight-subsections .icon-wrapper img {
     max-width: 52px;
@@ -314,10 +330,48 @@ section.highlight-subsections .icon-wrapper img {
     margin: 0 auto;
 }
 
+
+
 section.highlight-subsections {
     padding: 100px 0;
 }
 
+@media (max-width: 767px) {
+    section.hero {
+        height: 100%;
+        background-attachment: unset;
+        background-size: cover;
+    }
+
+    section.hero .content {
+        text-align: center;
+        padding: 75px 0;
+    }
+
+    .special-promotions img {
+        height: 300px;
+    }
+
+    .special-promotions .card-content {
+        width: 100%;
+    }
+
+    .special-promotions .card-content a {
+        width: 100%;
+    }
+
+    section.featured-product-listing {
+        padding: 50px 0;
+    }
+
+    section.limited-time-offer .content a {
+        width: 100%;
+    }
+
+    section.highlight-subsections {
+        padding: 50px 0;
+    }
+}
 
 section.about-us-hero {
     height: 75vh;

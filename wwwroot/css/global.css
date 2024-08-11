@@ -47,6 +47,17 @@ html {
     }
 }
 
+@media (max-width: 991px) {
+    .container-fluid {
+        padding: 0 50px !important;
+    }
+}
+
+@media (max-width: 767px) {
+    .container-fluid {
+        padding: 0 20px !important;
+    }
+}
 
 .btn {
     border-radius: 0;

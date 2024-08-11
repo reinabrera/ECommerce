@@ -48,6 +48,17 @@ if (splideEl.length > 0) {
     var splide = new Splide('#logo-carousel .splide', {
         type: 'loop',
         perPage: 6,
+        breakpoints: {
+            991: {
+                perPage: 4,
+            },
+            767: {
+                perPage: 2
+            }, 
+            575: {
+               perPage: 1
+            }
+        },
         perMove: 1,
         autoplay: true,
         interval: 1500,

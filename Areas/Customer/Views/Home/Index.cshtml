@@ -6,20 +6,20 @@
 }
 
 <section class="hero">
-    <div class="content-wrapper container h-100 d-flex align-items-center">
-        <div class="content col-6 text-light">
-            <h1 class="title display-2 fw-bold">Raining Offers For Hot Summer!</h1>
+    <div class="content-wrapper container-fluid container-lg h-100 d-flex align-items-center">
+        <div class="content col-md-6 text-light p-md-0">
+            <h1 class="title display-2 fw-600 fw-md-bold">Raining Offers For Hot Summer!</h1>
             <h4 class="mt-5 fs-3">
                 25% Off On All Products
             </h4>
 
             <div class="btns mt-5">
-                <div class="row gx-4">
-                    <div class="col-auto">
-                        <a asp-controller="Home" asp-action="Store" class="btn btn-light rounded-0 px-4 py-2 fw-600">SHOP NOW</a>
+                <div class="row gy-4 gy-md-0 gx-md-4">
+                    <div class="col-12 col-md-auto">
+                        <a asp-controller="Home" asp-action="Store" class="btn btn-light rounded-0 px-4 py-2 fw-600 w-100">SHOP NOW</a>
                     </div>
-                    <div class="col-auto">
-                        <a class="btn btn-outline-light rounded-0 px-4 py-2 fw-600">FIND MORE</a>
+                    <div class="col-12 col-md-auto">
+                        <a class="btn btn-outline-light rounded-0 px-4 py-2 fw-600 w-100">FIND MORE</a>
                     </div>
                 </div>
             </div>
@@ -28,14 +28,14 @@
 </section>
 
 <section id="logo-carousel" class="py-5">
-    <div class="container p-4">
+    <div class="container-fluid container-lg p-4">
         <div class="splide" aria-label="Company Logos">
             <div class="splide__track">
                 <ul class="splide__list">
                     @foreach (Partnership partnership in Model.Partnerships)
                     {
-                        <li class="splide__slide d-flex">
-                            <a class="col-9" href="@partnership.CompanyWebsite" target="_blank">
+                        <li class="splide__slide d-flex justify-content-center align-items-center">
+                            <a class="col-6 col-sm-9" href="@partnership.CompanyWebsite" target="_blank">
                                 <img src="@partnership.Image!.FilePath" alt="@partnership.CompanyName Logo">
                             </a>
                         </li>
@@ -47,18 +47,18 @@
 </section>
 
 <section class="special-promotions">
-    <div class="container">
-        <div class="row">
+    <div class="container-fluid container-lg">
+        <div class="row gy-3 gy-md-0">
 
             @for (int i = 0; i < Model.SpecialPromotions.Count; i++)
             {
                 SpecialPromotion item = Model.SpecialPromotions[i];
-                <div class="col-4">
+                <div class="col-12 col-md-4">
                     <div class="card text-bg-dark border-0 rounded-0 position-relative">
                         <div class="img-color-overlay position-absolute w-100 h-100"></div>
                         <img src="@(item.SiteMedia != null ? item.SiteMedia.FilePath : "")" class="card-img rounded-0" alt="...">
                         <div class="card-img-overlay d-flex">
-                            <div class="card-content mt-auto  text-light p-4">
+                            <div class="card-content mt-auto  text-light p-2 p-sm-4 p-md-2 p-lg-4">
                                 <h5 class="card-title fs-4">@item.Title</h5>
                                 <p class="card-text">@item.Description</p>
                                 <a href="@item.Url" class="btn btn-light py-2 px-4 fw-600">@item.ButtonText</a>
@@ -72,13 +72,13 @@
 </section>
 
 <section class="featured-product-listing">
-    <div class="container">
+    <div class="container-fluid container-lg">
         <h2 class="text-center fs-1">Featured Products</h2>
         <div class="divider d-flex mt-4">
             <span></span>
         </div>
         <div class="products-wrapper mt-5">
-            <div class="row row-cols-5 gy-4">
+            <div class="row row-cols-2 row-cols-sm-3 row-cols-lg-5 gy-4">
                 @for (int i = 0; i < Model.FeaturedProducts.Count; i++)
                 {
                     var Product = Model.FeaturedProducts[i];
@@ -93,26 +93,29 @@
 </section>
 
 <section class="limited-time-offer">
-    <div class="container">
-        <div class="content p-7 text-light col-6">
-            <div>
-                <span class="fs-5 fw-600">
-                    Limited Time Offer
-                </span>
-            </div>
+    <div class="container-fluid container-lg">
+        <div class=" container-bg">
+            <div class="content p-4 py-5 p-sm-5 text-light col-md-6">
+                <div>
+                    <span class="fs-5 fw-600">
+                        Limited Time Offer
+                    </span>
+                </div>
 
-            <h2 class="fs-1 fw-600 mt-4">Special Edition</h2>
-            <p class="mt-4">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.
-            </p>
+                <h2 class="fs-1 fw-600 mt-4">Special Edition</h2>
+                <p class="mt-4">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.
+                </p>
 
-            <div>
-                <span class="fs-5 fw-600">Buy This T-shirt At 20% Discount, Use Code OFF20</span>
+                <div>
+                    <span class="fs-5 fw-600">Buy This T-shirt At 20% Discount, Use Code OFF20</span>
+                </div>
+                <a href="#" class="mt-5 px-4 py-2 btn btn-light fw-600">SHOP NOW</a>
             </div>
-            <a href="#" class="mt-5 px-4 py-2 btn btn-light fw-600">SHOP NOW</a>
         </div>
     </div>
 
 </section>
+
 
 @Html.Partial("_SectionHighlights", "--global-bg-gray")
