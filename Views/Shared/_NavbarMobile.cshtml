@@ -1,0 +1,91 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using ECommerce2.Utility
+@inject SignInManager<ApplicationUser> SignInManager
+
+<nav class="navbar navbar-mobile navbar-light border-bottom box-shadow py-2 bg-white d-block d-lg-none">
+    <div class="container-fluid py-1 px-3">
+        <a class="navbar-brand w-100 p-0" asp-area="" asp-controller="Home" asp-action="Index"><img src="~/dist/logo1-free-img-140x47.png" /></a>
+
+        <div class="d-flex">
+            <div class="nav-item ms-5 d-flex">
+                <button type="button" class="nav-link p-0 d-flex justify-content-center align-items-center position-relative cart-details-btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#userCart" aria-controls="userCart">
+                    <span class="fw-bold cart-total">$@TempData["CartTotal"]</span>
+                    <i class="bi bi-handbag-fill ms-3 fs-5"></i>
+                    <div class="position-absolute rounded-pill cart-count--wrapper d-flex justify-content-center align-items-center shadow">
+                        <span class="cart-count">@TempData["CartCount"]</span>
+                    </div>
+                </button>
+            </div>
+            <button class="offcanvas-toggler d-flex align-items-center justify-content-center ms-4" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <i class="bi bi-list fs-3 text-white"></i>
+            </button>
+            <div class="offcanvas offcanvas-end" id="offcanvasNavbar">
+                <div class="offcanvas-header">
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        <div class="account-mobile">
+                            <button class="nav-link p-0 fw-bold d-flex justify-content-center align-items-center" type="button">
+                                <i class="bi bi-person-fill fs-3"></i>
+                            </button>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="account-mobile">
+                            <a class="nav-link p-0 fw-bold d-flex justify-content-center align-items-center" asp-area="Identity" asp-page="/Account/Login">
+                                <i class="bi bi-person-fill fs-3"></i>
+                            </a>
+                        </div>
+                    }
+                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    <ul class="navbar-nav list-unstyled menu-account">
+                        <li><a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index">Account</a></li>
+                        <li>
+                            <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Context.Request.Path@Context.Request.QueryString">
+                                <button type="submit" class="nav-link text-dark">Logout</button>
+                            </form>
+                        </li>
+                    </ul>
+                }
+
+                <ul class="navbar-nav menu-first mt-3">
+                    <li class="nav-item">
+                        <a class="nav-link fw-600" asp-area="Customer" asp-controller="Home" asp-action="Store">EVERYTHING</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fw-600" asp-area="Customer" asp-controller="Home" asp-action="Store" asp-route-category="Men">MEN</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fw-600" asp-area="Customer" asp-controller="Home" asp-action="Store" asp-route-category="Women">WOMEN</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fw-600" asp-area="Customer" asp-controller="Home" asp-action="Store" asp-route-category="Accessories">ACCESSORIES</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav menu-last mt-5">
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="Customer" asp-controller="Home" asp-action="AboutUs">ABOUT</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="Customer" asp-controller="Home" asp-action="ContactUs">CONTACT US</a>
+                    </li>
+
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        @if (User.IsInRole(UserRoles.Admin))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link fw-600" asp-area="Admin" asp-controller="Products" asp-action="Index">DASHBOARD</a>
+                            </li>
+                        }
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+</nav>

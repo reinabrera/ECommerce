@@ -24,13 +24,43 @@ header .navbar.bg-white .navbar-brand img {
     filter: invert(1) grayscale(100%) brightness(200%);
 }
 
-header .navbar {
+header .navbar.navbar-desktop {
     border-bottom: none !important;
 }
 
-header .navbar-brand {
+header .navbar-desktop .navbar-brand {
     max-width: 140px;
 }
+
+header .navbar-mobile .navbar-brand {
+    max-width: 100px;
+}
+
+header .navbar-mobile .offcanvas-toggler {
+    background-color: black;
+    border: 0;
+}
+
+header .navbar-mobile .nav-link {
+    padding: 20px;
+}
+
+header .navbar-mobile .offcanvas ul li {
+    border-bottom: 1px solid var(--global-border-color);
+}
+
+header .navbar-mobile .offcanvas ul.menu-first {
+    background-color: var(--global-bg-gray);
+}
+
+header .navbar-mobile .offcanvas ul.menu-last, header .navbar-mobile .offcanvas ul.menu-account {
+    background-color: #f9f9f9;
+}
+
+header .navbar-mobile .menu-account {
+    display: none;
+}
+
 header .navbar-brand img {
     width: 100%;
 }
@@ -62,11 +92,11 @@ header .cart-count--wrapper {
     font-weight: 600;
 }
 
-header .nav-link .bi {
+header .navbar-desktop .nav-link .bi {
     margin-top: -6px;
 }
 
-header .dropdown-menu {
+header .navbar-desktop .dropdown-menu {
     left: unset !important;
     right: 0;
     background-color: var(--global-bg-gray);

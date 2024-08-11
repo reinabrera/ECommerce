@@ -471,3 +471,12 @@ $('.cart-remove-btn').on('click', async function () {
         }
     }
 })
+
+$('header .navbar-mobile .account-mobile button').on('click', function () {
+    const dropdown = $('header .navbar-mobile .menu-account');
+    if (dropdown.is(":hidden")) {
+        dropdown.slideDown();
+    } else {
+        dropdown.slideUp();
+    }
+});
