@@ -97,9 +97,12 @@ html {
 
 /** Container Fix from Header */
 
-.container-fix {
-    padding-top: 104px;
+@media (min-width: 992px) {
+    .container-fix {
+        padding-top: 104px;
+    }
 }
+
 
 .fw-600 {
     font-weight: 600;

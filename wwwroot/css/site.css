@@ -590,11 +590,15 @@ section#store #product-listing .products-wrapper {
 section#store #product-listing .form-select {
     max-width: 150px;
 }
-
-
 section#store .container-fluid {
-    padding: 50px 20px !important;
+    padding: 30px 20px !important;
 }
+@media (min-width: 992px) {
+    section#store .container-fluid {
+        padding: 50px 20px !important;
+    }
+}
+
 
 @media (min-width: 576px) {
     section#store #product-listing .products-wrapper {
