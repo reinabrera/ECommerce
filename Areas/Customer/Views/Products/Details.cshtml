@@ -1,6 +1,10 @@
 ﻿@using ECommerce2.Models.ViewModels
 @model ProductDetailsVM
 
+@{
+    ViewData["Title"] = Model.Name;
+}
+
 @section CssOverrides {
     <link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/42.0.0/ckeditor5.css">
 }

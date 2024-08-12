@@ -1,4 +1,5 @@
 ﻿@using ECommerce2.Models.ViewModels
+@using System.Globalization
 @model StoreVM
 
 @{
@@ -15,6 +16,15 @@
     }
 
     int pageSize = (int)ViewData["PageSize"];
+
+    if (ViewData["SelectedCategory"] == null)
+    {
+        ViewData["Title"] = "Store";
+    } else
+    {
+        TextInfo info = new CultureInfo("en-US", false).TextInfo;
+        ViewData["Title"] = info.ToTitleCase(ViewData["SelectedCategory"].ToString());
+    }
 }
 
 <section id="store" class="container-fix">

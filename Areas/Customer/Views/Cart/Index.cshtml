@@ -3,6 +3,7 @@
 
 @{
     decimal? totalSum = Model.Sum(m => (m.Variant?.SalePrice ?? m.Variant?.ListPrice ?? m.Product.SalePrice ?? m.Product.ListPrice) * m.Quantity);
+    ViewData["Title"] = "Cart";
 }
 
 <div class="cart-page py-5">
