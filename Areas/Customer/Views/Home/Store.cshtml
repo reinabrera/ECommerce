@@ -142,17 +142,20 @@
                                 } else 
                                 {
                                     <li class="breadcrumb-item"><a asp-action="Store" class="text-muted">Store</a></li>
-                                    <li class="breadcrumb-item active text-capitalize" aria-current="page">
-                                        @if (ViewData["CurrentQuery"] != null)
-                                        {
-                                            <a asp-action="Store" asp-route-query="@ViewData["CurrentQuery"]" class="text-muted">Search results for “@ViewData["CurrentQuery"]”</a>
-                                        }
+                                    if (ViewData["CurrentQuery"] != null || ViewData["SelectedCategory"] != null)
+                                    {
+                                        <li class="breadcrumb-item active text-capitalize" aria-current="page">
+                                            @if (ViewData["CurrentQuery"] != null)
+                                            {
+                                                <a asp-action="Store" asp-route-query="@ViewData["CurrentQuery"]" class="text-muted">Search results for “@ViewData["CurrentQuery"]”</a>
+                                            }
 
-                                        @if (ViewData["SelectedCategory"] != null)
-                                        {
-                                            <a asp-action="Store" asp-route-category="@ViewData["SelectedCategory"]" class="text-muted">@ViewData["SelectedCategory"]</a>
-                                        }
-                                    </li>
+                                            @if (ViewData["SelectedCategory"] != null)
+                                            {
+                                                <a asp-action="Store" asp-route-category="@ViewData["SelectedCategory"]" class="text-muted">@ViewData["SelectedCategory"]</a>
+                                            }
+                                        </li>
+                                    }
                                 }
 
                                 @if (currentPage > 1)
