@@ -1,8 +1,26 @@
 ﻿@using ECommerce2.Models.ViewModels
 @model RatingBarChartVM
 
-<div class="row gx-2">
-    <div class="col-2">
+
+<div class="row justify-content-between gx-2">
+    <div class="col-auto star">
+        <span>@Model.Index star</span>
+    </div>
+    <div class="col flex-grow-1">
+        <div class="bar">
+            <div class="position-relative bar-inner--wrapper">
+                <div class="position-absolute bar--inner" style="width: @Model.Percentage%;">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="percent col-auto">
+        <span>@Model.Percentage%</span>
+    </div>
+</div>
+@* <div class="row gx-2">
+    <div class="col-2 col-sm-1 col-lg-2 star">
         <span>@Model.Index star</span>
     </div>
     <div class="col">
@@ -14,7 +32,7 @@
         </div>
     </div>
 
-    <div class="col-1">
+    <div class="col-1 percent">
         <span>@Model.Percentage%</span>
     </div>
-</div>
+</div> *@

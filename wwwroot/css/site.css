@@ -202,9 +202,16 @@ section.hero {
 
 /** Special Promotions */
 
+
 .special-promotions {
-    padding: 100px 0;
+    padding: 0 0 50px 0;
 }
+@media (min-width: 922px) {
+    .special-promotions {
+        padding: 100px 0;
+    }
+}
+
 
 .special-promotions .img-color-overlay {
     background-color: rgba(0,0,0,0.45);
@@ -795,9 +802,18 @@ section#store .container-fluid {
     border-top: 1px solid var(--global-border-color);
 }
 
+@media (min-width: 992px) {
+    #details-page-content .container-fluid {
+        max-width: 1200px;
+        padding: 0 25px;
+    }
+}
+
+
 #details-page-content {
     background-color: var(--global-bg-gray);
 }
+
 
 #add-to-cart-form input.item-count {
     max-width: 60px;
@@ -913,6 +929,39 @@ section#store .container-fluid {
     border: inherit;
 }
 
+@media (max-width: 991px) {
+    .cart-page #cart table thead {
+        display: none;
+    }
+
+    .cart-page #cart table tbody tr td {
+        width: 100%;
+        display: block;
+    }
+
+    .cart-page #cart table tbody tr td .title ~ * {
+        float: right;
+    }
+
+    .cart-page #cart table tbody tr td.product-img {
+        text-align: center;
+    }
+
+    .cart-page #cart table tbody tr:not(:last-of-type) {
+        border-bottom-width: 3px;
+    }
+
+    .cart-page #cart table tbody tr > td:not(:last-child) {
+        border-bottom: 1px solid var(--bs-border-color);
+    }
+}
+
+@media (max-width: 575px) {
+    .cart-page #cart table #update-cart-btn {
+        width: 100%;
+    }
+}
+
 .cart-page .no-products {
     background-color: #f5f5f5;
 }
@@ -956,7 +1005,15 @@ section#store .container-fluid {
     height: 100px;
 }
 
-.product-reviews .ratings-chart .row {
+.product-reviews .ratings-chart .star {
+    width: 50px;
+    white-space: nowrap;
+}
+
+.product-reviews .ratings-chart .percent {
+    width: 40px;
+}
+    .product-reviews .ratings-chart .row {
     font-weight: 500;
 }
 
@@ -996,4 +1053,13 @@ section#store .container-fluid {
 
 .card-list-item .card-body {
     line-height: 1.3rem;
+}
+
+@media (max-width: 991px) {
+    .ck-editor__main .ck-content {
+        overflow: hidden !important;
+    }
+    .ck-editor__main figure {
+        width: 100% !important;
+    }
 }
