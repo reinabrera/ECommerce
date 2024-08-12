@@ -120,12 +120,6 @@ namespace ECommerce2.Areas.Identity.Pages.Account
 
         public async Task OnGetAsync(string returnUrl = null)
         {
-            if (!_roleManager.RoleExistsAsync(UserRoles.Admin).GetAwaiter().GetResult())
-            {
-                _roleManager.CreateAsync(new IdentityRole(UserRoles.Admin)).GetAwaiter().GetResult();
-                _roleManager.CreateAsync(new IdentityRole(UserRoles.Customer)).GetAwaiter().GetResult();
-            }
-
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
@@ -148,6 +142,16 @@ namespace ECommerce2.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
+
+                    if (_userManager.Users.Count() == 1)
+                    {
+                        if (!_roleManager.RoleExistsAsync(UserRoles.Admin).GetAwaiter().GetResult())
+                        {
+                            _roleManager.CreateAsync(new IdentityRole(UserRoles.Admin)).GetAwaiter().GetResult();
+                            _roleManager.CreateAsync(new IdentityRole(UserRoles.Customer)).GetAwaiter().GetResult();
+                        }
+                        await _userManager.AddToRoleAsync(user, UserRoles.Admin);
+                    }
 
                     await _userManager.AddToRoleAsync(user, UserRoles.Customer);
 
