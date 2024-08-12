@@ -1,73 +1,76 @@
-﻿<footer class="border-top footer text-muted bg-white d-none">
+﻿<footer class="border-top footer text-muted bg-white">
     <div class="footer-widget py-5">
-        <div class="container">
-            <a asp-area="Customer" asp-controller="Home" asp-action="Store" class="fw-600 text-dark fs-4 text-decoration-none">SALE UP TO 70% OFF FOR ALL CLOTHES & FASHION ITEMS, ON ALL BRANDS.</a>
+        <div class="container-fluid container-lg d-flex d-sm-block">
+            <a asp-area="Customer" asp-controller="Home" asp-action="Store" class="fw-600 text-dark fs-4 text-decoration-none white-space-normal">SALE UP TO 70% OFF FOR ALL CLOTHES & FASHION ITEMS, ON ALL BRANDS.</a>
         </div>
     </div>
 
     <div class="primary-footer border-top border-bottom">
-        <div class="container py-5">
-            <div class="row">
-                <div class="col-4">
-                    <div class="brand-img--wrapper ">
-                        <!img src="/dist/logo1-free-img-140x47.png" class="brand-img" />
+        <div class="container-fluid container-lg">
+            <div class="py-5">
+                <div class="row">
+                    <div class="col-12 col-sm-3 col-md-4">
+                        <div class="brand-img--wrapper ">
+                            <!img src="/dist/logo1-free-img-140x47.png" class="brand-img" />
+                        </div>
+                        <div class="brand-line mt-5">
+                            <span class="text-dark fs-5 fw-600 white-space-normal">
+                                The best look anytime, anywhere.
+                            </span>
+                        </div>
                     </div>
-                    <div class="brand-line mt-5">
-                        <span class="text-dark fs-5 fw-600">
-                            The best look anytime, anywhere.
-                        </span>
-                    </div>
-                </div>
-                <div class="col-5">
-                    <div class="row footer-links">
-                        <div class="col-6">
-                            <div class="col-title">
-                                <span class="text-dark fs-5 fw-600">For Her</span>
-                            </div>
-                            <ul class="links list-unstyled mt-4">
-                                <li><a asp-area="Customer" asp-controller="Home" asp-action="Store" asp-route-category="Women">Women's Collection</a></li>
-                                <li><a asp-area="Customer" asp-controller="Home" asp-action="Store" asp-route-category="Women's Jeans">Women's Jeans</a></li>
-                                <li><a asp-area="Customer" asp-controller="Home" asp-action="Store" asp-route-category="Women's Shirts">Women's Shirts</a></li>
-                                <li><a asp-area="Customer" asp-controller="Home" asp-action="Store" asp-route-category="Women's Shoes">Women's Shoes</a></li>
-                                <li><a asp-area="Customer" asp-controller="Home" asp-action="Store" asp-route-category="Women's Shorts">Women's Shorts</a></li>
+                    <div class="col-12 col-sm-6 col-md-5 mt-5 mt-sm-0">
+                        <div class="row row-cols-1 row-cols-sm-2 footer-links">
+                            <div class="col">
+                                <div class="col-title">
+                                    <span class="text-dark fs-5 fw-600">For Her</span>
+                                </div>
+                                <ul class="links list-unstyled mt-4">
+                                    <li><a asp-area="Customer" asp-controller="Home" asp-action="Store" asp-route-category="Women">Women's Collection</a></li>
+                                    <li><a asp-area="Customer" asp-controller="Home" asp-action="Store" asp-route-category="Women's Jeans">Women's Jeans</a></li>
+                                    <li><a asp-area="Customer" asp-controller="Home" asp-action="Store" asp-route-category="Women's Shirts">Women's Shirts</a></li>
+                                    <li><a asp-area="Customer" asp-controller="Home" asp-action="Store" asp-route-category="Women's Shoes">Women's Shoes</a></li>
+                                    <li><a asp-area="Customer" asp-controller="Home" asp-action="Store" asp-route-category="Women's Shorts">Women's Shorts</a></li>
 
-                            </ul>
-                        </div>
-                        <div class="col-6">
-                            <div class="col-title">
-                                <span class="text-dark fs-5 fw-600">For Him</span>
+                                </ul>
                             </div>
-                            <ul class="links list-unstyled mt-4">
-                                <li><a asp-area="Customer" asp-controller="Home" asp-action="Store" asp-route-category="Men">Men's Collection</a></li>
-                                <li class="mt-1"><a asp-area="Customer" asp-controller="Home" asp-action="Store" asp-route-category="Men's Jeans">Men's Jeans</a></li>
-                                <li class="mt-1"><a asp-area="Customer" asp-controller="Home" asp-action="Store" asp-route-category="Men's Shirts">Men's Shirts</a></li>
-                            </ul>
+                            <div class="col">
+                                <div class="col-title">
+                                    <span class="text-dark fs-5 fw-600">For Him</span>
+                                </div>
+                                <ul class="links list-unstyled mt-4">
+                                    <li><a asp-area="Customer" asp-controller="Home" asp-action="Store" asp-route-category="Men">Men's Collection</a></li>
+                                    <li class="mt-1"><a asp-area="Customer" asp-controller="Home" asp-action="Store" asp-route-category="Men's Jeans">Men's Jeans</a></li>
+                                    <li class="mt-1"><a asp-area="Customer" asp-controller="Home" asp-action="Store" asp-route-category="Men's Shirts">Men's Shirts</a></li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-3">
-                    <div class="subscribe-widget">
-                        <div class="col-title">
-                            <span class="text-dark fs-5 fw-600">Subscribe</span>
-                            <form method="POST" class="mt-4">
-                                <input class="form-control rounded-0 py-2" placeholder="Your email address..." />
-                                <button type="submit" class="btn btn-blue px-4 py-2 mt-3 fw-600">SUBSCRIBE</button>
-                            </form>
+                    <div class="col-12 col-sm-3 mt-5 mt-sm-0">
+                        <div class="subscribe-widget">
+                            <div class="col-title">
+                                <span class="text-dark fs-5 fw-600">Subscribe</span>
+                                <form method="POST" class="mt-4">
+                                    <input class="form-control rounded-0 py-2" placeholder="Your email address..." />
+                                    <button type="submit" class="btn btn-blue px-4 py-2 mt-3 fw-600 w-100">SUBSCRIBE</button>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+            
         </div>
     </div>
     <div class="footer-bottom">
-        <div class="container py-5">
-            <div class="d-flex justify-content-between">
+        <div class="container-fluid container-lg">
+            <div class="d-flex flex-column align-items-center flex-sm-row justify-content-sm-between  py-3 py-sm-5">
                 <div class="copyright">
-                    <span class="text-dark">
+                    <span class="text-dark white-space-normal">
                         Copyright © @DateTime.Now.Year Brandstore. Powered by Brandstore.
                     </span>
                 </div>
-                <div class="social-links">
+                <div class="social-links mt-4 mt-sm-0">
                     <ul class="d-flex list-unstyled mb-0">
                         <li>
                             <a href="#" target="_blank"><i class="bi bi-facebook text-dark"></i></a>

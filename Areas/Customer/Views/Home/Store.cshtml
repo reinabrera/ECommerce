@@ -18,10 +18,9 @@
 }
 
 <section id="store" class="container-fix">
-    <div class="container">
-        <div class="d-flex">
-
-            <div id="store-sidebar" class="col-3">
+    <div class="container-fluid">
+        <div class="d-flex flex-column flex-lg-row">
+            <div id="store-sidebar" class="col-12 col-lg-3 order-1 order-lg-0">
                 <form method="get" asp-action="Store" id="queryForm">
                     <div class="d-flex">
                         <input type="text" name="query" value="@ViewData["CurrentQuery"]" placeholder="Search products.."/>
@@ -95,7 +94,7 @@
                     <span class="fs-4">
                         Our Best Sellers
                     </span>
-                    <ul class="best-selling-products list-unstyled mt-2">
+                    <ul class="best-selling-products list-unstyled mt-2 mb-0">
                         @foreach (ProductCardListItemVM item in Model.BestSelling)
                         {
                             @Html.Partial("_ProductCardListItem", item)
@@ -104,7 +103,7 @@
                 </div>
 
             </div>
-            <div id="product-listing" class="col-9">
+            <div id="product-listing" class="col-12 col-lg-9">
                 <div class="products-wrapper bg-white">
                     <div id="store-breadcrumbs">
                         <nav aria-label="breadcrumb">
@@ -192,7 +191,7 @@
 
                     @if (Model.ProductPageCount > 0)
                     {
-                        <div class="row row-cols-3 gy-5">
+                        <div class="row row-cols-2 row-cols-sm-3 gy-3 gy-md-5">
                             @for (int i = 0; i < Model.Products.Count; i++)
                             {
                                 var Product = Model.Products[i];

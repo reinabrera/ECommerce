@@ -6,10 +6,10 @@
 /*********************************************** */
 /** Global */
 
-const footer = $('footer');
+//const footer = $('footer');
 
-const body = $('body');
-body.css('margin-bottom', footer.height());
+//const body = $('body');
+//body.css('margin-bottom', footer.height());
 
 /****************************************** */
 /** Partnership Pages */

@@ -4,10 +4,17 @@
     <div class="position-relative img--wrapper">
         <img src="@Model.FeaturedImage.FilePath" class="card-img-top rounded-0">
         <a asp-controller="Products" asp-action="Details" asp-route-id="@Model.Slug" class="stretched-link"></a>
+        @if (Model.SalePrice != null)
+        {
+            <div class="sale-tag position-absolute d-flex justify-content-center align-items-center bg-white shadow">
+                <span>Sale!</span>
+            </div>
+        }
+
         <div class="add-to-cart position-absolute">
             @if (Model.VariantTermsGrouped.Any())
             {
-                <a asp-area="Customer" asp-controller="Products" asp-action="Details" asp-route-id="@Model.Slug" class="btn rounded-pill justify-content-center align-items-center" data-bs-toggle="tooltip" data-bs-placement="left"
+                <a asp-area="Customer" asp-controller="Products" asp-action="Details" asp-route-id="@Model.Slug" class="btn rounded-pill justify-content-center align-items-center  shadow" data-bs-toggle="tooltip" data-bs-placement="left"
                         data-bs-custom-class="add-to-cart-tooltip"
                         data-bs-title="Select Options">
                     <i class="bi bi-handbag-fill text-muted"></i>
@@ -17,7 +24,7 @@
                 <form asp-area="Customer" asp-controller="Cart" asp-action="Add" asp-route-returnUrl="@Context.Request.Path@Context.Request.QueryString">
                     <input type="hidden" name="ProductId" value="@Model.ProductId" required />
                     <input type="hidden" name="Quantity" value="1" required />
-                    <button type="submit" class="btn rounded-pill justify-content-center align-items-center" data-bs-toggle="tooltip" data-bs-placement="left"
+                    <button type="submit" class="btn rounded-pill justify-content-center align-items-center shadow" data-bs-toggle="tooltip" data-bs-placement="left"
                        data-bs-custom-class="add-to-cart-tooltip"
                        data-bs-title="Add to cart">
                         <i class="bi bi-handbag-fill text-muted"></i>

@@ -1,4 +1,5 @@
 ﻿using ECommerce2.Data;
+using ECommerce2.Migrations;
 using ECommerce2.Models;
 using ECommerce2.Models.ViewModels;
 using ECommerce2.Utility;
@@ -11,7 +12,6 @@ using Newtonsoft.Json;
 namespace ECommerce2.Areas.Customer.Controllers
 {
     [Area("Customer")]
-    [Authorize(Roles = UserRoles.Customer + ", " + UserRoles.Admin)]
     public class CartController : Controller
     {
         private readonly ILogger<CartController> _logger;
@@ -27,6 +27,8 @@ namespace ECommerce2.Areas.Customer.Controllers
             _userManager = userManager;
         }
 
+
+        [Authorize(Roles = UserRoles.Customer + ", " + UserRoles.Admin)]
         public async Task<IActionResult> Index()
         {
             ApplicationUser currentUser = await _userManager.GetUserAsync(User);
@@ -58,16 +60,19 @@ namespace ECommerce2.Areas.Customer.Controllers
             return View(cartItemVMs);
         }
 
-        [HttpPost]
+        //[HttpPost]
         public async Task<IActionResult> Add(AddToCartVM data, string returnUrl = null)
         {
-            if (!_signInManager.IsSignedIn(User))
-            {
-                return RedirectToPage("/Account/Login", new { area = "Identity" });
-            }
 
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && data.ProductId != Guid.Empty && data.Quantity != 0)
             {
+
+                if (!_signInManager.IsSignedIn(User))
+                {
+                    returnUrl = Url.Action(nameof(Add), new { ProductId = data.ProductId, Quantity = data.Quantity, VariantId = data.VariantId, returnUrl = returnUrl});
+                    return RedirectToPage("/Account/Login", new { area = "Identity", returnUrl });
+                }
+
                 ApplicationUser currentUser = await _userManager.GetUserAsync(User);
                 Product product = await _context.Products
                     .Include(p => p.Variations)
@@ -117,6 +122,7 @@ namespace ECommerce2.Areas.Customer.Controllers
             return RedirectToAction("Store", "Home");
         }
         [HttpPost]
+        [Authorize(Roles = UserRoles.Customer + ", " + UserRoles.Admin)]
         public async Task<IActionResult> Remove(int cartId)
         {
             if (cartId == 0)
@@ -157,6 +163,7 @@ namespace ECommerce2.Areas.Customer.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = UserRoles.Customer + ", " + UserRoles.Admin)]
         public async Task<IActionResult> UpdateCartItems([FromBody] UpdateCartVM data)
         {
             ApplicationUser currentUser = await _userManager.GetUserAsync(User);

@@ -1,15 +1,15 @@
 ﻿@using ECommerce2.Models.ViewModels
 @model ProductCardListItemVM
 
-<li>
-    <div class="card py-3 bg-transparent" style="max-width: 540px;">
+<li class="card-list-item">
+    <div class="card py-3 bg-transparent">
         <div class="row g-0">
-            <div class="col-md-3 position-relative">
-                <img src="@Model.Image.FilePath.ToString()" class="img-fluid rounded-start" alt="...">
+            <div class="col-auto position-relative">
+                <img src="@Model.Image.FilePath.ToString()" class="img-fluid" alt="...">
                 <a asp-controller="Products" asp-action="Details" asp-route-id="@Model.Slug" class="stretched-link"></a>
             </div>
-            <div class="col-md-9">
-                <div class="card-body p-0 ps-3">
+            <div class="col flex-grow-1">
+                <div class="card-body p-0 ps-3 w-100">
                     <a asp-controller="Products" asp-action="Details" asp-route-id="@Model.Slug" class="card-title text-dark text-decoration-none">@Model.Name</a>
                     <div class="star-rating d-flex">
                         <i class="bi bi-star"></i>

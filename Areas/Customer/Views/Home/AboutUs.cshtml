@@ -11,12 +11,11 @@
 </section>
 
 <section class="who-we-are">
-    <div class="container">
+    <div class="container-fluid container-lg">
         <div class="content">
             <div class="row gx-0">
-                <div class="col-6">
+                <div class="col-12 col-lg-6">
                     <div class="bg-white inner-content--wrapper">
-                        
                         <div class="content-text">
                             <div class="custom-divider d-flex">
                                 <span></span>
@@ -28,8 +27,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-6">
-                    <img src="~/dist/slide-image-free-img.jpg" class="w-100" />
+                <div class="col-12 col-lg-6 bg-image" style="background-image: url('../../dist/slide-image-free-img.jpg');">
+                    <img src="~/dist/slide-image-free-img.jpg" class="d-lg-none w-100" />
                 </div>
             </div>
         </div>
@@ -38,7 +37,7 @@
 </section>
 
 <section id="our-team" class="py-100">
-    <div class="container">
+    <div class="container-fluid container-lg">
         <div class="content">
             <div class="custom-divider justify-content-center d-flex">
                 <span></span>
@@ -59,8 +58,8 @@
                 
                 @foreach (var item in @Model)
                 {
-                    <div class="col-4">
-                        <div class="px-5 py-4 d-flex justify-content-center align-items-center flex-column member-content rounded border">
+                    <div class="col-12 col-md-4">
+                        <div class="px-3 px-lg-5 py-4 d-flex justify-content-center align-items-center flex-column member-content rounded border">
                             <div class="img--wrapper mb-4">
                                 <img src="@item.Image!.FilePath" alt="@item.Name Photo" />
                             </div>
@@ -80,35 +79,38 @@
 
 <section id="socials">
     <div class="container">
-        <div class="content text-center">
-            <div class="custom-divider justify-content-center d-flex">
-                <span></span>
-            </div>
-            <h4 class="fs-1 mt-4 fw-600">Follow Us</h4>
-            <div class="row gx-5 justify-content-center mt-5">
-                <div class="col-auto">
-                    <a href="#" class="text-decoration-none text-dark">
-                        <i class="bi bi-facebook"></i>
-                    </a>
+        <div class="content-wrapper p-md-0">
+            <div class="content text-center">
+                <div class="custom-divider justify-content-center d-flex">
+                    <span></span>
                 </div>
-                <div class="col-auto">
-                    <a href="#" class="text-decoration-none text-dark">
-                        <i class="bi bi-twitter-x"></i>
-                    </a>
-                </div>
-                <div class="col-auto">
-                    <a href="#" class="text-decoration-none text-dark">
-                        <i class="bi bi-instagram"></i>
-                    </a>
-                </div>
-                <div class="col-auto">
-                    <a href="#" class="text-decoration-none text-dark">
-                        <i class="bi bi-google"></i>
-                    </a>
-                </div>
+                <h4 class="fs-1 mt-4 fw-600">Follow Us</h4>
+                <div class="row gx-5 justify-content-center mt-5">
+                    <div class="col-auto">
+                        <a href="#" class="text-decoration-none text-dark">
+                            <i class="bi bi-facebook"></i>
+                        </a>
+                    </div>
+                    <div class="col-auto">
+                        <a href="#" class="text-decoration-none text-dark">
+                            <i class="bi bi-twitter-x"></i>
+                        </a>
+                    </div>
+                    <div class="col-auto">
+                        <a href="#" class="text-decoration-none text-dark">
+                            <i class="bi bi-instagram"></i>
+                        </a>
+                    </div>
+                    <div class="col-auto">
+                        <a href="#" class="text-decoration-none text-dark">
+                            <i class="bi bi-google"></i>
+                        </a>
+                    </div>
 
+                </div>
             </div>
         </div>
+        
 
     </div>
 

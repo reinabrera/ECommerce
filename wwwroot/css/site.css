@@ -1,6 +1,9 @@
 /** Header */
-header {
-    margin-bottom: -104px;
+
+@media (min-width: 992px) {
+    header {
+        margin-bottom: -104px;
+    }
 }
 
 header .navbar.bg-translucent {
@@ -124,8 +127,8 @@ header .dropdown-menu li:hover a, header .dropdown-menu li:hover button {
 }
 
 .footer {
-    position: absolute;
-    bottom: 0;
+/*    position: absolute;
+    bottom: 0;*/
     width: 100%;
     white-space: nowrap;
 }
@@ -146,6 +149,17 @@ footer .social-links ul li {
 
 footer .social-links ul li a:hover i {
     color: var(--global-blue-1) !important;
+}
+
+@media (max-width: 575px) {
+    footer .footer-widget a {
+        text-align: center;
+    }
+
+    footer .primary-footer, footer .footer-bottom {
+        text-align: center;
+    }
+
 }
 
 /** Hero section */
@@ -271,12 +285,20 @@ section.featured-product-listing {
 }
 
 .product-card .add-to-cart {
-    top: 0;
-    right: 0;
-    margin-top: 8px;
-    margin-right: 8px;
+    top: 15px;
+    right: 15px;
     display: none;
     z-index: 99;
+}
+
+
+.product-card .sale-tag {
+    z-index: 99;
+    top: 15px;
+    left: 15px;
+    padding: 5px 10px;
+    font-size: 0.8rem;
+    border-radius: 20px;
 }
 
 .product-card .add-to-cart .btn {
@@ -374,28 +396,69 @@ section.highlight-subsections {
 }
 
 section.about-us-hero {
-    height: 75vh;
     background: linear-gradient(0deg, rgb(30 87 122 / 50%), rgb(30 87 122 / 50%)), url("../dist/banner-04.jpg");
-    background-attachment: fixed;
+    background-position: center;
+    background-size: cover;
+    height: 25vh;
+
 }
 
-section.who-we-are {
-    padding: 100px 0;
-    background-color: var(--global-bg-gray);
-}
-
-@media (min-width: 1200px) {
-    section.who-we-are .container {
-        max-width: 1700px;
+@media (min-width: 768 ) {
+    section.about-us-hero {
+        height: 50vh;
     }
 }
 
+@media (min-width: 992px) {
+    section.about-us-hero {
+        background-attachment: fixed;
+        height: 75vh;
+        background-position: bottom;
+    }
+}
+
+
+section.who-we-are {
+    padding: 50px 0;
+    background-color: var(--global-bg-gray);
+}
+
+section.who-we-are .bg-image {
+    background-size: cover;
+    background-position: center;
+}
+
+
+
 section.who-we-are .inner-content--wrapper {
-    padding: 100px;
+    padding: 20px;
     height: 100%;
     display: flex;
     align-items: center;
+    text-align: center;
 }
+
+@media (min-width: 576px) {
+    section.who-we-are .inner-content--wrapper {
+        padding: 40px;
+        text-align: left;
+    }
+}
+
+@media (min-width: 992px) {
+    section.who-we-are {
+        padding: 100px 0;
+    }
+
+    section.who-we-are .container-lg {
+        max-width: 1700px !important;
+    }
+
+    section.who-we-are .inner-content--wrapper {
+        padding: 100px;
+    }
+}
+
 
 section#our-team .content {
     max-width: 800px;
@@ -404,6 +467,7 @@ section#our-team .content {
 
 section#our-team .content .team-members .member-content {
     background-color: var(--global-bg-gray);
+    height: 100%;
 }
 
 section#our-team .content .team-members img {
@@ -412,26 +476,58 @@ section#our-team .content .team-members img {
 
 section#socials {
     background: linear-gradient(0deg, rgb(25 26 26 / 50%), rgb(26 28 28 / 50%)), url(../dist/banner-05.jpg);
-    background-attachment: fixed;
+    background-size: cover;
+    background-position: center;
 }
 
 section#socials .content {
     background-color: var(--global-bg-gray);
     max-width: 400px;
     margin: 0 auto;
-    padding: 150px 50px;
+    padding: 50px 50px;
 }
+
+section#socials .content-wrapper {
+    padding: 40px 30px;
+}
+
+@media (min-width: 992px) {
+    section#socials {
+        background-attachment: fixed;
+    }
+
+    section#socials .content {
+        padding: 150px 50px;
+    }
+}
+
 
 section#socials .content a:hover i {
     color: var(--global-blue-1) !important;
 }
 
+
 section#contact-us-hero {
-    height: 55vh;
     background: linear-gradient(0deg, rgb(43 0 0 / 70%), rgb(30 87 122 / 50%)), url(../dist/banner-06.jpg);
     background-position: center;
-    background-attachment: fixed;
+    background-size: cover;
+    height: 25vh;
 }
+
+@media (min-width: 768 ) {
+    section#contact-us-hero {
+        height: 40vh;
+    }
+}
+
+@media (min-width: 992px) {
+    section#contact-us-hero {
+        background-attachment: fixed;
+        height: 55vh;
+        background-position: bottom;
+    }
+}
+
 
 section#contact-cards .divider-black span {
     border-bottom: 1px solid black;
@@ -443,13 +539,6 @@ section#contact-cards .cards a {
     text-decoration: none;
 }
 
-section#contact-form {
-    padding-bottom: 100px;
-}
-
-section#contact-form .form {
-    padding: 40px;
-}
 
 section#contact-form .form input, section#contact-form .form textarea {
     width: 100%;
@@ -468,7 +557,7 @@ section#contact-form .form button {
 }
 
 @media (min-width: 1200px) {
-    section#store .container {
+    section#store .container-fluid {
         max-width: 1380px;
     }
 }
@@ -488,6 +577,67 @@ section#store #store-sidebar form#queryForm button {
 section#store #store-sidebar form#queryForm button:hover {
     background-color: var(--global-blue-1);
 }
+
+section#store {
+    background-color: var(--global-bg-gray);
+}
+
+
+section#store #product-listing .products-wrapper {
+    padding: 20px;
+}
+
+section#store #product-listing .form-select {
+    max-width: 150px;
+}
+
+
+section#store .container-fluid {
+    padding: 50px 20px !important;
+}
+
+@media (min-width: 576px) {
+    section#store #product-listing .products-wrapper {
+        padding: 30px;
+    }
+
+    section#store #product-listing .form-select {
+        max-width: 100%;
+    }
+}
+
+@media (min-width: 992px) {
+    section#store .container-fluid {
+        padding: 70px 20px !important;
+    }
+
+    section#store .container-fluid > .d-flex {
+        margin-left: -30px;
+    }
+
+    section#store .container-fluid > .d-flex > div {
+        padding-left: 30px;
+    }
+
+    section#store #product-listing .products-wrapper {
+        padding: 50px;
+    }
+}
+
+@media (min-width: 1200px) {
+    section#store .container-fluid > .d-flex {
+        margin-left: -70px;
+    }
+
+    section#store .container-fluid > .d-flex > div {
+        padding-left: 70px;
+    }
+
+    section#store #product-listing .products-wrapper {
+        padding: 100px;
+    }
+}
+
     
 .dual-range-slider--wrapper {
     position: relative;
@@ -586,25 +736,6 @@ section#store #store-sidebar form#queryForm button:hover {
     background-color: var(--global-blue-1);
 }
 
-section#store {
-    background-color: var(--global-bg-gray);
-}
-
-section#store .container {
-    padding: 70px 0;
-}
-
-section#store .container > .d-flex {
-    margin-left: -70px;
-}
-
-section#store .container > .d-flex > div {
-    padding-left: 70px;
-}
-
-section#store #product-listing .products-wrapper {
-    padding: 100px;
-}
 
 .pagination .page-link {
     border-radius: unset !important;
@@ -849,4 +980,16 @@ section#store #product-listing .products-wrapper {
     padding-top: 20px;
     margin-top: 20px;
     border-top: 1px solid var(--global-border-color);
+}
+
+
+.card-list-item .row div:first-child img {
+    max-width: 64px;
+    max-height: 64px;
+    width: 100%;
+    height: 100%;
+}
+
+.card-list-item .card-body {
+    line-height: 1.3rem;
 }

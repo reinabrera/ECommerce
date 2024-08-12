@@ -83,7 +83,11 @@
                                     <p>@Model.Overview</p>
                                 </div>
 
-                                <form id="add-to-cart-form" asp-controller="Cart" asp-action="Add">
+                                <form id="add-to-cart-form"
+                                asp-controller="Cart"
+                                asp-action="Add"
+                                asp-route-returnUrl="@Context.Request.Path"
+                                >
                                     <input type="hidden" asp-for="ProductId" />
                                     @if (Model.VariantTermsGrouped.Any())
                                     {
