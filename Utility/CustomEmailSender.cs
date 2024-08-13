@@ -8,13 +8,15 @@ namespace ECommerce2.Utility
     {
         public Task SendEmailAsync(string email, string subject, string message)
         {
-            var envVars = DotEnv.Read();
+            DotEnv.Load();
 
-            string sender = envVars["BrevoSender"];
-            string login = envVars["BrevoLogin"];
-            string pw = envVars["BrevoApiKey"];
+            string sender = Environment.GetEnvironmentVariable("BrevoSender");
+            string login = Environment.GetEnvironmentVariable("BrevoLogin");
+            string pw = Environment.GetEnvironmentVariable("BrevoApiKey");
+            string smtpServer = Environment.GetEnvironmentVariable("BrevoSmtpServer");
+            string smtpPort = Environment.GetEnvironmentVariable("BrevoSmtpPort");
 
-            var client = new SmtpClient(envVars["BrevoSmtpServer"], Convert.ToInt32(envVars["BrevoSmtpPort"]))
+            var client = new SmtpClient(smtpServer, Convert.ToInt32(smtpPort))
             {
                 EnableSsl = true,
                 Credentials = new NetworkCredential(login, pw),
