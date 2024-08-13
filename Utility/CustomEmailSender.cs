@@ -10,11 +10,11 @@ namespace ECommerce2.Utility
         {
             DotEnv.Load();
 
-            string sender = Environment.GetEnvironmentVariable("BrevoSender");
-            string login = Environment.GetEnvironmentVariable("BrevoLogin");
-            string pw = Environment.GetEnvironmentVariable("BrevoApiKey");
-            string smtpServer = Environment.GetEnvironmentVariable("BrevoSmtpServer");
-            string smtpPort = Environment.GetEnvironmentVariable("BrevoSmtpPort");
+            string smtpServer = Environment.GetEnvironmentVariable("SMTP_SERVER");
+            string smtpPort = Environment.GetEnvironmentVariable("SMTP_PORT");
+            string login = Environment.GetEnvironmentVariable("SMTP_LOGIN");
+            string pw = Environment.GetEnvironmentVariable("SMTP_KEY");
+            string sender = Environment.GetEnvironmentVariable("SMTP_SENDER");
 
             var client = new SmtpClient(smtpServer, Convert.ToInt32(smtpPort))
             {
