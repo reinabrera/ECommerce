@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using ECommerce2.Utility;
 
 namespace ECommerce2.Areas.Identity.Pages.Account
 {
@@ -21,9 +22,9 @@ namespace ECommerce2.Areas.Identity.Pages.Account
     public class ResendEmailConfirmationModel : PageModel
     {
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IEmailSender _emailSender;
+        private readonly ICustomEmailSender _emailSender;
 
-        public ResendEmailConfirmationModel(UserManager<ApplicationUser> userManager, IEmailSender emailSender)
+        public ResendEmailConfirmationModel(UserManager<ApplicationUser> userManager, ICustomEmailSender emailSender)
         {
             _userManager = userManager;
             _emailSender = emailSender;
