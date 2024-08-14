@@ -31,11 +31,11 @@
         </div>
         <button class="btn btn-primary w-100 py-2 rounded" type="submit">Sign in</button>
         <div class="d-flex flex-column align-items-center mt-2">
-            <a id="forgot-password" asp-page="./ForgotPassword" class="text-muted">Forgot your password?</a>
-            <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl" class="text-muted">Register as a new user</a>
-            <a id="resend-confirmation" asp-page="./ResendEmailConfirmation" class="text-muted">Resend email confirmation</a>
+            <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl" class="text-decoration-none"><span class="text-muted">Not registered?</span> <span class="text-muted fw-600">Register</span></a>
+            <a id="forgot-password" asp-page="./ForgotPassword" class="text-muted text-decoration-none">Forgot your password?</a>
+            <a id="resend-confirmation" asp-page="./ResendEmailConfirmation" class="text-muted text-decoration-none">Resend email confirmation</a>
         </div>
-        <p class="mt-5 mb-3 text-body-secondary">© 2017–2024</p>
+        <p class="mt-5 mb-3 text-body-secondary">© 2024</p>
     </form>
 </section>
     
