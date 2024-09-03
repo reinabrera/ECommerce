@@ -17,5 +17,20 @@ namespace ECommerce2.Models
         public ProductImage? Image { get; set; }
         public string TermsConcatenated { get; set; }
         public ICollection<CartItem>? CartItems { get; set; }
+
+        public decimal? GetDisplayPrice()
+        {
+            if (SalePrice != null)
+            {
+                return (decimal)SalePrice;
+            }
+
+            if (ListPrice != null)
+            {
+                return (decimal)ListPrice;
+            }
+
+            return null;
+        }
     }
 }

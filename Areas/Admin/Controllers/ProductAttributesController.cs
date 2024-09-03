@@ -303,10 +303,11 @@ namespace ECommerce2.Areas.Admin.Controllers
 
             if (product == null) return Json(new { status = "Failed", message = "Product does not exist." });
 
-            List<Term> productTerms = product.SelectedTerms.ToList();
+            //List<Term> productTerms = product.SelectedTerms.ToList();
 
-            List<List<Term>> termsDividedByAttr = productTerms.GroupBy(a => a.AttributeId).Select(g => g.ToList()).ToList();
-            List<Variant> generatedVariations = GenerateTermCombinations(termsDividedByAttr);
+            //List<List<Term>> termsDividedByAttr = productTerms.GroupBy(a => a.AttributeId).Select(g => g.ToList()).ToList();
+            //List<Variant> generatedVariations = GenerateTermCombinations(termsDividedByAttr);
+            List<Variant> generatedVariations = product.GenerateVariation();
 
             List<Variant> added = generatedVariations
                 .Where(gv => !product.Variations
@@ -370,23 +371,21 @@ namespace ECommerce2.Areas.Admin.Controllers
         {
             if (data == null) return Json(new { status = "Failed", message = "There was an error processing your request." });
 
-            Product product = await _context.Products.FirstOrDefaultAsync(p => p.Id == data.ProductId);
+            Product product = await _context.Products
+                .Include(p => p.Variations)
+                    .ThenInclude(v => v.Terms)
+                 .Include(p => p.Variations)
+                    .ThenInclude(v => v.Image)
+                .FirstOrDefaultAsync(p => p.Id == data.ProductId);
+
             if (product == null) return Json(new { status = "Failed", message = "Product does not exist" });
 
             List<Variant> updated = new List<Variant>();
 
-            decimal? salePriceMin = int.MaxValue;
-            decimal? salePriceMax = 0;
-
-            decimal? listPriceWithoutSalePriceMin = int.MaxValue;
-            decimal? listPriceWithoutSalePriceMax = 0;
-
             foreach (VariantVM variantVM in data.Variants)
             {
-                Variant variant = await _context.Variations
-                    .Include(v => v.Terms)
-                    .Include(v => v.Image)
-                    .FirstOrDefaultAsync(v => v.Id == variantVM.Id);
+                Variant variant = product.Variations
+                    .FirstOrDefault(v => v.Id == variantVM.Id);
 
                 if (variant != null)
                 {
@@ -407,39 +406,11 @@ namespace ECommerce2.Areas.Admin.Controllers
                         variant.ImageId = null;
                         variant.Image = null;
                     }
-
-                    _context.Variations.Update(variant);
                     updated.Add(variant);
                 }
-
-                if (variant.SalePrice != null)
-                {
-                    if (variant.SalePrice < salePriceMin) salePriceMin = variant.SalePrice;
-                    if (variant.SalePrice > salePriceMax) salePriceMax = variant.SalePrice;
-                } else
-                {
-                    if (variant.ListPrice < listPriceWithoutSalePriceMin) listPriceWithoutSalePriceMin = variant.ListPrice;
-                    if (variant.ListPrice > listPriceWithoutSalePriceMax) listPriceWithoutSalePriceMax = variant.ListPrice;
-                }
             }
 
-            if (salePriceMin < listPriceWithoutSalePriceMin)
-            {
-                product.MinPrice = salePriceMin;
-            }
-            else
-            {
-                product.MinPrice = listPriceWithoutSalePriceMin;
-            }
-
-            if (salePriceMax > listPriceWithoutSalePriceMax)
-            {
-                product.MaxPrice = salePriceMax;
-            }
-            else
-            {
-                product.MaxPrice = listPriceWithoutSalePriceMax;
-            }
+            product.UpdatePriceRange();
 
             _context.Products.Update(product);
 
