@@ -40,6 +40,7 @@ namespace ECommerce2.Models
             CreatedDate = DateTime.Now;
             IsPublished = false;
             IsFeatured = false;
+            ListPrice = 0;
             if (SalePrice != null)
             {
                 MinPrice = SalePrice;
@@ -49,6 +50,94 @@ namespace ECommerce2.Models
                 MinPrice = ListPrice;
                 MaxPrice = ListPrice;
             }
+        }
+
+        public decimal GetDisplayPrice()
+        {
+            if (SalePrice != null)
+            {
+                return (decimal)SalePrice;
+            }
+
+            return (decimal)ListPrice;
+        }
+
+        public void UpdatePriceRange()
+        {
+            if (Variations.Any())
+            {
+                decimal? salePriceMin = int.MaxValue;
+                decimal? salePriceMax = 0;
+
+                decimal? listPriceWithoutSalePriceMin = int.MaxValue;
+                decimal? listPriceWithoutSalePriceMax = 0;
+
+                foreach (Variant variant in Variations)
+                {
+                    if (variant.SalePrice != null)
+                    {
+                        if (variant.SalePrice < salePriceMin) salePriceMin = variant.SalePrice;
+                        if (variant.SalePrice > salePriceMax) salePriceMax = variant.SalePrice;
+                    }
+                    else
+                    {
+                        if (variant.ListPrice < listPriceWithoutSalePriceMin) listPriceWithoutSalePriceMin = variant.ListPrice;
+                        if (variant.ListPrice > listPriceWithoutSalePriceMax) listPriceWithoutSalePriceMax = variant.ListPrice;
+                    }
+                }
+
+                if (salePriceMin < listPriceWithoutSalePriceMin)
+                {
+                    MinPrice = salePriceMin;
+                }
+                else
+                {
+                    MinPrice = listPriceWithoutSalePriceMin;
+                }
+
+                if (salePriceMax > listPriceWithoutSalePriceMax)
+                {
+                    MaxPrice = salePriceMax;
+                }
+                else
+                {
+                    MaxPrice = listPriceWithoutSalePriceMax;
+                }
+            }
+        }
+
+        public List<Variant> GenerateVariation()
+        {
+            List<List<Term>> termsDividedByAttr = SelectedTerms.GroupBy(a => a.AttributeId).Select(g => g.ToList()).ToList();
+            
+            return GenerateTermCombinations(termsDividedByAttr);
+        }
+
+        private List<Variant> GenerateTermCombinations(List<List<Term>> terms, int n = 0, List<Term> current = null, List<Variant> variations = null)
+        {
+            if (current == null) current = new List<Term>();
+            if (variations == null) variations = new List<Variant>();
+
+            if (n == terms.Count)
+            {
+                Variant variant = new Variant()
+                {
+                    Terms = new List<Term>(current),
+                    TermsConcatenated = string.Join(", ", current.OrderBy(c => c.Id).Select(c => c.Id)),
+                };
+                variations.Add(variant);
+            }
+            else
+            {
+                foreach (Term term in terms[n])
+                {
+                    current.Add(term);
+                    GenerateTermCombinations(terms, n + 1, current, variations);
+                    current.RemoveAt(current.Count - 1);
+                }
+            }
+
+            return variations;
         }
     }
 }

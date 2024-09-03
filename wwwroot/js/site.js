@@ -301,7 +301,7 @@ $('.product-card .attribute-radios input[type="radio"]').on('change', async func
 
         const data = await GetProductVariantData(parentEl.data('product-id'),termIds);
 
-        if (data != null || data != undefined) {
+        if (data != null && data != undefined && data.Image != null) {
             parentEl.find('.img--wrapper img').attr('src', data.Image.FilePath);
             parentEl.find('.product-pricing').empty();
 
