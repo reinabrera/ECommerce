@@ -33,10 +33,6 @@
 
   <ItemGroup>
     <Folder Include="Areas\Customer\Views\Shared\" />
-<<<<<<< HEAD
-=======
-    <Folder Include="Controllers\" />
->>>>>>> c232c724a7398308ff28447a3e36d7ba1b382e37
     <Folder Include="Migrations\" />
     <Folder Include="wwwroot\Media\" />
     <Folder Include="wwwroot\ProductImages\" />
