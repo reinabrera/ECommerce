@@ -357,19 +357,7 @@ namespace ECommerce2.Areas.Admin.Controllers
 
                     /** Min and Max Price **/
 
-                    if (UpdateProduct.MinPrice == null && UpdateProduct.MaxPrice == null)
-                    {
-                        if (UpdateProduct.SalePrice != null)
-                        {
-                            UpdateProduct.MinPrice = UpdateProduct.SalePrice;
-                            UpdateProduct.MaxPrice = UpdateProduct.SalePrice;
-                        }
-                        else
-                        {
-                            UpdateProduct.MinPrice = UpdateProduct.ListPrice;
-                            UpdateProduct.MaxPrice = UpdateProduct.ListPrice;
-                        }
-                    }
+                    UpdateProduct.UpdateMinManPriceIfNull();
 
 
                     _context.Update(UpdateProduct);
@@ -400,8 +388,9 @@ namespace ECommerce2.Areas.Admin.Controllers
 
             foreach (Product product in products)
             {
-                string idStr = product.Id.ToString();
-                product.Slug = GenerateSlug(product.Name, idStr.Substring(idStr.Length - 12));
+                //string idStr = product.Id.ToString();
+                //product.Slug = GenerateSlug(product.Name, idStr.Substring(idStr.Length - 12));
+                product.GenerateSlug();
                 _context.Products.Update(product);
             }
 

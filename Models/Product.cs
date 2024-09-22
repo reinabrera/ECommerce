@@ -61,7 +61,22 @@ namespace ECommerce2.Models
 
             return (decimal)ListPrice;
         }
-
+        public void UpdateMinManPriceIfNull()
+        {
+            if (MinPrice == null && MaxPrice == null)
+            {
+                if (SalePrice != null)
+                {
+                    MinPrice = SalePrice;
+                    MaxPrice = SalePrice;
+                }
+                else
+                {
+                    MinPrice = ListPrice;
+                    MaxPrice = ListPrice;
+                }
+            }
+        }
         public void UpdatePriceRange()
         {
             if (Variations.Any())
@@ -138,6 +153,15 @@ namespace ECommerce2.Models
             }
 
             return variations;
+        }
+
+        public void GenerateSlug()
+        {
+            SlugHelper helper = new SlugHelper();
+
+            string slugTemp = helper.GenerateSlug(Name);
+
+            Slug = string.Join("-", slugTemp, Id);
         }
     }
 }
